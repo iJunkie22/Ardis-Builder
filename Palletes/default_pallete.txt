@@ -1,0 +1,12 @@
+#6788cc - light blue
+#0078ad - blue
+#e65177 - pink
+#924565 - violet
+#b93d48 - red, I guess
+#cd1d31 - red
+#ffcc67 - yellow
+#f38725 - orange
+#ef6a47 - peach
+#79c843 - light green
+#66ae4a - dark green
+#669966 - olive green
