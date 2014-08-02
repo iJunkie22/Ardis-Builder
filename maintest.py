@@ -5,55 +5,78 @@ import os
 w_path = os.getcwd()
 
 
+def Hide_Page(p_num_to_hide):
+    winbox = builder.get_object("box2")
+    vp_to_hide = p_num_to_hide+1
+    vp_str_to_hide = str(vp_to_hide)
+    old_vp = builder.get_object('viewport'+vp_str_to_hide)
+    winbox.remove(old_vp)
+    
+def Show_page(p_num_to_show):
+    winbox = builder.get_object("box2")
+    vp_to_show = p_num_to_show+1
+    vp_str_to_show = str(vp_to_show)
+    new_vp = builder.get_object('viewport'+vp_str_to_show)
+    winbox.add(new_vp)
+    setPageDot(p_num_to_show)
+    if p_num_to_show == 0:
+        backbutton.hide()
+    else:
+        backbutton.show()
+
 
 class Handler:
     def onDeleteWindow(self, *args):
         Gtk.main_quit(*args)
         exit()
-        
+
     def on_Next_clicked(self, button):
-	backbutton.show()
-	exitbutton.show()
-	winbox = builder.get_object("box2")
-	page1_viewport = builder.get_object("viewport1")
-	page2_viewport = builder.get_object("viewport2")
-	setPageDot(1)
-	winbox.remove(page1_viewport)
-	winbox.add(page2_viewport)
+        exitbutton.show()
+        cur_page = getPageDot()
+        nex_page = cur_page+1
+        Hide_Page(cur_page)
+        Show_page(nex_page)
+        setPageDot(nex_page)
       
     def on_Back_clicked(self, button):
-	backbutton.hide()
-	exitbutton.hide()
-	winbox = builder.get_object("box2")
-	page1_viewport = builder.get_object("viewport1")
-	page2_viewport = builder.get_object("viewport2")
-	setPageDot(0)
-	winbox.remove(page2_viewport)
-	winbox.add(page1_viewport)
-	
+        exitbutton.hide()
+        cur_page = getPageDot()
+        prev_page = cur_page-1
+        Hide_Page(cur_page)
+        Show_page(prev_page)
+        setPageDot(prev_page)
+
+
     def on_Exit_clicked(self, button):
-	exit()
-      
+        exit()
 
     def onButtonPressed(self, button):
-	try:
-	  execfile(w_path+'/page2.py')
-	  setPageDot(1)
-	  pageone.hide()
+        try:
+            execfile(w_path+'/page2.py')
+            setPageDot(1)
+            pageone.hide()
         finally:
-	  winbox = builder.get_object("box2")
-	  page1_viewport = builder.get_object("viewport1")
-	  page2_viewport = builder.get_object("viewport2")
-	  #page_viewport.hide()
-	  setPageDot(1)
-	  winbox.remove(page1_viewport)
-	  winbox.add(page2_viewport)
-	  #exit()
+            winbox = builder.get_object("box2")
+            page1_viewport = builder.get_object("viewport1")
+            page2_viewport = builder.get_object("viewport2")
+            #page_viewport.hide()
+            setPageDot(1)
+            winbox.remove(page1_viewport)
+            winbox.add(page2_viewport)
+            #exit()
         
 def setPageDot(n):
     pageDot = builder.get_object("curr_page_dot")
     mainbox = builder.get_object("box1")
     mainbox.reorder_child(pageDot, n)
+    
+def getPageDot():
+    pageDot = builder.get_object("curr_page_dot")
+    mainbox = builder.get_object("box1")
+    page_dot_list = mainbox.get_children()
+    for i, v in enumerate(page_dot_list):
+        if v == pageDot:
+            return int(i)
     
 def nextPage(c):
     nexp = c+1
