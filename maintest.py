@@ -33,8 +33,9 @@ def Show_page(p_num_to_show):
 
 
 class Handler:
-    def onDeleteWindow(self, *args):
-        Gtk.main_quit(*args)
+
+    def on_window1_delete_event(self, arg1, arg2):
+        Gtk.main_quit()
         exit()
 
     def on_Next_clicked(self, button):

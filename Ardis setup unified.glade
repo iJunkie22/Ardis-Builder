@@ -39,6 +39,7 @@ Please click next for further customization options.</property>
     <property name="default_width">680</property>
     <property name="default_height">500</property>
     <property name="icon">Images/winicon.png</property>
+    <signal name="delete-event" handler="on_window1_delete_event" swapped="no"/>
     <child>
       <object class="GtkBox" id="box2">
         <property name="visible">True</property>
