@@ -17,8 +17,15 @@ def Show_page(p_num_to_show):
     vp_to_show = p_num_to_show+1
     vp_str_to_show = str(vp_to_show)
     new_vp = builder.get_object('viewport'+vp_str_to_show)
-    winbox.add(new_vp)
-    setPageDot(p_num_to_show)
+    try:
+        winbox.add(new_vp)
+        setPosInCont('curr_page_dot', 'box1', p_num_to_show)
+    except TypeError:
+        Gtk.main_quit()
+        exit()
+        
+    #setPageDot(p_num_to_show)
+    setPosInCont('curr_page_dot', 'box1', p_num_to_show)
     if p_num_to_show == 0:
         backbutton.hide()
     else:
@@ -32,23 +39,52 @@ class Handler:
 
     def on_Next_clicked(self, button):
         exitbutton.show()
-        cur_page = getPageDot()
+        cur_page = getPosInCont('curr_page_dot', 'box1')
+        if cur_page == 1:
+            radio_choice = getPosInCont('event_box_curr_radio', 'box7')
+            print radio_choice
         nex_page = cur_page+1
         Hide_Page(cur_page)
         Show_page(nex_page)
-        setPageDot(nex_page)
+        setPosInCont('curr_page_dot', 'box1', nex_page)
+        #setPageDot(nex_page)
       
     def on_Back_clicked(self, button):
         exitbutton.hide()
-        cur_page = getPageDot()
+        cur_page = getPosInCont('curr_page_dot', 'box1')
         prev_page = cur_page-1
         Hide_Page(cur_page)
         Show_page(prev_page)
-        setPageDot(prev_page)
+        setPosInCont('curr_page_dot', 'box1', prev_page)
 
 
     def on_Exit_clicked(self, button):
         exit()
+        
+    def on_eventbox_radio_press(self, radio, button2):
+        #print radio
+        #print button2
+        #print "hello world"
+        #print builder.get_object("image15")
+        active_radio_box = builder.get_object("event_box_curr_radio")
+        rad_box1 = builder.get_object("box7")
+        rad_list = rad_box1.get_children()
+        for i, v in enumerate(rad_list):
+            if v == radio:
+                #print i
+                rad_box1.reorder_child(active_radio_box, i)
+            
+        
+    def on_inactive_radio_press_event(self, radio):
+        rad_box1 = builder.get_object("box7")
+        rad_list = rad_box1.get_children()
+        for i, v in enumerate(rad_list):
+            if v == radio:
+                print i
+                return int(i)
+        exit()
+        
+    
 
     def onButtonPressed(self, button):
         try:
@@ -70,12 +106,19 @@ def setPageDot(n):
     mainbox = builder.get_object("box1")
     mainbox.reorder_child(pageDot, n)
     
-def getPageDot():
-    pageDot = builder.get_object("curr_page_dot")
-    mainbox = builder.get_object("box1")
-    page_dot_list = mainbox.get_children()
-    for i, v in enumerate(page_dot_list):
-        if v == pageDot:
+    
+def setPosInCont(targ_obj, targ_con, targ_pos):
+    target_object = builder.get_object(targ_obj)
+    taget_container = builder.get_object(targ_con)
+    taget_container.reorder_child(target_object, targ_pos)
+    
+    
+def getPosInCont(targ_obj, targ_con):
+    target_object = builder.get_object(targ_obj)
+    taget_container = builder.get_object(targ_con)
+    objects_list = taget_container.get_children()
+    for i, v in enumerate(objects_list):
+        if v == target_object:
             return int(i)
     
 def nextPage(c):
