@@ -4,6 +4,9 @@ import os
 
 w_path = os.getcwd()
 print w_path
+gtkstyle = Gtk.CssProvider()
+cust_style = gtkstyle.new()
+cust_stle.load_from_file('ArdisGTKStyle.css')
 
 class Handler:
     def onDeleteWindow(self, *args):
@@ -12,10 +15,10 @@ class Handler:
 
     def onNextPressed(self, button):
         #print("Hello World!")
-        radio1 = builder.get_object("radiobutton1")
-        radio2 = builder.get_object("radiobutton2")
-        radio3 = builder.get_object("radiobutton3")
-        radio4 = builder.get_object("radiobutton4")
+        radio1 = builder2.get_object("radiobutton1")
+        radio2 = builder2.get_object("radiobutton2")
+        radio3 = builder2.get_object("radiobutton3")
+        radio4 = builder2.get_object("radiobutton4")
         
         def active_check(radio):
 		if radio.get_active() is True:
@@ -35,13 +38,13 @@ class Handler:
         exit()
         
 def setPageDot(n):
-    pageDot = builder.get_object("curr_page_dot")
-    mainbox = builder.get_object("box1")
+    pageDot = builder2.get_object("curr_page_dot")
+    mainbox = builder2.get_object("box1")
     mainbox.reorder_child(pageDot, n)
     
 def getPosOf(objbox, obj):
-    obj_item = builder.get_object(obj)
-    obj_box = builder.get_object(objbox)
+    obj_item = builder2.get_object(obj)
+    obj_box = builder2.get_object(objbox)
 
     obj_box.child_get_property(obj_item, "position", int)
     #return get_int(value())
@@ -52,17 +55,18 @@ def nextPage():
 	nexp = c+1
 	setPageDot(nexp)
 
-builder = Gtk.Builder()
-builder.add_from_file(w_path+'/Ardis setup style.glade')
-builder.connect_signals(Handler())
+builder2 = Gtk.Builder()
+builder2.add_from_file(w_path+'/Ardis setup style.glade')
+builder2.connect_signals(Handler())
 
-window = builder.get_object("window1")
-pageDot = builder.get_object("curr_page_dot")
-mainbox = builder.get_object("box1")
-pageone = builder.get_object("viewport1")
+window = builder2.get_object("window1")
+pageDot = builder2.get_object("curr_page_dot")
+mainbox = builder2.get_object("box1")
+pageone = builder2.get_object("viewport1")
 pagetest = mainbox.query_child_packing(pageDot)
 current_page = 1
 #print pagetest
+
 setPageDot(current_page)
 window.show_all()
 pageone.show()

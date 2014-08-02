@@ -58,6 +58,7 @@
     <property name="default_width">680</property>
     <property name="default_height">500</property>
     <property name="icon">winicon.png</property>
+    <property name="decorated">False</property>
     <child>
       <object class="GtkBox" id="box2">
         <property name="visible">True</property>
