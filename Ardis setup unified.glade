@@ -12,6 +12,21 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">Images/go-previous.png</property>
   </object>
+  <object class="GtkLinkButton" id="linkbutton1">
+    <property name="label" translatable="yes">button</property>
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="receives_default">True</property>
+    <property name="relief">none</property>
+    <property name="uri">http://glade.gnome.org</property>
+  </object>
+  <object class="GtkLabel" id="label20">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="label" translatable="yes">label</property>
+    <property name="use_underline">True</property>
+    <property name="mnemonic_widget">linkbutton1</property>
+  </object>
   <object class="GtkImage" id="page_ind_cur">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -172,6 +187,21 @@ Please click next for further customization options.</property>
               </packing>
             </child>
             <child>
+              <object class="GtkLinkButton" id="DonateButton">
+                <property name="label" translatable="yes">Donate</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="relief">none</property>
+                <property name="uri">http://ijunkie22.github.io/Ardis-Builder/</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkFixed" id="fixed1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -180,7 +210,8 @@ Please click next for further customization options.</property>
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child>
@@ -196,7 +227,8 @@ Please click next for further customization options.</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">2</property>
+                <property name="pack_type">end</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>
@@ -213,6 +245,7 @@ Please click next for further customization options.</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
+                <property name="pack_type">end</property>
                 <property name="position">4</property>
               </packing>
             </child>
@@ -537,18 +570,824 @@ Please click next for further customization options.</property>
       </object>
     </child>
   </object>
-  <object class="GtkSizeGroup" id="sizegroup1">
-    <property name="mode">both</property>
-    <widgets>
-      <widget name="viewport2"/>
-      <widget name="viewport1"/>
-    </widgets>
-  </object>
   <object class="GtkSizeGroup" id="sizegroup2">
     <property name="mode">both</property>
     <widgets>
       <widget name="box5"/>
       <widget name="box6"/>
+    </widgets>
+  </object>
+  <object class="GtkViewport" id="viewport3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkBox" id="box8">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkLabel" id="label5">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="xpad">30</property>
+            <property name="ypad">15</property>
+            <property name="label" translatable="yes">We are trying to provide our users with choice, choice to select what best suits their needs.
+
+Please select below what color of places icons do you prefer. </property>
+            <property name="wrap">True</property>
+            <property name="ellipsize">end</property>
+            <property name="track_visited_links">False</property>
+            <property name="lines">4</property>
+            <attributes>
+              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 10"/>
+              <attribute name="foreground" value="#000000000000"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolledwindow1">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="vexpand">True</property>
+            <property name="hscrollbar_policy">never</property>
+            <property name="vscrollbar_policy">always</property>
+            <child>
+              <object class="GtkViewport" id="viewport3b">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">20</property>
+                <property name="vscroll_policy">natural</property>
+                <child>
+                  <object class="GtkBox" id="box10">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_right">20</property>
+                    <property name="margin_top">20</property>
+                    <property name="margin_bottom">20</property>
+                    <child>
+                      <object class="GtkBox" id="box11">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_right">15</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">15</property>
+                        <property name="homogeneous">True</property>
+                        <child>
+                          <object class="GtkEventBox" id="event_box_curr_radio1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <child>
+                              <object class="GtkImage" id="image28">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_on.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox2">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image29">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox3">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image30">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox6">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image31">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox7">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image32">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox8">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image33">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">5</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox9">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image34">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">6</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox10">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image35">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">7</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox11">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image36">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">8</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox12">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image37">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">9</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox13">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image38">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">10</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox14">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image43">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">11</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox15">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image44">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">12</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox16">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image45">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">13</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="box12">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">15</property>
+                        <property name="homogeneous">True</property>
+                        <child>
+                          <object class="GtkLabel" id="label6">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Blackish</property>
+                            <attributes>
+                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label7">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Blue</property>
+                            <attributes>
+                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label8">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Dark Green</property>
+                            <attributes>
+                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label9">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Light Green</property>
+                            <attributes>
+                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label10">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Olive Green</property>
+                            <attributes>
+                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label11">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Orange</property>
+                            <attributes>
+                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">5</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label12">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Peach</property>
+                            <attributes>
+                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">6</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label13">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Pink</property>
+                            <attributes>
+                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">7</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label14">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Red</property>
+                            <attributes>
+                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">8</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label15">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Shadow Grey</property>
+                            <attributes>
+                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">9</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label16">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Sky Blue</property>
+                            <attributes>
+                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">10</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label17">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Soft Red</property>
+                            <attributes>
+                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">11</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label18">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Violet</property>
+                            <attributes>
+                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">12</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label19">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Yellow</property>
+                            <attributes>
+                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">13</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="box13">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">15</property>
+                        <property name="homogeneous">True</property>
+                        <child>
+                          <object class="GtkImage" id="image18">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/places_sample_Blackish.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image19">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/places_sample_Blue.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image20">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="xalign">0.49000000953674316</property>
+                            <property name="pixbuf">Images/places_sample_Darkgreen.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image21">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/places_sample_Lightgreen.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image22">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/places_sample_Olivegreen.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image23">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/places_sample_Orange.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">5</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image24">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/places_sample_Peach.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">6</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image25">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/places_sample_Pink.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">7</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image26">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/places_sample_Red.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">8</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image27">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/places_sample_Shadowgrey.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">9</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image39">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/places_sample_Skyblue.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">10</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image40">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/places_sample_Softred.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">11</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image41">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/places_sample_Violet.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">12</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image42">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/places_sample_Yellow.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">13</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkSizeGroup" id="sizegroup1">
+    <property name="mode">both</property>
+    <widgets>
+      <widget name="viewport2"/>
+      <widget name="viewport1"/>
+      <widget name="viewport3"/>
+    </widgets>
+  </object>
+  <object class="GtkSizeGroup" id="sizegroup3">
+    <property name="mode">vertical</property>
+    <widgets>
+      <widget name="box12"/>
+      <widget name="box13"/>
     </widgets>
   </object>
 </interface>

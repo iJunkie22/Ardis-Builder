@@ -44,6 +44,9 @@ class Handler:
         if cur_page == 1:
             radio_choice = getPosInCont('event_box_curr_radio', 'box7')
             print radio_choice
+        if cur_page == 2:
+            radio_choice = getPosInCont('event_box_curr_radio1', 'box11')
+            print radio_choice
         nex_page = cur_page+1
         Hide_Page(cur_page)
         Show_page(nex_page)
@@ -76,6 +79,18 @@ class Handler:
                 rad_box1.reorder_child(active_radio_box, i)
             
         
+    def on_eventbox_radio_press2(self, radio, button2):
+        #print radio
+        #print button2
+        #print "hello world"
+        #print builder.get_object("image15")
+        active_radio_box = builder.get_object("event_box_curr_radio1")
+        rad_box1 = builder.get_object("box11")
+        rad_list = rad_box1.get_children()
+        for i, v in enumerate(rad_list):
+            if v == radio:
+                #print i
+                rad_box1.reorder_child(active_radio_box, i)
     def on_inactive_radio_press_event(self, radio):
         rad_box1 = builder.get_object("box7")
         rad_list = rad_box1.get_children()
