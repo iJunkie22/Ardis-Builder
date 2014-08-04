@@ -1,15 +1,14 @@
 /.directory
-/Ardis setup style.glade~
+/*.*~
+/.*.*
+/#*#
+/Images/*~
+/Images/.directory
+/Palletes/*~
 /Ardis setup style2.glade
-/Ardis setup unified.glade~
 /Ardis setup.glade
-/Ardis setup.glade~
 /Ardis setup2.glade
-/about_icons.svg~
 /main.py
-/main.py~
-/maintest.py~
-/page2.py~
 /text.png
 /text.svg
 /textsmall.svg

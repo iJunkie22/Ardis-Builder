@@ -340,7 +340,7 @@ Please click next for further customization options.</property>
             <property name="orientation">vertical</property>
             <property name="homogeneous">True</property>
             <child>
-              <object class="GtkEventBox" id="event_box_curr_radio">
+              <object class="GtkEventBox" id="event_box_curr_radio1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="visible_window">False</property>
@@ -638,7 +638,7 @@ Please select below what color of places icons do you prefer. </property>
                         <property name="spacing">15</property>
                         <property name="homogeneous">True</property>
                         <child>
-                          <object class="GtkEventBox" id="event_box_curr_radio1">
+                          <object class="GtkEventBox" id="event_box_curr_radio2">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="visible_window">False</property>
@@ -663,7 +663,7 @@ Please select below what color of places icons do you prefer. </property>
                             <property name="can_focus">False</property>
                             <property name="visible_window">False</property>
                             <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image29">
                                 <property name="visible">True</property>
@@ -684,7 +684,7 @@ Please select below what color of places icons do you prefer. </property>
                             <property name="can_focus">False</property>
                             <property name="visible_window">False</property>
                             <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image30">
                                 <property name="visible">True</property>
@@ -705,7 +705,7 @@ Please select below what color of places icons do you prefer. </property>
                             <property name="can_focus">False</property>
                             <property name="visible_window">False</property>
                             <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image31">
                                 <property name="visible">True</property>
@@ -726,7 +726,7 @@ Please select below what color of places icons do you prefer. </property>
                             <property name="can_focus">False</property>
                             <property name="visible_window">False</property>
                             <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image32">
                                 <property name="visible">True</property>
@@ -747,7 +747,7 @@ Please select below what color of places icons do you prefer. </property>
                             <property name="can_focus">False</property>
                             <property name="visible_window">False</property>
                             <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image33">
                                 <property name="visible">True</property>
@@ -768,7 +768,7 @@ Please select below what color of places icons do you prefer. </property>
                             <property name="can_focus">False</property>
                             <property name="visible_window">False</property>
                             <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image34">
                                 <property name="visible">True</property>
@@ -789,7 +789,7 @@ Please select below what color of places icons do you prefer. </property>
                             <property name="can_focus">False</property>
                             <property name="visible_window">False</property>
                             <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image35">
                                 <property name="visible">True</property>
@@ -810,7 +810,7 @@ Please select below what color of places icons do you prefer. </property>
                             <property name="can_focus">False</property>
                             <property name="visible_window">False</property>
                             <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image36">
                                 <property name="visible">True</property>
@@ -831,7 +831,7 @@ Please select below what color of places icons do you prefer. </property>
                             <property name="can_focus">False</property>
                             <property name="visible_window">False</property>
                             <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image37">
                                 <property name="visible">True</property>
@@ -852,7 +852,7 @@ Please select below what color of places icons do you prefer. </property>
                             <property name="can_focus">False</property>
                             <property name="visible_window">False</property>
                             <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image38">
                                 <property name="visible">True</property>
@@ -873,7 +873,7 @@ Please select below what color of places icons do you prefer. </property>
                             <property name="can_focus">False</property>
                             <property name="visible_window">False</property>
                             <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image43">
                                 <property name="visible">True</property>
@@ -894,7 +894,7 @@ Please select below what color of places icons do you prefer. </property>
                             <property name="can_focus">False</property>
                             <property name="visible_window">False</property>
                             <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image44">
                                 <property name="visible">True</property>
@@ -915,7 +915,7 @@ Please select below what color of places icons do you prefer. </property>
                             <property name="can_focus">False</property>
                             <property name="visible_window">False</property>
                             <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press2" swapped="no"/>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image45">
                                 <property name="visible">True</property>

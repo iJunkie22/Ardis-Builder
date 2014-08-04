@@ -4,7 +4,6 @@ import os
 
 w_path = os.getcwd()
 
-
 def Hide_Page(p_num_to_hide):
     winbox = builder.get_object("box2")
     vp_to_hide = p_num_to_hide+1
@@ -21,6 +20,12 @@ def Show_page(p_num_to_show):
         winbox.add(new_vp)
         setPosInCont('curr_page_dot', 'box1', p_num_to_show)
     except TypeError:
+        #This captures any attempt to advance to a page that doesnt exist
+        radio_choice_page1 = getPosInCont('event_box_curr_radio1', 'box7')
+        radio_choice_page2 = getPosInCont('event_box_curr_radio2', 'box11')
+        print 'Action style ', radio_choice_page1
+        print 'Places color ', radio_choice_page2
+
         Gtk.main_quit()
         exit()
         
@@ -35,21 +40,18 @@ def Show_page(p_num_to_show):
 class Handler:
 
     def on_window1_delete_event(self, arg1, arg2):
+        #Captures exit request made by a window manager
+        #Disabling this means closing the window leaves a ZOMBIE!!!
         Gtk.main_quit()
         exit()
 
     def on_Next_clicked(self, button):
-        exitbutton.show()
+        #exitbutton.show()
         cur_page = getPosInCont('curr_page_dot', 'box1')
-        if cur_page == 1:
-            radio_choice = getPosInCont('event_box_curr_radio', 'box7')
-            print radio_choice
-        if cur_page == 2:
-            radio_choice = getPosInCont('event_box_curr_radio1', 'box11')
-            print radio_choice
         nex_page = cur_page+1
         Hide_Page(cur_page)
         Show_page(nex_page)
+        #if the next page doesnt exist, the app exits now
         setPosInCont('curr_page_dot', 'box1', nex_page)
         #setPageDot(nex_page)
       
@@ -66,56 +68,14 @@ class Handler:
         exit()
         
     def on_eventbox_radio_press(self, radio, button2):
-        #print radio
-        #print button2
-        #print "hello world"
-        #print builder.get_object("image15")
-        active_radio_box = builder.get_object("event_box_curr_radio")
-        rad_box1 = builder.get_object("box7")
-        rad_list = rad_box1.get_children()
+        cur_page = getPosInCont('curr_page_dot', 'box1')
+        active_radio_box = builder.get_object('event_box_curr_radio'+str(cur_page))
+        rad_parent = radio.get_parent()
+        rad_list = rad_parent.get_children()
         for i, v in enumerate(rad_list):
             if v == radio:
-                #print i
-                rad_box1.reorder_child(active_radio_box, i)
-            
-        
-    def on_eventbox_radio_press2(self, radio, button2):
-        #print radio
-        #print button2
-        #print "hello world"
-        #print builder.get_object("image15")
-        active_radio_box = builder.get_object("event_box_curr_radio1")
-        rad_box1 = builder.get_object("box11")
-        rad_list = rad_box1.get_children()
-        for i, v in enumerate(rad_list):
-            if v == radio:
-                #print i
-                rad_box1.reorder_child(active_radio_box, i)
-    def on_inactive_radio_press_event(self, radio):
-        rad_box1 = builder.get_object("box7")
-        rad_list = rad_box1.get_children()
-        for i, v in enumerate(rad_list):
-            if v == radio:
-                print i
-                #return int(i)
-        exit()
-        
-    
+                rad_parent.reorder_child(active_radio_box, i)
 
-    def onButtonPressed(self, button):
-        try:
-            execfile(w_path+'/page2.py')
-            setPageDot(1)
-            pageone.hide()
-        finally:
-            winbox = builder.get_object("box2")
-            page1_viewport = builder.get_object("viewport1")
-            page2_viewport = builder.get_object("viewport2")
-            #page_viewport.hide()
-            setPageDot(1)
-            winbox.remove(page1_viewport)
-            winbox.add(page2_viewport)
-            #exit()
         
 def setPageDot(n):
     pageDot = builder.get_object("curr_page_dot")
@@ -137,10 +97,6 @@ def getPosInCont(targ_obj, targ_con):
         if v == target_object:
             return int(i)
     
-def nextPage(c):
-    nexp = c+1
-    setPageDot(nexp)
-    return nexp
 
 builder = Gtk.Builder()
 builder.add_from_file(w_path+'/Ardis setup unified.glade')
@@ -152,9 +108,7 @@ mainbox = builder.get_object("box1")
 backbutton = builder.get_object("button2")
 exitbutton = builder.get_object("button3")
 pageone = builder.get_object("viewport1")
-pagetest = mainbox.query_child_packing(pageDot)
 current_page = 0
-#print pagetest
 window.show_all()
 backbutton.hide()
 exitbutton.hide()
