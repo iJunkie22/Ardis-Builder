@@ -1,1 +1,2 @@
 #666 - background
+#111111 - blackish

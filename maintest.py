@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python -t
 from gi.repository import Gtk
 import os
 
@@ -82,7 +82,7 @@ class Handler:
         for i, v in enumerate(rad_list):
             if v == radio:
                 print i
-                return int(i)
+                #return int(i)
         exit()
         
     
