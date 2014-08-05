@@ -1,4 +1,4 @@
-#!/usr/bin/python -t
+#!/usr/bin/python2 -t
 from gi.repository import Gtk
 import os
 
