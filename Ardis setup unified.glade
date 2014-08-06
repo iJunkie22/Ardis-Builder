@@ -317,7 +317,6 @@ Please click next for further customization options.</property>
       </object>
     </child>
   </object>
-  <object class="GtkTextTagTable" id="texttagtable1"/>
   <object class="GtkViewport" id="viewport2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -1427,7 +1426,6 @@ Please select below what color of places icons do you prefer. </property>
         <child>
           <object class="GtkLinkButton" id="ProjectStatusLinkButton">
             <property name="label" translatable="yes">Check progress on GitHub</property>
-            <property name="related_action"/>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>

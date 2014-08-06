@@ -3,6 +3,10 @@ from gi.repository import Gtk
 import os
 
 w_path = os.getcwd()
+envars = os.environ
+user_home_dir = envars['HOME']
+Ardis_colors = {}
+Ardis_colors = {'Blackish':'#111111', 'Blue':'#0078ad', 'Dark Green':'#66ae4a', 'Light Green':'#79c843', 'Olive Green':'#669966', 'Orange':'#f38725', 'Peach':'#ef6a47', 'Pink':'#e65177', 'Red':'#cd1d31', 'Shadow Grey':'#666666', 'Sky Blue':'#6788cc', 'Soft Red':'#b93d48', 'Violet':'#924565', 'Yellow':'#ffcc67'}
 
 def Hide_Page(p_num_to_hide):
     winbox = builder.get_object("box2")
@@ -33,10 +37,19 @@ def Show_page(p_num_to_show):
         radio_choice_page5 = getPosInCont('event_box_curr_radio5', 'box21')
         label_choice_page5 = getNthChildLabel('box22', radio_choice_page5)
         
-        print 'Action style ', label_choice_page1
-        print 'Places color ', label_choice_page2
-        print 'Start here ', label_choice_page4
-        print 'DesktopEnvironment ', label_choice_page5
+        if label_choice_page5 == 'KDE':
+            user_icon_dir = str(user_home_dir+'/.kde/share/icons/')
+        elif label_choice_page5 is not None:
+            user_icon_dir = str(user_home_dir+'/.icons/')
+        else:
+            user_icon_dir = None
+            
+        print 'Action style='+'"'+label_choice_page1+'"'
+        print 'Places color='+Ardis_colors[label_choice_page2], '"'+label_choice_page2+'"'
+        print 'Start here='+label_choice_page4
+        print 'DesktopEnvironment='+label_choice_page5
+        print 'Install Location='+user_icon_dir
+        
 
         Gtk.main_quit()
         exit()
@@ -129,7 +142,7 @@ current_page = 0
 window.show_all()
 backbutton.hide()
 exitbutton.hide()
-pageone.show()
+#pageone.show()
 
 
 
