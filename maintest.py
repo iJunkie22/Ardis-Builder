@@ -23,8 +23,12 @@ def Show_page(p_num_to_show):
         #This captures any attempt to advance to a page that doesnt exist
         radio_choice_page1 = getPosInCont('event_box_curr_radio1', 'box7')
         radio_choice_page2 = getPosInCont('event_box_curr_radio2', 'box11')
+        radio_choice_page4 = getPosInCont('event_box_curr_radio4', 'box16')
+        radio_choice_page5 = getPosInCont('event_box_curr_radio5', 'box21')
         print 'Action style ', radio_choice_page1
         print 'Places color ', radio_choice_page2
+        print 'Start here ', radio_choice_page4
+        print 'DesktopEnvironment ', radio_choice_page5
 
         Gtk.main_quit()
         exit()
