@@ -22,13 +22,21 @@ def Show_page(p_num_to_show):
     except TypeError:
         #This captures any attempt to advance to a page that doesnt exist
         radio_choice_page1 = getPosInCont('event_box_curr_radio1', 'box7')
+        label_choice_page1 = getNthChildLabel('box5', radio_choice_page1)
+        
         radio_choice_page2 = getPosInCont('event_box_curr_radio2', 'box11')
+        label_choice_page2 = getNthChildLabel('box12', radio_choice_page2)
+        
         radio_choice_page4 = getPosInCont('event_box_curr_radio4', 'box16')
+        label_choice_page4 = getNthChildLabel('box17', radio_choice_page4)
+        
         radio_choice_page5 = getPosInCont('event_box_curr_radio5', 'box21')
-        print 'Action style ', radio_choice_page1
-        print 'Places color ', radio_choice_page2
-        print 'Start here ', radio_choice_page4
-        print 'DesktopEnvironment ', radio_choice_page5
+        label_choice_page5 = getNthChildLabel('box22', radio_choice_page5)
+        
+        print 'Action style ', label_choice_page1
+        print 'Places color ', label_choice_page2
+        print 'Start here ', label_choice_page4
+        print 'DesktopEnvironment ', label_choice_page5
 
         Gtk.main_quit()
         exit()
@@ -101,6 +109,11 @@ def getPosInCont(targ_obj, targ_con):
         if v == target_object:
             return int(i)
     
+def getNthChildLabel(targ_con, child_n):
+    taget_container = builder.get_object(targ_con)
+    objects_list = taget_container.get_children()
+    target_label = objects_list[child_n]
+    return target_label.get_text()
 
 builder = Gtk.Builder()
 builder.add_from_file(w_path+'/Ardis setup unified.glade')
