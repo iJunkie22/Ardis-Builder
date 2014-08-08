@@ -67,6 +67,19 @@ class Handler:
     def on_window1_delete_event(self, arg1, arg2):
         #Captures exit request made by a window manager
         #Disabling this means closing the window leaves a ZOMBIE!!!
+        gtkicons = Gtk.IconTheme()
+        gtksettings = Gtk.Settings()
+        context_list = gtkicons.list_contexts()
+        curicontheme = gtkicons.get_default()
+        print context_list
+        print '.'*50
+        print gtkicons.get_search_path()
+        print '.'*50
+        print curicontheme.get_search_path()
+        print '.'*50
+        print gtksettings.props.gtk_icon_theme_name
+        print '.'*50
+        print gtksettings.props.gtk_icon_sizes
         Gtk.main_quit()
         exit()
 
