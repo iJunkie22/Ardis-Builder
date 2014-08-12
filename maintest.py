@@ -20,60 +20,110 @@ def Hide_Page(p_num_to_hide):
     vp_to_hide = p_num_to_hide+1
     vp_str_to_hide = str(vp_to_hide)
     old_vp = builder.get_object('viewport'+vp_str_to_hide)
-    winbox.remove(old_vp)
+    if nextbutton.get_label() == '  Next   ':
+        winbox.remove(old_vp)
     
 def Show_page(p_num_to_show):
     winbox = builder.get_object("box2")
     vp_to_show = p_num_to_show+1
     vp_str_to_show = str(vp_to_show)
     new_vp = builder.get_object('viewport'+vp_str_to_show)
-    try:
+    
+    
+    radio_choice_page1 = getPosInCont('event_box_curr_radio1', 'box7')
+    label_choice_page1 = getNthChildLabel('box5', radio_choice_page1)
+    
+    radio_choice_page2 = getPosInCont('event_box_curr_radio2', 'box11')
+    label_choice_page2 = getNthChildLabel('box12', radio_choice_page2)
+    
+    radio_choice_page4 = getPosInCont('event_box_curr_radio4', 'box16')
+    label_choice_page4 = getNthChildLabel('box17', radio_choice_page4)
+    
+    radio_choice_page5 = getPosInCont('event_box_curr_radio5', 'box21')
+    label_choice_page5 = getNthChildLabel('box22', radio_choice_page5)
+    
+    if label_choice_page5 == 'KDE':
+        user_icon_dir = str(user_home_dir+'/.kde/share/icons/')
+    elif label_choice_page5 is not None:
+        user_icon_dir = str(user_home_dir+'/.icons/')
+    else:
+        user_icon_dir = None
+        
+    if vp_to_show > 6:
+    #This is when the last page is triggered
+        res_label_obj = builder.get_object('results_summary')
+        res_sum = str('<b>Action style=</b>'+'"'+label_choice_page1+'"'+'''\n<b>Places color=</b>'''+Ardis_colors[label_choice_page2]+'"'+label_choice_page2+'"'+'''\n<b>Start here=</b>'''+label_choice_page4+'''\n<b>DesktopEnvironment=</b>'''+label_choice_page5+'''\n<b>Install Location=</b>'''+user_icon_dir)
+        res_label_obj.set_markup(res_sum)
+        d_string = ardis_dirs(places=label_choice_page2)
+        ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
+        dir_len = len(ardis_d_list)
+        prog_step = float('1.0') / float(dir_len)
+        prog_bar = builder.get_object('progressbar1')
+        prog_bar.set_fraction(float('0.00'))
+    if vp_to_show == 7:
+        #prog_bar.set_pulse_step(prog_step)
+        #print prog_bar.get_pulse_step()
+        nextbutton.set_label('  Build   ')
         winbox.add(new_vp)
         setPosInCont('curr_page_dot', 'box1', p_num_to_show)
-    except TypeError:
-        #This captures any attempt to advance to a page that doesnt exist
-        radio_choice_page1 = getPosInCont('event_box_curr_radio1', 'box7')
-        label_choice_page1 = getNthChildLabel('box5', radio_choice_page1)
-        
-        radio_choice_page2 = getPosInCont('event_box_curr_radio2', 'box11')
-        label_choice_page2 = getNthChildLabel('box12', radio_choice_page2)
-        
-        radio_choice_page4 = getPosInCont('event_box_curr_radio4', 'box16')
-        label_choice_page4 = getNthChildLabel('box17', radio_choice_page4)
-        
-        radio_choice_page5 = getPosInCont('event_box_curr_radio5', 'box21')
-        label_choice_page5 = getNthChildLabel('box22', radio_choice_page5)
-        
-        if label_choice_page5 == 'KDE':
-            user_icon_dir = str(user_home_dir+'/.kde/share/icons/')
-        elif label_choice_page5 is not None:
-            user_icon_dir = str(user_home_dir+'/.icons/')
-        else:
-            user_icon_dir = None
+        #for g_item in ardis_d_list[::]:
+            #print Theme_Indexer.define_group(g_item)
+            #old_prog = prog_bar.get_fraction()
+            #new_prog = old_prog + prog_step
+            #prog_bar.set_fraction(new_prog)
+            #prog_bar.pulse()
+            #print prog_bar.get_fraction()
             
+    elif nextbutton.get_label() == '  Build   ':
+        #The user has chosen to generate
         d_string = ardis_dirs(places=label_choice_page2)
-        print d_string
         ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
-        for g_item in ardis_d_list[::]:
-            print Theme_Indexer.define_group(g_item)
+        dir_len = len(ardis_d_list)
+        prog_step = float('1.0') / float(dir_len)
+        prog_bar = builder.get_object('progressbar1')
+        prog_bar.set_fraction(float('0.00'))
+        #prog_bar.set_pulse_step(prog_step)
+        #print prog_bar.get_pulse_step()
+        temp_theme_file = open(user_icon_dir+"Ardis/temp_index.theme",'w')
+        try:
+            temp_theme_file.write('Directories='+d_string+'\n\n')
+            for g_item in ardis_d_list[::]:
+                g_line = Theme_Indexer.define_group(g_item)
+                temp_theme_file.write(g_line+'\n')
+                old_prog = prog_bar.get_fraction()
+                new_prog = old_prog + prog_step
+                prog_bar.set_fraction(new_prog)
+                #prog_bar.pulse()
+                #print prog_bar.get_fraction()
+        finally:
+            temp_theme_file.close()
+        nextbutton.set_label('  Apply   ')
         
-        print 'Action style='+'"'+label_choice_page1+'"'
-        #print 'Places color='+Ardis_colors[label_choice_page2], '"'+label_choice_page2+'"'
-        print 'Places color='+Ardis_colors[label_choice_page2], '"'+label_choice_page2+'"'
-        print 'Start here='+label_choice_page4
-        print 'DesktopEnvironment='+label_choice_page5
-        print 'Install Location='+user_icon_dir
-        
-
-        Gtk.main_quit()
-        exit()
-        
-    #setPageDot(p_num_to_show)
-    setPosInCont('curr_page_dot', 'box1', p_num_to_show)
-    if p_num_to_show == 0:
-        backbutton.hide()
     else:
-        backbutton.show()
+        try:
+            winbox.add(new_vp)
+            setPosInCont('curr_page_dot', 'box1', p_num_to_show)
+
+        except TypeError:
+            #This captures any attempt to advance to a page that doesnt exist
+            
+            print 'Action style='+'"'+label_choice_page1+'"'
+            #print 'Places color='+Ardis_colors[label_choice_page2], '"'+label_choice_page2+'"'
+            print 'Places color='+Ardis_colors[label_choice_page2], '"'+label_choice_page2+'"'
+            print 'Start here='+label_choice_page4
+            print 'DesktopEnvironment='+label_choice_page5
+            print 'Install Location='+user_icon_dir
+            
+
+            Gtk.main_quit()
+            exit()
+            
+        #setPageDot(p_num_to_show)
+        setPosInCont('curr_page_dot', 'box1', p_num_to_show)
+        if p_num_to_show == 0:
+            backbutton.hide()
+        else:
+            backbutton.show()
 
 
 class Handler:
@@ -113,6 +163,7 @@ class Handler:
       
     def on_Back_clicked(self, button):
         exitbutton.hide()
+        nextbutton.set_label('  Next   ')
         cur_page = getPosInCont('curr_page_dot', 'box1')
         prev_page = cur_page-1
         Hide_Page(cur_page)
@@ -166,6 +217,7 @@ builder.connect_signals(Handler())
 window = builder.get_object("window1")
 pageDot = builder.get_object("curr_page_dot")
 mainbox = builder.get_object("box1")
+nextbutton = builder.get_object("button1")
 backbutton = builder.get_object("button2")
 exitbutton = builder.get_object("button3")
 pageone = builder.get_object("viewport1")
