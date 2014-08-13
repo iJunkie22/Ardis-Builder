@@ -42,6 +42,9 @@ def Show_page(p_num_to_show):
     radio_choice_page5 = getPosInCont('event_box_curr_radio5', 'box21')
     label_choice_page5 = getNthChildLabel('box22', radio_choice_page5)
     
+
+    
+    
     if label_choice_page5 == 'KDE':
         user_icon_dir = str(user_home_dir+'/.kde/share/icons/')
     elif label_choice_page5 is not None:
@@ -61,22 +64,14 @@ def Show_page(p_num_to_show):
         prog_bar = builder.get_object('progressbar1')
         prog_bar.set_fraction(float('0.00'))
     if vp_to_show == 7:
-        #prog_bar.set_pulse_step(prog_step)
-        #print prog_bar.get_pulse_step()
         nextbutton.set_label('  Build   ')
         winbox.add(new_vp)
         setPosInCont('curr_page_dot', 'box1', p_num_to_show)
-        #for g_item in ardis_d_list[::]:
-            #print Theme_Indexer.define_group(g_item)
-            #old_prog = prog_bar.get_fraction()
-            #new_prog = old_prog + prog_step
-            #prog_bar.set_fraction(new_prog)
-            #prog_bar.pulse()
-            #print prog_bar.get_fraction()
+
             
     elif nextbutton.get_label() == '  Build   ':
         #The user has chosen to generate
-        d_string = ardis_dirs(places=label_choice_page2)
+        d_string = ardis_dirs(places=label_choice_page2.lower())
         ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
         dir_len = len(ardis_d_list)
         prog_step = float('1.0') / float(dir_len)
@@ -84,7 +79,7 @@ def Show_page(p_num_to_show):
         prog_bar.set_fraction(float('0.00'))
         #prog_bar.set_pulse_step(prog_step)
         #print prog_bar.get_pulse_step()
-        temp_theme_file = open(user_icon_dir+"Ardis/temp_index.theme",'w')
+        temp_theme_file = open(user_icon_dir+"Ardis_TEST_theme/temp_index.theme",'w')
         try:
             temp_theme_file.write('Directories='+d_string+'\n\n')
             for g_item in ardis_d_list[::]:
@@ -179,10 +174,8 @@ class Handler:
         active_radio_box = builder.get_object('event_box_curr_radio'+str(cur_page))
         rad_parent = radio.get_parent()
         rad_list = rad_parent.get_children()
-        for i, v in enumerate(rad_list):
-            if v == radio:
-                rad_parent.reorder_child(active_radio_box, i)
-
+        i = rad_list.index(radio)
+        rad_parent.reorder_child(active_radio_box, i)
         
 def setPageDot(n):
     pageDot = builder.get_object("curr_page_dot")
@@ -200,9 +193,7 @@ def getPosInCont(targ_obj, targ_con):
     target_object = builder.get_object(targ_obj)
     taget_container = builder.get_object(targ_con)
     objects_list = taget_container.get_children()
-    for i, v in enumerate(objects_list):
-        if v == target_object:
-            return int(i)
+    return objects_list.index(target_object)
     
 def getNthChildLabel(targ_con, child_n):
     taget_container = builder.get_object(targ_con)
@@ -210,8 +201,39 @@ def getNthChildLabel(targ_con, child_n):
     target_label = objects_list[child_n]
     return target_label.get_text()
 
+def hide_bonus_places(targ_x):
+    targ_parent = builder.get_object(targ_x)
+    out_list = []
+    col_list = targ_parent.get_children()
+    r_list = col_list[0].get_children()
+    l_list = col_list[1].get_children()
+    p_list = col_list[2].get_children()
+    for i, v in enumerate(l_list):
+        #print i, v.get_text()
+        if v.get_text() != "Blue":
+            if v.get_text() != "Violet":
+                if v.get_text() != "Brown":
+                    print v.get_text()
+                    out_list.append(r_list[i])
+                    out_list.append(p_list[i])
+                    out_list.append(l_list[i])
+    for i in out_list:
+        i.hide()
+
+            
+
+        #if v == radio:
+        #    rad_parent.reorder_child(active_radio_box, i)
+
+def hideAdjacentChildren(targ_parent):
+    col_list = targ_parent.get_children()
+    r_list = col_list[0]
+    l_list = col_list[1]
+    p_list = col_list[2]
+
+
 builder = Gtk.Builder()
-builder.add_from_file(w_path+'/Ardis setup unified.glade')
+builder.add_from_file(w_path+'/Ardis setup unified2.glade')
 builder.connect_signals(Handler())
 
 window = builder.get_object("window1")
@@ -221,6 +243,7 @@ nextbutton = builder.get_object("button1")
 backbutton = builder.get_object("button2")
 exitbutton = builder.get_object("button3")
 pageone = builder.get_object("viewport1")
+hide_bonus_places('box10')
 current_page = 0
 window.show_all()
 backbutton.hide()

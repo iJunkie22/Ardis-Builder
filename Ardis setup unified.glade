@@ -612,7 +612,7 @@ Please select below what color of places icons do you prefer. </property>
           <object class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="vexpand">True</property>
+            <property name="valign">baseline</property>
             <property name="hscrollbar_policy">never</property>
             <property name="vscrollbar_policy">always</property>
             <child>
@@ -625,6 +625,7 @@ Please select below what color of places icons do you prefer. </property>
                   <object class="GtkBox" id="box10">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="valign">baseline</property>
                     <property name="margin_right">20</property>
                     <property name="margin_top">20</property>
                     <property name="margin_bottom">20</property>
@@ -637,26 +638,6 @@ Please select below what color of places icons do you prefer. </property>
                         <property name="spacing">15</property>
                         <property name="homogeneous">True</property>
                         <child>
-                          <object class="GtkEventBox" id="event_box_curr_radio2">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <child>
-                              <object class="GtkImage" id="image28">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_on.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkEventBox" id="eventbox2">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -668,6 +649,26 @@ Please select below what color of places icons do you prefer. </property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="event_box_curr_radio2">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <child>
+                              <object class="GtkImage" id="image28">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_on.png</property>
                               </object>
                             </child>
                           </object>
@@ -1368,7 +1369,7 @@ Please select below what color of places icons do you prefer. </property>
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="pack_type">end</property>
-            <property name="position">2</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
