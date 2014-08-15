@@ -7,6 +7,14 @@ w_path = os.getcwd()
 sys.path.append(str(w_path))
 import Theme_Indexer
 
+Ardis_kw = {}
+Ardis_kw['name'] = 'ArdisTESTtheme'
+Ardis_kw['dir'] = 'Ardis_TEST_theme'
+Ardis_kw['vers'] = '0.5'
+Ardis_kw['comment'] = 'Simple and flat icon theme with long shadow - v'+Ardis_kw['vers']
+ardis_unlocked_places = ['Blue', 'Violet', 'Brown']
+AB_Pages = {0: dict(desc='intro', viewport='viewport1', has_radios=False), 1: dict(desc='actions', viewport='viewport2', has_radios=True, rad_box='box7', lab_box='box5', img_box='box6', cur_rad='event_box_curr_radio1'), 2: dict(desc='places', viewport='viewport3', has_radios=True, rad_box='box11', lab_box='box12', img_box='box13', cur_rad='event_box_curr_radio2'), 3: dict(desc='mimetypes', viewport='viewport4', has_radios=False), 4: dict(desc='start-here', viewport='viewport5', has_radios=True, rad_box='box16', lab_box='box17', img_box='box18', cur_rad='event_box_curr_radio4'), 5: dict(desc='DE', viewport='viewport6', has_radios=True, rad_box='box21', lab_box='box22', img_box='box23', cur_rad='event_box_curr_radio5'), 6: dict(desc='thank-you', viewport='viewport7', has_radios=False), 7: dict(viewport='viewport8')}
+
 envars = os.environ
 user_home_dir = envars['HOME']
 Ardis_colors = {}
@@ -17,17 +25,25 @@ def ardis_dirs(**ArdisDirArgs):
 
 def Hide_Page(p_num_to_hide):
     winbox = builder.get_object("box2")
-    vp_to_hide = p_num_to_hide+1
-    vp_str_to_hide = str(vp_to_hide)
-    old_vp = builder.get_object('viewport'+vp_str_to_hide)
+    #vp_to_hide = p_num_to_hide+1
+    #vp_str_to_hide = str(vp_to_hide)
+    page_dict = {}
+    page_dict = AB_Pages[p_num_to_hide]
+    old_vp = builder.get_object(page_dict['viewport'])
     if nextbutton.get_label() == '  Next   ':
         winbox.remove(old_vp)
     
 def Show_page(p_num_to_show):
     winbox = builder.get_object("box2")
     vp_to_show = p_num_to_show+1
-    vp_str_to_show = str(vp_to_show)
-    new_vp = builder.get_object('viewport'+vp_str_to_show)
+    #vp_str_to_show = str(vp_to_show)
+    #new_vp = builder.get_object('viewport'+vp_str_to_show)
+    page_dict = {}
+    try:
+        page_dict = AB_Pages[p_num_to_show]
+    except KeyError, nullpage:
+        page_dict = {'viewport': 'viewport'+str(nullpage)}
+    new_vp = builder.get_object(page_dict['viewport'])
     
     
     radio_choice_page1 = getPosInCont('event_box_curr_radio1', 'box7')
@@ -52,7 +68,7 @@ def Show_page(p_num_to_show):
     else:
         user_icon_dir = None
         
-    if vp_to_show > 6:
+    if p_num_to_show >= 6:
     #This is when the last page is triggered
         res_label_obj = builder.get_object('results_summary')
         res_sum = str('<b>Action style=</b>'+'"'+label_choice_page1+'"'+'''\n<b>Places color=</b>'''+Ardis_colors[label_choice_page2]+'"'+label_choice_page2+'"'+'''\n<b>Start here=</b>'''+label_choice_page4+'''\n<b>DesktopEnvironment=</b>'''+label_choice_page5+'''\n<b>Install Location=</b>'''+user_icon_dir)
@@ -63,7 +79,8 @@ def Show_page(p_num_to_show):
         prog_step = float('1.0') / float(dir_len)
         prog_bar = builder.get_object('progressbar1')
         prog_bar.set_fraction(float('0.00'))
-    if vp_to_show == 7:
+        
+    if p_num_to_show == 6:
         nextbutton.set_label('  Build   ')
         winbox.add(new_vp)
         setPosInCont('curr_page_dot', 'box1', p_num_to_show)
@@ -79,7 +96,7 @@ def Show_page(p_num_to_show):
         prog_bar.set_fraction(float('0.00'))
         #prog_bar.set_pulse_step(prog_step)
         #print prog_bar.get_pulse_step()
-        temp_theme_file = open(user_icon_dir+"Ardis_TEST_theme/temp_index.theme",'w')
+        temp_theme_file = open(user_icon_dir+Ardis_kw['dir']+"/temp_index.theme",'w')
         try:
             temp_theme_file.write('Directories='+d_string+'\n\n')
             for g_item in ardis_d_list[::]:
@@ -107,10 +124,10 @@ def Show_page(p_num_to_show):
             print 'DesktopEnvironment='+label_choice_page5
             print 'Install Location='+user_icon_dir
             
-            temp_theme_file = open(user_icon_dir+"Ardis_TEST_theme/temp_index.theme",'r')
-            final_theme_file = open(user_icon_dir+"Ardis_TEST_theme/index.theme",'w')
+            temp_theme_file = open(user_icon_dir+Ardis_kw['dir']+"/temp_index.theme",'r')
+            final_theme_file = open(user_icon_dir+Ardis_kw['dir']+"/index.theme",'w')
             try:
-                final_theme_file.write('[Icon Theme]\nName=ArdisTESTtheme\nComment=Simple and flat icon theme with long shadow - v0.5\n\nDisplayDepth=32\n\nInherits=hicolor,GNOME,Oxygen\n\nExample=folder\n\nLinkOverlay=link\nLockOverlay=lockoverlay\nShareOverlay=share\nZipOverlay=zip\n\nDesktopDefault=48\nDesktopSizes=16,22,32,48,64,128,256\nToolbarDefault=22\nToolbarSizes=16,22,32,48\nMainToolbarDefault=22\nMainToolbarSizes=16,22,32,48\nSmallDefault=16\nSmallSizes=16,22,32,48\nPanelDefault=32\nPanelSizes=16,22,32,48,64,128,256\nDialogDefault=32\nDialogSizes=16,22,32\n\n')
+                final_theme_file.write('[Icon Theme]\nName='+Ardis_kw['name']+'\nComment='+Ardis_kw['comment']+'\n\nDisplayDepth=32\n\nInherits=hicolor,GNOME,Oxygen\n\nExample=folder\n\nLinkOverlay=link\nLockOverlay=lockoverlay\nShareOverlay=share\nZipOverlay=zip\n\nDesktopDefault=48\nDesktopSizes=16,22,32,48,64,128,256\nToolbarDefault=22\nToolbarSizes=16,22,32,48\nMainToolbarDefault=22\nMainToolbarSizes=16,22,32,48\nSmallDefault=16\nSmallSizes=16,22,32,48\nPanelDefault=32\nPanelSizes=16,22,32,48,64,128,256\nDialogDefault=32\nDialogSizes=16,22,32\n\n')
                 for line in temp_theme_file:
                     final_theme_file.write(line)
             finally:
@@ -218,27 +235,13 @@ def hide_bonus_places(targ_x):
     p_list = col_list[2].get_children()
     for i, v in enumerate(l_list):
         #print i, v.get_text()
-        if v.get_text() != "Blue":
-            if v.get_text() != "Violet":
-                if v.get_text() != "Brown":
-                    print v.get_text()
-                    out_list.append(r_list[i])
-                    out_list.append(p_list[i])
-                    out_list.append(l_list[i])
+        if v.get_text() not in ardis_unlocked_places:
+            print v.get_text()
+            out_list.append(r_list[i])
+            out_list.append(p_list[i])
+            out_list.append(l_list[i])
     for i in out_list:
         i.hide()
-
-            
-
-        #if v == radio:
-        #    rad_parent.reorder_child(active_radio_box, i)
-
-def hideAdjacentChildren(targ_parent):
-    col_list = targ_parent.get_children()
-    r_list = col_list[0]
-    l_list = col_list[1]
-    p_list = col_list[2]
-
 
 builder = Gtk.Builder()
 builder.add_from_file(w_path+'/Ardis setup unified2.glade')
