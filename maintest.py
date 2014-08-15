@@ -88,8 +88,6 @@ def Show_page(p_num_to_show):
                 old_prog = prog_bar.get_fraction()
                 new_prog = old_prog + prog_step
                 prog_bar.set_fraction(new_prog)
-                #prog_bar.pulse()
-                #print prog_bar.get_fraction()
         finally:
             temp_theme_file.close()
         nextbutton.set_label('  Apply   ')
