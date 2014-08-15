@@ -109,6 +109,16 @@ def Show_page(p_num_to_show):
             print 'DesktopEnvironment='+label_choice_page5
             print 'Install Location='+user_icon_dir
             
+            temp_theme_file = open(user_icon_dir+"Ardis_TEST_theme/temp_index.theme",'r')
+            final_theme_file = open(user_icon_dir+"Ardis_TEST_theme/index.theme",'w')
+            try:
+                final_theme_file.write('[Icon Theme]\nName=ArdisTESTtheme\nComment=Simple and flat icon theme with long shadow - v0.5\n\nDisplayDepth=32\n\nInherits=hicolor,GNOME,Oxygen\n\nExample=folder\n\nLinkOverlay=link\nLockOverlay=lockoverlay\nShareOverlay=share\nZipOverlay=zip\n\nDesktopDefault=48\nDesktopSizes=16,22,32,48,64,128,256\nToolbarDefault=22\nToolbarSizes=16,22,32,48\nMainToolbarDefault=22\nMainToolbarSizes=16,22,32,48\nSmallDefault=16\nSmallSizes=16,22,32,48\nPanelDefault=32\nPanelSizes=16,22,32,48,64,128,256\nDialogDefault=32\nDialogSizes=16,22,32\n\n')
+                for line in temp_theme_file:
+                    final_theme_file.write(line)
+            finally:
+                temp_theme_file.close()
+                final_theme_file.close()
+            
 
             Gtk.main_quit()
             exit()
