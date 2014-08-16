@@ -13,7 +13,7 @@ Ardis_kw['dir'] = 'Ardis_TEST_theme'
 Ardis_kw['vers'] = '0.5'
 Ardis_kw['comment'] = 'Simple and flat icon theme with long shadow - v'+Ardis_kw['vers']
 ardis_unlocked_places = ['Blue', 'Violet', 'Brown']
-AB_Pages = {0: dict(desc='intro', viewport='viewport1', has_radios=False), 1: dict(desc='actions', viewport='viewport2', has_radios=True, rad_box='box7', lab_box='box5', img_box='box6', cur_rad='event_box_curr_radio1'), 2: dict(desc='places', viewport='viewport3', has_radios=True, rad_box='box11', lab_box='box12', img_box='box13', cur_rad='event_box_curr_radio2'), 3: dict(desc='mimetypes', viewport='viewport4', has_radios=False), 4: dict(desc='start-here', viewport='viewport5', has_radios=True, rad_box='box16', lab_box='box17', img_box='box18', cur_rad='event_box_curr_radio4'), 5: dict(desc='DE', viewport='viewport6', has_radios=True, rad_box='box21', lab_box='box22', img_box='box23', cur_rad='event_box_curr_radio5'), 6: dict(desc='thank-you', viewport='viewport7', has_radios=False), 7: dict(viewport='viewport8')}
+AB_Pages = {0: dict(desc='intro', viewport='viewport1', has_radios=False), 1: dict(desc='actions', viewport='viewport2', has_radios=True, rad_box='box7', lab_box='box5', img_box='box6', cur_rad='event_box_curr_radio1'), 2: dict(desc='places', viewport='viewport3', has_radios=True, rad_box='box11', lab_box='box12', img_box='box13', cur_rad='event_box_curr_radio2'), 11: dict(desc='mimetypes', viewport='viewport4', has_radios=False), 3: dict(desc='start-here', viewport='viewport5', has_radios=True, rad_box='box16', lab_box='box17', img_box='box18', cur_rad='event_box_curr_radio4'), 4: dict(desc='DE', viewport='viewport6', has_radios=True, rad_box='box21', lab_box='box22', img_box='box23', cur_rad='event_box_curr_radio5'), 5: dict(desc='thank-you', viewport='viewport7', has_radios=False), 6: dict(viewport='viewport8')}
 
 envars = os.environ
 user_home_dir = envars['HOME']
@@ -42,7 +42,7 @@ def Show_page(p_num_to_show):
     try:
         page_dict = AB_Pages[p_num_to_show]
     except KeyError, nullpage:
-        page_dict = {'viewport': 'viewport'+str(nullpage)}
+        page_dict = {'viewport': 'viewport99'}
     new_vp = builder.get_object(page_dict['viewport'])
     
     
@@ -68,7 +68,7 @@ def Show_page(p_num_to_show):
     else:
         user_icon_dir = None
         
-    if p_num_to_show >= 6:
+    if p_num_to_show >= 5:
     #This is when the last page is triggered
         res_label_obj = builder.get_object('results_summary')
         res_sum = str('<b>Action style=</b>'+'"'+label_choice_page1+'"'+'''\n<b>Places color=</b>'''+Ardis_colors[label_choice_page2]+'"'+label_choice_page2+'"'+'''\n<b>Start here=</b>'''+label_choice_page4+'''\n<b>DesktopEnvironment=</b>'''+label_choice_page5+'''\n<b>Install Location=</b>'''+user_icon_dir)
@@ -80,7 +80,7 @@ def Show_page(p_num_to_show):
         prog_bar = builder.get_object('progressbar1')
         prog_bar.set_fraction(float('0.00'))
         
-    if p_num_to_show == 6:
+    if p_num_to_show == 5:
         nextbutton.set_label('  Build   ')
         winbox.add(new_vp)
         setPosInCont('curr_page_dot', 'box1', p_num_to_show)
@@ -196,7 +196,8 @@ class Handler:
         
     def on_eventbox_radio_press(self, radio, button2):
         cur_page = getPosInCont('curr_page_dot', 'box1')
-        active_radio_box = builder.get_object('event_box_curr_radio'+str(cur_page))
+        page_dict = AB_Pages[cur_page]
+        active_radio_box = builder.get_object(page_dict['cur_rad'])
         rad_parent = radio.get_parent()
         rad_list = rad_parent.get_children()
         i = rad_list.index(radio)
@@ -249,6 +250,7 @@ builder.connect_signals(Handler())
 
 window = builder.get_object("window1")
 pageDot = builder.get_object("curr_page_dot")
+extraPageDot = builder.get_object("image10")
 mainbox = builder.get_object("box1")
 nextbutton = builder.get_object("button1")
 backbutton = builder.get_object("button2")
@@ -257,6 +259,7 @@ pageone = builder.get_object("viewport1")
 hide_bonus_places('box10')
 current_page = 0
 window.show_all()
+extraPageDot.hide()
 backbutton.hide()
 exitbutton.hide()
 #pageone.show()
