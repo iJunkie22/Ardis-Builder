@@ -94,8 +94,6 @@ def Show_page(p_num_to_show):
         prog_step = float('1.0') / float(dir_len)
         prog_bar = builder.get_object('progressbar1')
         prog_bar.set_fraction(float('0.00'))
-        #prog_bar.set_pulse_step(prog_step)
-        #print prog_bar.get_pulse_step()
         temp_theme_file = open(user_icon_dir+Ardis_kw['dir']+"/temp_index.theme",'w')
         try:
             temp_theme_file.write('Directories='+d_string+'\n\n')
@@ -138,7 +136,6 @@ def Show_page(p_num_to_show):
             Gtk.main_quit()
             exit()
             
-        #setPageDot(p_num_to_show)
         setPosInCont('curr_page_dot', 'box1', p_num_to_show)
         if p_num_to_show == 0:
             backbutton.hide()
@@ -172,14 +169,12 @@ class Handler:
         exit()
 
     def on_Next_clicked(self, button):
-        #exitbutton.show()
         cur_page = getPosInCont('curr_page_dot', 'box1')
         nex_page = cur_page+1
         Hide_Page(cur_page)
         Show_page(nex_page)
         #if the next page doesnt exist, the app exits now
         setPosInCont('curr_page_dot', 'box1', nex_page)
-        #setPageDot(nex_page)
       
     def on_Back_clicked(self, button):
         exitbutton.hide()
@@ -235,9 +230,7 @@ def hide_bonus_places(targ_x):
     l_list = col_list[1].get_children()
     p_list = col_list[2].get_children()
     for i, v in enumerate(l_list):
-        #print i, v.get_text()
         if v.get_text() not in ardis_unlocked_places:
-            print v.get_text()
             out_list.append(r_list[i])
             out_list.append(p_list[i])
             out_list.append(l_list[i])
@@ -250,7 +243,6 @@ builder.connect_signals(Handler())
 
 window = builder.get_object("window1")
 pageDot = builder.get_object("curr_page_dot")
-extraPageDot = builder.get_object("image10")
 mainbox = builder.get_object("box1")
 nextbutton = builder.get_object("button1")
 backbutton = builder.get_object("button2")
@@ -259,7 +251,6 @@ pageone = builder.get_object("viewport1")
 hide_bonus_places('box10')
 current_page = 0
 window.show_all()
-extraPageDot.hide()
 backbutton.hide()
 exitbutton.hide()
 #pageone.show()
