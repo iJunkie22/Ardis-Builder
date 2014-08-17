@@ -141,7 +141,7 @@ def Show_page(p_num_to_show):
             backbutton.hide()
         else:
             backbutton.show()
-
+    
 
 class Handler:
 
@@ -177,7 +177,6 @@ class Handler:
         setPosInCont('curr_page_dot', 'box1', nex_page)
       
     def on_Back_clicked(self, button):
-        exitbutton.hide()
         nextbutton.set_label('  Next   ')
         cur_page = getPosInCont('curr_page_dot', 'box1')
         prev_page = cur_page-1
@@ -246,13 +245,11 @@ pageDot = builder.get_object("curr_page_dot")
 mainbox = builder.get_object("box1")
 nextbutton = builder.get_object("button1")
 backbutton = builder.get_object("button2")
-exitbutton = builder.get_object("button3")
 pageone = builder.get_object("viewport1")
 hide_bonus_places('box10')
 current_page = 0
 window.show_all()
 backbutton.hide()
-exitbutton.hide()
 #pageone.show()
 
 
