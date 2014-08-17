@@ -46,7 +46,7 @@
     <property name="tag_table">texttagtable1</property>
     <property name="text" translatable="yes">Thank you for downloading Ardis icon theme, and welcome to latest version of the icon pack!
 
-This wizard will allow you to customize Ardis icon theme the way best suits you.
+This wizar will allow you to customize Ardis icon theme the way best suits you.
 Curent version of the icon pack you use is 1.0, curent version of the customization script is 1.0
 
 Ardis icon theme was designed and developed by KotusWorks: kotus.works@gmail.com
@@ -59,7 +59,7 @@ Please click next for further customization options.</property>
     <property name="height_request">400</property>
     <property name="can_focus">False</property>
     <property name="has_focus">True</property>
-    <property name="title" translatable="yes">Ardis Builder</property>
+    <property name="title" translatable="yes">Ardis setup</property>
     <property name="window_position">center</property>
     <property name="default_width">680</property>
     <property name="default_height">500</property>
@@ -185,15 +185,28 @@ Please click next for further customization options.</property>
               </packing>
             </child>
             <child>
+              <object class="GtkButton" id="button3">
+                <property name="label" translatable="yes">Exit</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_Exit_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkFixed" id="fixed1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
-                <property name="non_homogeneous">True</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child>
@@ -202,14 +215,13 @@ Please click next for further customization options.</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
-                <property name="halign">end</property>
                 <property name="image">image3</property>
                 <property name="always_show_image">True</property>
                 <signal name="clicked" handler="on_Back_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
+                <property name="fill">True</property>
                 <property name="pack_type">end</property>
                 <property name="position">3</property>
                 <property name="secondary">True</property>
@@ -280,6 +292,7 @@ Please click next for further customization options.</property>
                     <property name="pixels_above_lines">2</property>
                     <property name="pixels_below_lines">4</property>
                     <property name="pixels_inside_wrap">11</property>
+                    <property name="editable">False</property>
                     <property name="wrap_mode">word</property>
                     <property name="left_margin">15</property>
                     <property name="right_margin">10</property>
@@ -310,6 +323,8 @@ Please click next for further customization options.</property>
     <widgets>
       <widget name="button1"/>
       <widget name="button2"/>
+      <widget name="button3"/>
+      <widget name="DonateButton"/>
     </widgets>
   </object>
   <object class="GtkViewport" id="viewport2">
