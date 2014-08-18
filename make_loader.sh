@@ -23,7 +23,7 @@ Comment=
 Exec=$d_s/.local/bin/ArdisBuilder
 GenericName[en_US]=Ardis Icon Theme Customization Wizard
 GenericName=Ardis Icon Theme Customization Wizard
-Icon=ardis-builder
+Icon=$maintest_dir/icons/ardis-builder.png
 MimeType=
 Name[en_US]=Ardis Builder
 Name=Ardis Builder
@@ -34,7 +34,7 @@ TerminalOptions=
 Type=Application
 Version=1.0
 X-DBUS-ServiceName=
-X-DBUS-StartupType=unique
+X-DBUS-StartupType=
 X-KDE-SubstituteUID=false
 X-KDE-Username=
 " > "$AB_desktop_entry"
