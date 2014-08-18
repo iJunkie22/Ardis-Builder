@@ -19,7 +19,7 @@ AB_Pages = {0: dict(desc='intro', viewport='viewport1', has_radios=False), 1: di
 envars = os.environ
 user_home_dir = envars['HOME']
 Ardis_colors = {}
-Ardis_colors = {'Blackish':'#111111', 'Blue':'#0078ad', 'Dark Green':'#66ae4a', 'Light Green':'#79c843', 'Olive Green':'#669966', 'Orange':'#f38725', 'Peach':'#ef6a47', 'Pink':'#e65177', 'Red':'#cd1d31', 'Shadow Grey':'#666666', 'Sky Blue':'#6788cc', 'Soft Red':'#b93d48', 'Violet':'#924565', 'Yellow':'#ffcc67'}
+Ardis_colors = {'Blackish':'#111111', 'Blue':'#0078ad', 'Brown':'#b59a6e', 'Dark Green':'#66ae4a', 'Light Green':'#79c843', 'Olive Green':'#669966', 'Orange':'#f38725', 'Peach':'#ef6a47', 'Pink':'#e65177', 'Red':'#cd1d31', 'Shadow Grey':'#666666', 'Sky Blue':'#6788cc', 'Soft Red':'#b93d48', 'Violet':'#924565', 'Yellow':'#ffcc67'}
 Ardis_actions = {'Ardis — Original':'standard', 'Ardis — Dark Actions':'gray', 'Ardis — Clear Dark':'standard', 'Ardis — Clear Light':'standard'}
 
 def ardis_dirs(**ArdisDirArgs):
