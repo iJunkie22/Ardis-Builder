@@ -240,6 +240,8 @@ def hide_bonus_places(targ_x):
 
 builder = Gtk.Builder()
 builder.add_from_file(w_path+'/Ardis setup unified2.glade')
+
+
 builder.connect_signals(Handler())
 
 window = builder.get_object("window1")
@@ -253,7 +255,8 @@ current_page = 0
 window.show_all()
 backbutton.hide()
 #pageone.show()
-
+gtksettings = Gtk.Settings.get_default()
+gtksettings.props.gtk_button_images = True
 
 
 Gtk.main()
