@@ -1,12 +1,17 @@
 #!/bin/bash
+
+make_if_needed () {
+    while read testdir;do if [ ! -d "$testdir" ];then mkdir "$testdir";fi;done
+}
 maintest_dir="$PWD"
 user_local_bin="$HOME/.local/bin"
+user_local_share="$HOME/.local/share"
+user_local_share_apps="$HOME/.local/share/applications"
 q_s='"'
 d_s='$HOME'
-if [ ! -d "$user_local_bin" ]
-    then
-    mkdir "$user_local_bin"
-fi
+make_if_needed "$user_local_bin"
+make_if_needed "$user_local_share"
+make_if_needed "$user_local_share_apps"
 AB_bash_loader="$user_local_bin/ArdisBuilder"
 AB_desktop_entry="$HOME/.local/share/applications/ArdisBuilder.desktop"
 echo "#!/bin/bash
@@ -33,10 +38,6 @@ Terminal=false
 TerminalOptions=
 Type=Application
 Version=1.0
-X-DBUS-ServiceName=
-X-DBUS-StartupType=
-X-KDE-SubstituteUID=false
-X-KDE-Username=
 " > "$AB_desktop_entry"
 chmod +x "$AB_desktop_entry"
 
