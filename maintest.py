@@ -11,7 +11,7 @@ import Theme_Indexer
 Ardis_kw = {}
 Ardis_kw['name'] = 'ArdisTESTtheme'
 Ardis_kw['dir'] = 'Ardis_TEST_theme'
-Ardis_kw['vers'] = '0.5'
+Ardis_kw['vers'] = '0.6'
 Ardis_kw['comment'] = 'Simple and flat icon theme with long shadow - v'+Ardis_kw['vers']
 ardis_unlocked_places = ['Blue', 'Violet', 'Brown']
 AB_Pages = {0: dict(desc='intro', viewport='viewport1', has_radios=False), 1: dict(desc='actions', viewport='viewport2', has_radios=True, rad_box='box7', lab_box='box5', img_box='box6', cur_rad='event_box_curr_radio1'), 2: dict(desc='places', viewport='viewport3', has_radios=True, rad_box='box11', lab_box='box12', img_box='box13', cur_rad='event_box_curr_radio2'), 11: dict(desc='mimetypes', viewport='viewport4', has_radios=False), 3: dict(desc='start-here', viewport='viewport5', has_radios=True, rad_box='box16', lab_box='box17', img_box='box18', cur_rad='event_box_curr_radio4'), 4: dict(desc='DE', viewport='viewport6', has_radios=True, rad_box='box21', lab_box='box22', img_box='box23', cur_rad='event_box_curr_radio5'), 5: dict(desc='thank-you', viewport='viewport7', has_radios=False), 6: dict(viewport='viewport8')}
@@ -21,10 +21,13 @@ user_home_dir = envars['HOME']
 user_DE = envars['XDG_CURRENT_DESKTOP']
 Ardis_colors = {}
 Ardis_colors = {'Blackish':'#111111', 'Blue':'#0078ad', 'Brown':'#b59a6e', 'Dark Green':'#66ae4a', 'Light Green':'#79c843', 'Olive Green':'#669966', 'Orange':'#f38725', 'Peach':'#ef6a47', 'Pink':'#e65177', 'Red':'#cd1d31', 'Shadow Grey':'#666666', 'Sky Blue':'#6788cc', 'Soft Red':'#b93d48', 'Violet':'#924565', 'Yellow':'#ffcc67'}
-Ardis_actions = {'Standard Type':'standard', 'Dark action icons\nwith no background':'gray', 'Ardis — Clear Dark':'standard', 'Ardis — Clear Light':'standard'}
+Ardis_actions = {'Standard Type':'standard', 'Dark action icons\nwith no background':'gray'}
+Ardis_apps = {'Standard Type':'standard', 'Standard type\nwith gray background':'grayBG'}
+Ardis_status = {'Standard Type':'standard', 'Dark action icons\nwith no background':'white'}
+
 
 def ardis_dirs(**ArdisDirArgs):
-    return '16x16/apps/standard,16x16/devices,16x16/categories,16x16/actions/'+ArdisDirArgs['actions']+',16x16/mimetypes,16x16/places/'+ArdisDirArgs['places']+',16x16/status,22x22/apps/standard,22x22/devices,22x22/categories,22x22/actions/'+ArdisDirArgs['actions']+',22x22/mimetypes,22x22/places/'+ArdisDirArgs['places']+',22x22/status,22x22/panel,24x24/apps/standard,24x24/devices,24x24/categories,24x24/actions/'+ArdisDirArgs['actions']+',24x24/mimetypes,24x24/places/'+ArdisDirArgs['places']+',24x24/panel,24x24/status,32x32/apps,32x32/devices,32x32/categories,32x32/actions/'+ArdisDirArgs['actions']+',32x32/mimetypes,32x32/places/'+ArdisDirArgs['places']+',32x32/status,48x48/apps,48x48/devices,48x48/categories,48x48/actions/'+ArdisDirArgs['actions']+',48x48/mimetypes,48x48/places/'+ArdisDirArgs['places']+',48x48/status,64x64/apps,64x64/devices,64x64/categories,64x64/actions/standard,64x64/mimetypes,64x64/places/'+ArdisDirArgs['places']+',64x64/status,96x96/apps,96x96/devices,96x96/categories,96x96/actions/'+ArdisDirArgs['actions']+',96x96/mimetypes,96x96/places/'+ArdisDirArgs['places']+',96x96/status,128x128/apps,128x128/devices,128x128/categories,128x128/mimetypes,128x128/places/'+ArdisDirArgs['places']+',128x128/status,scalable/apps,scalable/devices,scalable/categories,scalable/actions/'+ArdisDirArgs['actions']+',scalable/mimetypes,scalable/places/'+ArdisDirArgs['places']+',scalable/status'
+    return '16x16/apps/'+ArdisDirArgs['apps']+',16x16/devices,16x16/categories,16x16/actions/'+ArdisDirArgs['actions']+',16x16/mimetypes,16x16/places/'+ArdisDirArgs['places']+',16x16/status/'+ArdisDirArgs['status']+',22x22/apps/'+ArdisDirArgs['apps']+',22x22/devices,22x22/categories,22x22/actions/'+ArdisDirArgs['actions']+',22x22/mimetypes,22x22/places/'+ArdisDirArgs['places']+',22x22/status/'+ArdisDirArgs['status']+',22x22/panel,24x24/apps/'+ArdisDirArgs['apps']+',24x24/devices,24x24/categories,24x24/actions/'+ArdisDirArgs['actions']+',24x24/mimetypes,24x24/places/'+ArdisDirArgs['places']+',24x24/panel,24x24/status/'+ArdisDirArgs['status']+',32x32/apps,32x32/devices,32x32/categories,32x32/actions/'+ArdisDirArgs['actions']+',32x32/mimetypes,32x32/places/'+ArdisDirArgs['places']+',32x32/status/'+ArdisDirArgs['status']+',48x48/apps,48x48/devices,48x48/categories,48x48/actions/'+ArdisDirArgs['actions']+',48x48/mimetypes,48x48/places/'+ArdisDirArgs['places']+',48x48/status,64x64/apps,64x64/devices,64x64/categories,64x64/actions/standard,64x64/mimetypes,64x64/places/'+ArdisDirArgs['places']+',64x64/status,96x96/apps,96x96/devices,96x96/categories,96x96/actions/'+ArdisDirArgs['actions']+',96x96/mimetypes,96x96/places/'+ArdisDirArgs['places']+',96x96/status,128x128/apps,128x128/devices,128x128/categories,128x128/mimetypes,128x128/places/'+ArdisDirArgs['places']+',128x128/status/'+ArdisDirArgs['status']
 
 def Hide_Page(p_num_to_hide):
     winbox = builder.get_object("box2")
@@ -76,7 +79,7 @@ def Show_page(p_num_to_show):
         res_label_obj = builder.get_object('results_summary')
         res_sum = str('<b>Action style=</b>'+label_choice_page1+'''\n<b>Places color=</b>'''+Ardis_colors[label_choice_page2]+'"'+label_choice_page2+'"'+'''\n<b>Small Apps=</b>'''+label_choice_page4+'''\n<b>Status=</b>'''+label_choice_page5+'''\n<b>DesktopEnvironment=</b>'''+user_DE+'''\n<b>Install Location=</b>'''+user_icon_dir+Ardis_kw['dir'])
         res_label_obj.set_markup(res_sum)
-        d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1])
+        d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1], apps=Ardis_apps[label_choice_page4], status=Ardis_status[label_choice_page5])
         ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
         dir_len = len(ardis_d_list)
         prog_step = float('1.0') / float(dir_len)
@@ -91,7 +94,7 @@ def Show_page(p_num_to_show):
             
     elif nextbutton.get_label() == '  Build   ':
         #The user has chosen to generate
-        d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1])
+        d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1], apps=Ardis_apps[label_choice_page4], status=Ardis_status[label_choice_page5])
         ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
         dir_len = len(ardis_d_list)
         prog_step = float('1.0') / float(dir_len)
