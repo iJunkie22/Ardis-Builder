@@ -18,9 +18,10 @@ AB_Pages = {0: dict(desc='intro', viewport='viewport1', has_radios=False), 1: di
 
 envars = os.environ
 user_home_dir = envars['HOME']
+user_DE = envars['XDG_CURRENT_DESKTOP']
 Ardis_colors = {}
 Ardis_colors = {'Blackish':'#111111', 'Blue':'#0078ad', 'Brown':'#b59a6e', 'Dark Green':'#66ae4a', 'Light Green':'#79c843', 'Olive Green':'#669966', 'Orange':'#f38725', 'Peach':'#ef6a47', 'Pink':'#e65177', 'Red':'#cd1d31', 'Shadow Grey':'#666666', 'Sky Blue':'#6788cc', 'Soft Red':'#b93d48', 'Violet':'#924565', 'Yellow':'#ffcc67'}
-Ardis_actions = {'Ardis — Original':'standard', 'Ardis — Dark Actions':'gray', 'Ardis — Clear Dark':'standard', 'Ardis — Clear Light':'standard'}
+Ardis_actions = {'Standard Type':'standard', 'Dark action icons\nwith no background':'gray', 'Ardis — Clear Dark':'standard', 'Ardis — Clear Light':'standard'}
 
 def ardis_dirs(**ArdisDirArgs):
     return '16x16/apps/standard,16x16/devices,16x16/categories,16x16/actions/'+ArdisDirArgs['actions']+',16x16/mimetypes,16x16/places/'+ArdisDirArgs['places']+',16x16/status,22x22/apps/standard,22x22/devices,22x22/categories,22x22/actions/'+ArdisDirArgs['actions']+',22x22/mimetypes,22x22/places/'+ArdisDirArgs['places']+',22x22/status,22x22/panel,24x24/apps/standard,24x24/devices,24x24/categories,24x24/actions/'+ArdisDirArgs['actions']+',24x24/mimetypes,24x24/places/'+ArdisDirArgs['places']+',24x24/panel,24x24/status,32x32/apps,32x32/devices,32x32/categories,32x32/actions/'+ArdisDirArgs['actions']+',32x32/mimetypes,32x32/places/'+ArdisDirArgs['places']+',32x32/status,48x48/apps,48x48/devices,48x48/categories,48x48/actions/'+ArdisDirArgs['actions']+',48x48/mimetypes,48x48/places/'+ArdisDirArgs['places']+',48x48/status,64x64/apps,64x64/devices,64x64/categories,64x64/actions/standard,64x64/mimetypes,64x64/places/'+ArdisDirArgs['places']+',64x64/status,96x96/apps,96x96/devices,96x96/categories,96x96/actions/'+ArdisDirArgs['actions']+',96x96/mimetypes,96x96/places/'+ArdisDirArgs['places']+',96x96/status,128x128/apps,128x128/devices,128x128/categories,128x128/mimetypes,128x128/places/'+ArdisDirArgs['places']+',128x128/status,scalable/apps,scalable/devices,scalable/categories,scalable/actions/'+ArdisDirArgs['actions']+',scalable/mimetypes,scalable/places/'+ArdisDirArgs['places']+',scalable/status'
@@ -63,9 +64,9 @@ def Show_page(p_num_to_show):
 
     
     
-    if label_choice_page5 == 'KDE':
+    if user_DE == 'KDE':
         user_icon_dir = str(user_home_dir+'/.kde/share/icons/')
-    elif label_choice_page5 is not None:
+    elif user_DE is not None:
         user_icon_dir = str(user_home_dir+'/.icons/')
     else:
         user_icon_dir = None
@@ -73,7 +74,7 @@ def Show_page(p_num_to_show):
     if p_num_to_show >= 5:
     #This is when the last page is triggered
         res_label_obj = builder.get_object('results_summary')
-        res_sum = str('<b>Action style=</b>'+'"'+label_choice_page1+'"'+'''\n<b>Places color=</b>'''+Ardis_colors[label_choice_page2]+'"'+label_choice_page2+'"'+'''\n<b>Start here=</b>'''+label_choice_page4+'''\n<b>DesktopEnvironment=</b>'''+label_choice_page5+'''\n<b>Install Location=</b>'''+user_icon_dir+Ardis_kw['dir'])
+        res_sum = str('<b>Action style=</b>'+label_choice_page1+'''\n<b>Places color=</b>'''+Ardis_colors[label_choice_page2]+'"'+label_choice_page2+'"'+'''\n<b>Small Apps=</b>'''+label_choice_page4+'''\n<b>Status=</b>'''+label_choice_page5+'''\n<b>DesktopEnvironment=</b>'''+user_DE+'''\n<b>Install Location=</b>'''+user_icon_dir+Ardis_kw['dir'])
         res_label_obj.set_markup(res_sum)
         d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1])
         ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
@@ -121,7 +122,7 @@ def Show_page(p_num_to_show):
             #print 'Places color='+Ardis_colors[label_choice_page2], '"'+label_choice_page2+'"'
             print 'Places color='+Ardis_colors[label_choice_page2], '"'+label_choice_page2+'"'
             print 'Start here='+label_choice_page4
-            print 'DesktopEnvironment='+label_choice_page5
+            print 'DesktopEnvironment='+user_DE
             print 'Install Location='+user_icon_dir+Ardis_kw['dir']
             
             temp_theme_file = open(user_icon_dir+Ardis_kw['dir']+"/temp_index.theme",'r')

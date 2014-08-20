@@ -392,15 +392,12 @@ Please click next for further customization options.</property>
             <property name="ypad">15</property>
             <property name="label" translatable="yes">We are trying to provide our users with choice, choice to select what best suits their needs.
 
-Please select below what style of action icons you prefer. </property>
+Please select below what type of &lt;b&gt;action&lt;/b&gt; icons you prefer. </property>
+            <property name="use_markup">True</property>
             <property name="wrap">True</property>
             <property name="ellipsize">end</property>
             <property name="track_visited_links">False</property>
             <property name="lines">4</property>
-            <attributes>
-              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 10"/>
-              <attribute name="foreground" value="#000000000000"/>
-            </attributes>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -423,8 +420,9 @@ Please select below what style of action icons you prefer. </property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
                 <property name="valign">baseline</property>
-                <property name="vexpand">True</property>
+                <property name="vexpand">False</property>
                 <property name="orientation">vertical</property>
+                <property name="spacing">15</property>
                 <property name="homogeneous">True</property>
                 <child>
                   <object class="GtkEventBox" id="event_box_curr_radio1">
@@ -444,27 +442,6 @@ Please select below what style of action icons you prefer. </property>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEventBox" id="eventbox4">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="visible_window">False</property>
-                    <property name="above_child">True</property>
-                    <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                    <child>
-                      <object class="GtkImage" id="image16">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="pixbuf">Images/radio_off.png</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
@@ -488,27 +465,6 @@ Please select below what style of action icons you prefer. </property>
                     <property name="position">2</property>
                   </packing>
                 </child>
-                <child>
-                  <object class="GtkEventBox" id="eventbox5">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="visible_window">False</property>
-                    <property name="above_child">True</property>
-                    <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                    <child>
-                      <object class="GtkImage" id="image17">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="pixbuf">Images/radio_off.png</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">3</property>
-                  </packing>
-                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -521,16 +477,15 @@ Please select below what style of action icons you prefer. </property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
+                <property name="spacing">15</property>
                 <property name="homogeneous">True</property>
                 <child>
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes">Ardis — Original</property>
-                    <attributes>
-                      <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                    </attributes>
+                    <property name="label" translatable="yes">Standard Type</property>
+                    <property name="use_markup">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -539,30 +494,13 @@ Please select below what style of action icons you prefer. </property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="halign">start</property>
-                    <property name="label" translatable="yes">Ardis — Dark Actions</property>
-                    <attributes>
-                      <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                    </attributes>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes">Ardis — Clear Dark</property>
-                    <attributes>
-                      <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                    </attributes>
+                    <property name="label" translatable="yes">Dark action icons
+with no background</property>
+                    <property name="use_markup">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -570,25 +508,9 @@ Please select below what style of action icons you prefer. </property>
                     <property name="position">2</property>
                   </packing>
                 </child>
-                <child>
-                  <object class="GtkLabel" id="label4">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="halign">start</property>
-                    <property name="label" translatable="yes">Ardis — Clear Light</property>
-                    <attributes>
-                      <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                    </attributes>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">3</property>
-                  </packing>
-                </child>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
@@ -612,18 +534,6 @@ Please select below what style of action icons you prefer. </property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkImage" id="image11">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="pixbuf">Images/style_dark_action_icons.png</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkImage" id="image12">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -635,22 +545,11 @@ Please select below what style of action icons you prefer. </property>
                     <property name="position">2</property>
                   </packing>
                 </child>
-                <child>
-                  <object class="GtkImage" id="image13">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="pixbuf">Images/style_light_action_no_bg.png</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">3</property>
-                  </packing>
-                </child>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
+                <property name="pack_type">end</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -687,15 +586,12 @@ Please select below what style of action icons you prefer. </property>
             <property name="ypad">15</property>
             <property name="label" translatable="yes">We are trying to provide our users with choice, choice to select what best suits their needs.
 
-Please select below what color of places icons do you prefer. </property>
+Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer. </property>
+            <property name="use_markup">True</property>
             <property name="wrap">True</property>
             <property name="ellipsize">end</property>
             <property name="track_visited_links">False</property>
             <property name="lines">4</property>
-            <attributes>
-              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 10"/>
-              <attribute name="foreground" value="#000000000000"/>
-            </attributes>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -707,12 +603,12 @@ Please select below what color of places icons do you prefer. </property>
           <object class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="valign">baseline</property>
             <property name="hscrollbar_policy">never</property>
             <child>
               <object class="GtkViewport" id="viewport3b">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="valign">start</property>
                 <property name="margin_left">20</property>
                 <property name="vscroll_policy">natural</property>
                 <child>
@@ -1555,15 +1451,12 @@ Please select below what color of places icons do you prefer. </property>
             <property name="ypad">15</property>
             <property name="label" translatable="yes">We are trying to provide our users with choice, choice to select what best suits their needs.
 
-Please select below what type of 'start here' icon you prefer. </property>
+Please select below what color of &lt;b&gt;small apps&lt;/b&gt; icon you prefer. </property>
+            <property name="use_markup">True</property>
             <property name="wrap">True</property>
             <property name="ellipsize">end</property>
             <property name="track_visited_links">False</property>
             <property name="lines">4</property>
-            <attributes>
-              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 10"/>
-              <attribute name="foreground" value="#000000000000"/>
-            </attributes>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -1581,6 +1474,7 @@ Please select below what type of 'start here' icon you prefer. </property>
               <object class="GtkViewport" id="viewport5b">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="valign">start</property>
                 <property name="margin_left">20</property>
                 <property name="vscroll_policy">natural</property>
                 <child>
@@ -1595,6 +1489,7 @@ Please select below what type of 'start here' icon you prefer. </property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="margin_right">15</property>
+                        <property name="vexpand">True</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">15</property>
                         <property name="homogeneous">True</property>
@@ -1639,342 +1534,6 @@ Please select below what type of 'start here' icon you prefer. </property>
                             <property name="position">1</property>
                           </packing>
                         </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox18">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image48">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox19">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image49">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">3</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox20">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image50">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">4</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox21">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image51">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">5</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox22">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image52">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">6</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox23">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image53">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">7</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox24">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image54">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">8</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox25">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image55">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">9</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox26">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image56">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">10</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox27">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image57">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">11</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox28">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image58">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">12</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox29">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image59">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">13</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox30">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image74">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">14</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox31">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image75">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">15</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox32">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image76">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">16</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox33">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image77">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">17</property>
-                          </packing>
-                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1995,10 +1554,8 @@ Please select below what type of 'start here' icon you prefer. </property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
-                            <property name="label" translatable="yes">Arch</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="label" translatable="yes">Standard Type</property>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -2011,271 +1568,14 @@ Please select below what type of 'start here' icon you prefer. </property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
-                            <property name="label" translatable="yes">Chakra</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="label" translatable="yes">Standard type
+with gray background</property>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label25">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Debian</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label26">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Fedora</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">3</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label27">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Gentoo</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">4</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label28">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Kubuntu</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">5</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label29">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Linux Mint</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">6</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label30">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Lubuntu</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">7</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label31">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Magiea</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">8</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label32">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Manjaro</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">9</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label33">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">OpenSuse</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">10</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label34">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Siduction</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">11</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label35">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Ubuntu</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">12</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label36">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">GNOME</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">13</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label37">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">KDE</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">14</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label38">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">LXDE</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">15</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label39">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">XFCE</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">16</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label40">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Ardis</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">17</property>
                           </packing>
                         </child>
                       </object>
@@ -2314,199 +1614,6 @@ Please select below what type of 'start here' icon you prefer. </property>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image62">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="xalign">0.49000000953674316</property>
-                            <property name="pixbuf">Images/distributor-logo-debian.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image63">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-fedora.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">3</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image64">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-gentoo.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">4</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image65">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-kubuntu.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">5</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image66">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-linux-mint.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">6</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image67">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-lubuntu.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">7</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image68">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-magiea.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">8</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image69">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-manjaro.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">9</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image70">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-opensuse.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">10</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image71">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-siduction.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">11</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image72">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-ubuntu.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">12</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image73">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/start-here-gnome.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">13</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image78">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/start-here-kde.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">14</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image79">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/start-here-lxde.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">15</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image80">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/start-here-xfce.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">16</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image81">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/start-here.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">17</property>
                           </packing>
                         </child>
                       </object>
@@ -2555,15 +1662,12 @@ Please select below what type of 'start here' icon you prefer. </property>
             <property name="ypad">15</property>
             <property name="label" translatable="yes">We are trying to provide our users with choice, choice to select what best suits their needs.
 
-Please select below which Desktop Environment you currently use.</property>
+Please select below what type of &lt;b&gt;status&lt;/b&gt; icons you prefer</property>
+            <property name="use_markup">True</property>
             <property name="wrap">True</property>
             <property name="ellipsize">end</property>
             <property name="track_visited_links">False</property>
             <property name="lines">4</property>
-            <attributes>
-              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 10"/>
-              <attribute name="foreground" value="#000000000000"/>
-            </attributes>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -2587,6 +1691,7 @@ Please select below which Desktop Environment you currently use.</property>
                   <object class="GtkBox" id="box20">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="valign">start</property>
                     <property name="margin_right">20</property>
                     <property name="margin_top">20</property>
                     <property name="margin_bottom">20</property>
@@ -2640,90 +1745,6 @@ Please select below which Desktop Environment you currently use.</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEventBox" id="eventbox39">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image88">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">6</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox40">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image89">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">7</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox45">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image94">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">12</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox46">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image95">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">13</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkEventBox" id="eventbox47">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -2742,48 +1763,6 @@ Please select below which Desktop Environment you currently use.</property>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">14</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox48">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image97">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">15</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox50">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image99">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">17</property>
                           </packing>
                         </child>
                       </object>
@@ -2806,10 +1785,8 @@ Please select below which Desktop Environment you currently use.</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
-                            <property name="label" translatable="yes">XFCE</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="label" translatable="yes">Standard Type</property>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -2822,10 +1799,9 @@ Please select below which Desktop Environment you currently use.</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
-                            <property name="label" translatable="yes">MATE</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="label" translatable="yes">Dark action icons
+withno background</property>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -2834,115 +1810,17 @@ Please select below which Desktop Environment you currently use.</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="label48">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Cinnamon</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">6</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label49">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Lubuntu</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">7</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label54">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Unity</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">12</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label55">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">GNOME</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">13</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkLabel" id="label56">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
-                            <property name="label" translatable="yes">KDE</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="label" translatable="yes">meow option </property>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">14</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label57">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">LXDE</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">15</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label59">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Pantheon</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">17</property>
                           </packing>
                         </child>
                       </object>
@@ -2956,6 +1834,7 @@ Please select below which Desktop Environment you currently use.</property>
                       <object class="GtkBox" id="box23">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="halign">end</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">15</property>
                         <property name="homogeneous">True</property>
@@ -2984,54 +1863,6 @@ Please select below which Desktop Environment you currently use.</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkImage" id="image106">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-linux-mint.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">6</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image107">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-lubuntu.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">7</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image112">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-ubuntu.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">12</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image113">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/start-here-gnome.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">13</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkImage" id="image114">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -3041,30 +1872,6 @@ Please select below which Desktop Environment you currently use.</property>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">14</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image115">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/start-here-lxde.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">15</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image117">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/start-here.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">17</property>
                           </packing>
                         </child>
                       </object>
