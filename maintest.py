@@ -73,7 +73,7 @@ def Show_page(p_num_to_show):
     if p_num_to_show >= 5:
     #This is when the last page is triggered
         res_label_obj = builder.get_object('results_summary')
-        res_sum = str('<b>Action style=</b>'+'"'+label_choice_page1+'"'+'''\n<b>Places color=</b>'''+Ardis_colors[label_choice_page2]+'"'+label_choice_page2+'"'+'''\n<b>Start here=</b>'''+label_choice_page4+'''\n<b>DesktopEnvironment=</b>'''+label_choice_page5+'''\n<b>Install Location=</b>'''+user_icon_dir)
+        res_sum = str('<b>Action style=</b>'+'"'+label_choice_page1+'"'+'''\n<b>Places color=</b>'''+Ardis_colors[label_choice_page2]+'"'+label_choice_page2+'"'+'''\n<b>Start here=</b>'''+label_choice_page4+'''\n<b>DesktopEnvironment=</b>'''+label_choice_page5+'''\n<b>Install Location=</b>'''+user_icon_dir+Ardis_kw['dir'])
         res_label_obj.set_markup(res_sum)
         d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1])
         ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
@@ -122,7 +122,7 @@ def Show_page(p_num_to_show):
             print 'Places color='+Ardis_colors[label_choice_page2], '"'+label_choice_page2+'"'
             print 'Start here='+label_choice_page4
             print 'DesktopEnvironment='+label_choice_page5
-            print 'Install Location='+user_icon_dir
+            print 'Install Location='+user_icon_dir+Ardis_kw['dir']
             
             temp_theme_file = open(user_icon_dir+Ardis_kw['dir']+"/temp_index.theme",'r')
             final_theme_file = open(user_icon_dir+Ardis_kw['dir']+"/index.theme",'w')
@@ -134,7 +134,10 @@ def Show_page(p_num_to_show):
                 temp_theme_file.close()
                 final_theme_file.close()
             
-
+            theme = Gtk.IconTheme()
+            theme.set_custom_theme(Ardis_kw['dir'])
+            theme.rescan_if_needed()
+            theme.set_custom_theme(None)
             Gtk.main_quit()
             exit()
             
@@ -150,23 +153,6 @@ class Handler:
     def on_window1_delete_event(self, arg1, arg2):
         #Captures exit request made by a window manager
         #Disabling this means closing the window leaves a ZOMBIE!!!
-        gtkicons = Gtk.IconTheme()
-        gtksettings = Gtk.Settings()
-        context_list = gtkicons.list_contexts()
-        curicontheme = gtkicons.get_default()
-        print context_list
-        print '.'*50
-        print gtkicons.get_search_path()
-        print '.'*50
-        print curicontheme.get_search_path()
-        print '.'*50
-        print gtksettings.props.gtk_icon_theme_name
-        print '.'*50
-        print gtksettings.props.gtk_icon_sizes
-        d_string = Theme_Indexer.sample_string('')
-        d_list = Theme_Indexer.list_from_string(',', d_string)
-        d_test = d_list[4]
-        print Theme_Indexer.define_group(d_test)
         Gtk.main_quit()
         exit()
 
@@ -237,12 +223,15 @@ def hide_bonus_places(targ_x):
             out_list.append(l_list[i])
     for i in out_list:
         i.hide()
+        
+
 
 builder = Gtk.Builder()
 builder.add_from_file(w_path+'/Ardis setup unified2.glade')
 
-
 builder.connect_signals(Handler())
+
+
 
 window = builder.get_object("window1")
 pageDot = builder.get_object("curr_page_dot")

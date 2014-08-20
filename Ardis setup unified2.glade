@@ -335,7 +335,12 @@ Please click next for further customization options.</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">Images/page_indicator1.png</property>
   </object>
-  <object class="GtkStatusIcon" id="statusicon1"/>
+  <object class="GtkStatusIcon" id="statusicon1">
+    <property name="file">icons/ardis-builder-small.png</property>
+    <property name="has_tooltip">True</property>
+    <property name="tooltip_text" translatable="yes">Ardis Builder</property>
+    <property name="title" translatable="yes">Ardis Builder</property>
+  </object>
   <object class="GtkTextTagTable" id="texttagtable1">
     <child type="tag">
       <object class="GtkTextTag" id="texttag2">
