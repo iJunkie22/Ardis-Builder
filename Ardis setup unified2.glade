@@ -498,8 +498,7 @@ Please select below what type of &lt;b&gt;action&lt;/b&gt; icons you prefer. </p
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes">Dark action icons
-with no background</property>
+                    <property name="label" translatable="yes">Dark icons with no background</property>
                     <property name="use_markup">True</property>
                   </object>
                   <packing>
@@ -1596,7 +1595,7 @@ with gray background</property>
                           <object class="GtkImage" id="image60">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-archlinux.png</property>
+                            <property name="pixbuf">Images/style_standard_apps.png</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1608,7 +1607,7 @@ with gray background</property>
                           <object class="GtkImage" id="image61">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-chakra.png</property>
+                            <property name="pixbuf">Images/style_dark_apps.png</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1799,8 +1798,7 @@ Please select below what type of &lt;b&gt;status&lt;/b&gt; icons you prefer</pro
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
-                            <property name="label" translatable="yes">Dark action icons
-withno background</property>
+                            <property name="label" translatable="yes">Light icons with no background</property>
                             <property name="use_markup">True</property>
                           </object>
                           <packing>
@@ -1842,7 +1840,7 @@ withno background</property>
                           <object class="GtkImage" id="image100">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/start-here-xfce.png</property>
+                            <property name="pixbuf">Images/style_standard_status.png</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1854,7 +1852,7 @@ withno background</property>
                           <object class="GtkImage" id="image103">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/distributor-logo-fedora.png</property>
+                            <property name="pixbuf">Images/style_light_status_no_bg.png</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
