@@ -3,6 +3,8 @@
 from gi.repository import Gtk
 import os
 import sys
+import xdg.IconTheme
+import re
 
 w_path = os.getcwd()
 sys.path.append(str(w_path))
@@ -13,6 +15,11 @@ Ardis_kw['name'] = 'ArdisTESTtheme'
 Ardis_kw['dir'] = 'Ardis_TEST_theme'
 Ardis_kw['vers'] = '0.6'
 Ardis_kw['comment'] = 'Simple and flat icon theme with long shadow - v'+Ardis_kw['vers']
+icon_path = xdg.IconTheme.getIconPath('ac-adapter', theme=Ardis_kw['dir'])
+m = re.match('(.*'+Ardis_kw['dir']+')', icon_path)
+if m:
+    Ardis_kw['path'] = m.group(1)
+
 ardis_unlocked_places = ['Blue', 'Violet', 'Brown']
 AB_Pages = {0: dict(desc='intro', viewport='viewport1', has_radios=False), 1: dict(desc='actions', viewport='viewport2', has_radios=True, rad_box='box7', lab_box='box5', img_box='box6', cur_rad='event_box_curr_radio1'), 2: dict(desc='places', viewport='viewport3', has_radios=True, rad_box='box11', lab_box='box12', img_box='box13', cur_rad='event_box_curr_radio2'), 11: dict(desc='mimetypes', viewport='viewport4', has_radios=False), 3: dict(desc='start-here', viewport='viewport5', has_radios=True, rad_box='box16', lab_box='box17', img_box='box18', cur_rad='event_box_curr_radio4'), 4: dict(desc='DE', viewport='viewport6', has_radios=True, rad_box='box21', lab_box='box22', img_box='box23', cur_rad='event_box_curr_radio5'), 5: dict(desc='thank-you', viewport='viewport7', has_radios=False), 6: dict(viewport='viewport8')}
 
@@ -66,7 +73,7 @@ def Show_page(p_num_to_show):
     
 
     
-    
+    #this is now ignored, in favor of the xdg method and Ardis_kw['path']
     if user_DE == 'KDE':
         user_icon_dir = str(user_home_dir+'/.kde/share/icons/')
     elif user_DE is not None:
@@ -100,7 +107,7 @@ def Show_page(p_num_to_show):
         prog_step = float('1.0') / float(dir_len)
         prog_bar = builder.get_object('progressbar1')
         prog_bar.set_fraction(float('0.00'))
-        temp_theme_file = open(user_icon_dir+Ardis_kw['dir']+"/temp_index.theme",'w')
+        temp_theme_file = open(Ardis_kw['path']+"/temp_index.theme",'w')
         try:
             temp_theme_file.write('Directories='+d_string+'\n\n')
             for g_item in ardis_d_list[::]:
@@ -128,8 +135,8 @@ def Show_page(p_num_to_show):
             print 'DesktopEnvironment='+user_DE
             print 'Install Location='+user_icon_dir+Ardis_kw['dir']
             
-            temp_theme_file = open(user_icon_dir+Ardis_kw['dir']+"/temp_index.theme",'r')
-            final_theme_file = open(user_icon_dir+Ardis_kw['dir']+"/index.theme",'w')
+            temp_theme_file = open(Ardis_kw['path']+"/temp_index.theme",'r')
+            final_theme_file = open(Ardis_kw['path']+"/index.theme",'w')
             try:
                 final_theme_file.write('[Icon Theme]\nName='+Ardis_kw['name']+'\nComment='+Ardis_kw['comment']+'\n\nDisplayDepth=32\n\nInherits=hicolor,GNOME,Oxygen\n\nExample=folder\n\nLinkOverlay=link\nLockOverlay=lockoverlay\nShareOverlay=share\nZipOverlay=zip\n\nDesktopDefault=48\nDesktopSizes=16,22,32,48,64,128,256\nToolbarDefault=22\nToolbarSizes=16,22,32,48\nMainToolbarDefault=22\nMainToolbarSizes=16,22,32,48\nSmallDefault=16\nSmallSizes=16,22,32,48\nPanelDefault=32\nPanelSizes=16,22,32,48,64,128,256\nDialogDefault=32\nDialogSizes=16,22,32\n\n')
                 for line in temp_theme_file:
