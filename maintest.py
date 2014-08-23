@@ -28,9 +28,9 @@ user_home_dir = envars['HOME']
 user_DE = envars['XDG_CURRENT_DESKTOP']
 Ardis_colors = {}
 Ardis_colors = {'Blackish':'#111111', 'Blue':'#0078ad', 'Brown':'#b59a6e', 'Dark Green':'#66ae4a', 'Light Green':'#79c843', 'Olive Green':'#669966', 'Orange':'#f38725', 'Peach':'#ef6a47', 'Pink':'#e65177', 'Red':'#cd1d31', 'Shadow Grey':'#666666', 'Sky Blue':'#6788cc', 'Soft Red':'#b93d48', 'Violet':'#924565', 'Yellow':'#ffcc67'}
-Ardis_actions = {'Standard Type':'standard', 'Dark action icons\nwith no background':'gray'}
+Ardis_actions = {'Standard Type':'standard', 'Dark icons with no background':'gray'}
 Ardis_apps = {'Standard Type':'standard', 'Standard type\nwith gray background':'grayBG'}
-Ardis_status = {'Standard Type':'standard', 'Dark action icons\nwith no background':'white'}
+Ardis_status = {'Standard Type':'standard', 'Light icons with no background':'white'}
 
 
 def ardis_dirs(**ArdisDirArgs):
