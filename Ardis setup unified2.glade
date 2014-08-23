@@ -413,13 +413,13 @@ Please select below what type of &lt;b&gt;action&lt;/b&gt; icons you prefer. </p
             <property name="margin_right">20</property>
             <property name="margin_top">20</property>
             <property name="margin_bottom">20</property>
-            <property name="spacing">14</property>
             <child>
               <object class="GtkBox" id="box7">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
                 <property name="valign">baseline</property>
+                <property name="margin_right">15</property>
                 <property name="vexpand">False</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">15</property>
@@ -519,9 +519,12 @@ Please select below what type of &lt;b&gt;action&lt;/b&gt; icons you prefer. </p
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
+                <property name="spacing">15</property>
                 <property name="homogeneous">True</property>
                 <child>
                   <object class="GtkImage" id="image2">
+                    <property name="width_request">240</property>
+                    <property name="height_request">40</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="pixbuf">Images/style_standard.png</property>
@@ -1593,6 +1596,8 @@ with gray background</property>
                         <property name="homogeneous">True</property>
                         <child>
                           <object class="GtkImage" id="image60">
+                            <property name="width_request">240</property>
+                            <property name="height_request">40</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="pixbuf">Images/style_standard_apps.png</property>
@@ -1743,27 +1748,6 @@ Please select below what type of &lt;b&gt;status&lt;/b&gt; icons you prefer</pro
                             <property name="position">3</property>
                           </packing>
                         </child>
-                        <child>
-                          <object class="GtkEventBox" id="eventbox47">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="visible_window">False</property>
-                            <property name="above_child">True</property>
-                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image96">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="pixbuf">Images/radio_off.png</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">14</property>
-                          </packing>
-                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1807,20 +1791,6 @@ Please select below what type of &lt;b&gt;status&lt;/b&gt; icons you prefer</pro
                             <property name="position">3</property>
                           </packing>
                         </child>
-                        <child>
-                          <object class="GtkLabel" id="label56">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">meow option </property>
-                            <property name="use_markup">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">14</property>
-                          </packing>
-                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1838,6 +1808,8 @@ Please select below what type of &lt;b&gt;status&lt;/b&gt; icons you prefer</pro
                         <property name="homogeneous">True</property>
                         <child>
                           <object class="GtkImage" id="image100">
+                            <property name="width_request">240</property>
+                            <property name="height_request">40</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="pixbuf">Images/style_standard_status.png</property>
@@ -1858,18 +1830,6 @@ Please select below what type of &lt;b&gt;status&lt;/b&gt; icons you prefer</pro
                             <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">3</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image114">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">Images/start-here-kde.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">14</property>
                           </packing>
                         </child>
                       </object>
