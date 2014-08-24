@@ -943,9 +943,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">Blackish</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -959,9 +957,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">Blue</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -975,9 +971,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">Brown</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -991,9 +985,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">Light Green</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1007,9 +999,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">Olive Green</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1023,9 +1013,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">Orange</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1039,9 +1027,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">Peach</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1055,9 +1041,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">Pink</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1071,9 +1055,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">Red</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1087,9 +1069,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">Shadow Grey</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1103,9 +1083,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">Sky Blue</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1119,9 +1097,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">Soft Red</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1135,9 +1111,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">Violet</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1151,9 +1125,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">Yellow</property>
-                            <attributes>
-                              <attribute name="font-desc" value="DejaVu Sans Ultra-Light 16"/>
-                            </attributes>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
