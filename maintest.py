@@ -19,6 +19,7 @@ def find_theme_path(themedir):
     if user_DE == 'KDE':
         icon_theme_locs.append(os.path.expanduser('~/.kde/share/icons'))
         icon_theme_locs.append(os.path.expanduser('~/.kde4/share/icons'))
+        icon_theme_locs.append(os.path.expanduser('~/.icons'))
     else:
         icon_theme_locs.append(os.path.expanduser('~/.icons'))
     icon_theme_locs.append('/usr/share/icons')
