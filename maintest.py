@@ -3,7 +3,6 @@
 from gi.repository import Gtk
 import os
 import sys
-import xdg.IconTheme
 import re
 import glob
 
@@ -55,7 +54,6 @@ def ardis_dirs(**ArdisDirArgs):
     for dirpath in themedirs:
         reldirpath = re.sub(Ardis_kw['path']+'/', '', dirpath)
         dircontext = os.path.basename(re.sub('\/$', '', reldirpath))
-        print dircontext
         if dircontext in ArdisDirArgs.keys():
             dirstyle = ArdisDirArgs[dircontext]
             #Do some cool op with these variables
@@ -88,18 +86,13 @@ def Show_page(p_num_to_show):
         page_dict = {'viewport': 'viewport99'}
     new_vp = builder.get_object(page_dict['viewport'])
     
+    label_choice_page1 = getNthChildLabel('box5', getPosInParent('event_box_curr_radio1'))
     
-    radio_choice_page1 = getPosInCont('event_box_curr_radio1', 'box7')
-    label_choice_page1 = getNthChildLabel('box5', radio_choice_page1)
+    label_choice_page2 = getNthChildLabel('box12', getPosInParent('event_box_curr_radio2'))
     
-    radio_choice_page2 = getPosInCont('event_box_curr_radio2', 'box11')
-    label_choice_page2 = getNthChildLabel('box12', radio_choice_page2)
-    
-    radio_choice_page4 = getPosInCont('event_box_curr_radio4', 'box16')
-    label_choice_page4 = getNthChildLabel('box17', radio_choice_page4)
-    
-    radio_choice_page5 = getPosInCont('event_box_curr_radio5', 'box21')
-    label_choice_page5 = getNthChildLabel('box22', radio_choice_page5)
+    label_choice_page4 = getNthChildLabel('box17', getPosInParent('event_box_curr_radio4'))
+
+    label_choice_page5 = getNthChildLabel('box22', getPosInParent('event_box_curr_radio5'))
     
 
     
@@ -126,7 +119,7 @@ def Show_page(p_num_to_show):
     if p_num_to_show == 5:
         nextbutton.set_label('  Build   ')
         winbox.add(new_vp)
-        setPosInCont('curr_page_dot', 'box1', p_num_to_show)
+        setPosInParent('curr_page_dot', p_num_to_show)
 
             
     elif nextbutton.get_label() == '  Build   ':
@@ -153,7 +146,7 @@ def Show_page(p_num_to_show):
     else:
         try:
             winbox.add(new_vp)
-            setPosInCont('curr_page_dot', 'box1', p_num_to_show)
+            setPosInParent('curr_page_dot', p_num_to_show)
 
         except TypeError:
             #This captures any attempt to advance to a page that doesnt exist
@@ -182,7 +175,7 @@ def Show_page(p_num_to_show):
             Gtk.main_quit()
             exit()
             
-        setPosInCont('curr_page_dot', 'box1', p_num_to_show)
+        setPosInParent('curr_page_dot', p_num_to_show)
         if p_num_to_show == 0:
             backbutton.hide()
         else:
@@ -198,27 +191,27 @@ class Handler:
         exit()
 
     def on_Next_clicked(self, button):
-        cur_page = getPosInCont('curr_page_dot', 'box1')
+        cur_page = getPosInParent('curr_page_dot')
         nex_page = cur_page+1
         Hide_Page(cur_page)
         Show_page(nex_page)
         #if the next page doesnt exist, the app exits now
-        setPosInCont('curr_page_dot', 'box1', nex_page)
+        setPosInParent('curr_page_dot', nex_page)
       
     def on_Back_clicked(self, button):
         nextbutton.set_label('  Next   ')
-        cur_page = getPosInCont('curr_page_dot', 'box1')
+        cur_page = getPosInParent('curr_page_dot')
         prev_page = cur_page-1
         Hide_Page(cur_page)
         Show_page(prev_page)
-        setPosInCont('curr_page_dot', 'box1', prev_page)
+        setPosInParent('curr_page_dot', prev_page)
 
 
     def on_Exit_clicked(self, button):
         exit()
         
     def on_eventbox_radio_press(self, radio, button2):
-        cur_page = getPosInCont('curr_page_dot', 'box1')
+        cur_page = getPosInParent('curr_page_dot')
         page_dict = AB_Pages[cur_page]
         active_radio_box = builder.get_object(page_dict['cur_rad'])
         rad_parent = radio.get_parent()
@@ -237,10 +230,21 @@ def setPosInCont(targ_obj, targ_con, targ_pos):
     taget_container = builder.get_object(targ_con)
     taget_container.reorder_child(target_object, targ_pos)
     
+def setPosInParent(targ_obj, targ_pos):
+    target_object = builder.get_object(targ_obj)
+    taget_container = target_object.get_parent()
+    taget_container.reorder_child(target_object, targ_pos)
+    
     
 def getPosInCont(targ_obj, targ_con):
     target_object = builder.get_object(targ_obj)
     taget_container = builder.get_object(targ_con)
+    objects_list = taget_container.get_children()
+    return objects_list.index(target_object)
+
+def getPosInParent(targ_obj):
+    target_object = builder.get_object(targ_obj)
+    taget_container = target_object.get_parent()
     objects_list = taget_container.get_children()
     return objects_list.index(target_object)
     
