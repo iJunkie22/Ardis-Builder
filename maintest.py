@@ -5,6 +5,7 @@ import os
 import sys
 import re
 import glob
+import fnmatch
 
 w_path = os.getcwd()
 sys.path.append(str(w_path))
@@ -30,8 +31,8 @@ def find_theme_path(themedir):
             break
 
 Ardis_kw = {}
-Ardis_kw['name'] = 'ArdisTESTtheme'
-Ardis_kw['dir'] = 'Ardis_TEST_theme'
+Ardis_kw['name'] = 'Ardis_test'
+Ardis_kw['dir'] = 'Ardis_test'
 Ardis_kw['vers'] = '0.6'
 Ardis_kw['comment'] = 'Simple and flat icon theme with long shadow - v'+Ardis_kw['vers']
 
@@ -48,19 +49,25 @@ Ardis_status = {'Standard Type':'standard', 'Light icons with no background':'wh
 
 
 def ardis_dirs(**ArdisDirArgs):
+    themecontexts = ['actions', 'animations', 'apps', 'categories', 'devices', 'emblems', 'emotes', 'intl', 'mimetypes', 'panel', 'places', 'status']
     themedirlist = []
-    themedirs = glob.glob(Ardis_kw['path']+'/*x*/*/')
-    themedirs.sort()
-        
-    for dirpath in themedirs:
-        reldirpath = re.sub(Ardis_kw['path']+'/', '', dirpath)
-        dircontext = os.path.basename(re.sub('\/$', '', reldirpath))
-        if dircontext in ArdisDirArgs.keys():
-            dirstyle = ArdisDirArgs[dircontext]
-            #Do some cool op with these variables
-            themedirlist.append(os.path.join(reldirpath, dirstyle))
-        else:
-            themedirlist.append(re.sub('\/$', '', reldirpath))
+    theme_size_dirs = []
+    theme_size_dirs = glob.glob(Ardis_kw['path']+'/*x*/')
+    theme_size_dirs.sort()
+    for s_dir in theme_size_dirs:
+        for c_dir in themecontexts:
+            test_s_c_dir = os.path.join(s_dir, c_dir)
+            if os.path.isdir(test_s_c_dir):
+                theme_ready_path = os.path.relpath(test_s_c_dir, Ardis_kw['path'])
+                themedirlist.append(re.sub('\/$', '', theme_ready_path))
+                # The index is now happy, now we need to make any needed symlinks
+            if os.path.islink(test_s_c_dir):
+                try:
+                    link_target = 'extra/'+c_dir+'/'+ArdisDirArgs[c_dir]+'/'
+                    os.unlink(test_s_c_dir)
+                    os.symlink(link_target, test_s_c_dir)
+                except KeyError, undef_cat:
+                    print '***Oops! ', undef_cat, ' is not defined!***' 
     temp_directories = re.sub("\'\,\s\'", ",", str(themedirlist))
     newdirectories = re.sub("(^\[\'|\'\]$)", "", temp_directories)
     return newdirectories
