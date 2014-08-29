@@ -120,7 +120,7 @@ def Show_page(p_num_to_show):
         res_label_obj = builder.get_object('results_summary')
         res_sum = str('<b>Action style=</b>'+label_choice_page1+'''\n<b>Places color=</b>'''+Ardis_colors[label_choice_page2]+'"'+label_choice_page2+'"'+'''\n<b>Small Apps=</b>'''+label_choice_page4+'''\n<b>Status=</b>'''+label_choice_page5+'''\n<b>DesktopEnvironment=</b>'''+user_DE+'''\n<b>Install Location=</b>'''+Ardis_kw['path'])
         res_label_obj.set_markup(res_sum)
-        d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1], apps=Ardis_apps[label_choice_page4], status=Ardis_status[label_choice_page5], categories=Ardis_categories[label_choice_page6])
+        d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1], apps=Ardis_apps[label_choice_page4], status=Ardis_status[label_choice_page5], categories=Ardis_categories[label_choice_page6], devices=Ardis_apps[label_choice_page4])
         ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
         dir_len = len(ardis_d_list)
         prog_step = float('1.0') / float(dir_len)
@@ -135,7 +135,7 @@ def Show_page(p_num_to_show):
             
     elif nextbutton.get_label() == '  Build   ':
         #The user has chosen to generate
-        d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1], apps=Ardis_apps[label_choice_page4], status=Ardis_status[label_choice_page5], categories=Ardis_categories[label_choice_page6])
+        d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1], apps=Ardis_apps[label_choice_page4], status=Ardis_status[label_choice_page5], categories=Ardis_categories[label_choice_page6], devices=Ardis_apps[label_choice_page4])
         ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
         dir_len = len(ardis_d_list)
         prog_step = float('1.0') / float(dir_len)
