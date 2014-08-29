@@ -39,13 +39,14 @@ Ardis_kw['comment'] = 'Simple and flat icon theme with long shadow - v'+Ardis_kw
 Ardis_kw['path'] = find_theme_path(Ardis_kw['dir'])
 
 ardis_unlocked_places = ['Blue', 'Violet', 'Brown']
-AB_Pages = {0: dict(desc='intro', viewport='viewport1', has_radios=False), 1: dict(desc='actions', viewport='viewport2', has_radios=True, rad_box='box7', lab_box='box5', img_box='box6', cur_rad='event_box_curr_radio1'), 2: dict(desc='places', viewport='viewport3', has_radios=True, rad_box='box11', lab_box='box12', img_box='box13', cur_rad='event_box_curr_radio2'), 11: dict(desc='mimetypes', viewport='viewport4', has_radios=False), 3: dict(desc='start-here', viewport='viewport5', has_radios=True, rad_box='box16', lab_box='box17', img_box='box18', cur_rad='event_box_curr_radio4'), 4: dict(desc='DE', viewport='viewport6', has_radios=True, rad_box='box21', lab_box='box22', img_box='box23', cur_rad='event_box_curr_radio5'), 5: dict(desc='thank-you', viewport='viewport7', has_radios=False), 6: dict(viewport='viewport8')}
+AB_Pages = {0: dict(desc='intro', viewport='viewport1', has_radios=False), 1: dict(desc='actions', viewport='viewport2', has_radios=True, rad_box='box7', lab_box='box5', img_box='box6', cur_rad='event_box_curr_radio1'), 2: dict(desc='places', viewport='viewport3', has_radios=True, rad_box='box11', lab_box='box12', img_box='box13', cur_rad='event_box_curr_radio2'), 11: dict(desc='mimetypes', viewport='viewport4', has_radios=False), 3: dict(desc='start-here', viewport='viewport5', has_radios=True, rad_box='box16', lab_box='box17', img_box='box18', cur_rad='event_box_curr_radio4'), 4: dict(desc='DE', viewport='viewport6', has_radios=True, rad_box='box21', lab_box='box22', img_box='box23', cur_rad='event_box_curr_radio5'), 6: dict(desc='thank-you', viewport='viewport7', has_radios=False), 5: dict(desc='categories', viewport='viewport8', has_radios=True, rad_box='box32', lab_box='box33', img_box='box34', cur_rad='event_box_curr_radio3')}
 
 Ardis_colors = {}
 Ardis_colors = {'Blackish':'#111111', 'Blue':'#0078ad', 'Brown':'#b59a6e', 'Dark Green':'#66ae4a', 'Light Green':'#79c843', 'Olive Green':'#669966', 'Orange':'#f38725', 'Peach':'#ef6a47', 'Pink':'#e65177', 'Red':'#cd1d31', 'Shadow Grey':'#666666', 'Sky Blue':'#6788cc', 'Soft Red':'#b93d48', 'Violet':'#924565', 'Yellow':'#ffcc67'}
 Ardis_actions = {'Standard Type':'standard', 'Dark icons with no background':'gray'}
 Ardis_apps = {'Standard Type':'standard', 'Standard type\nwith gray background':'grayBG'}
 Ardis_status = {'Standard Type':'standard', 'Light icons with no background':'white'}
+Ardis_categories = {'Standard Type':'standard', 'Standard type\nwith gray background':'grayBG'}
 
 
 def ardis_dirs(**ArdisDirArgs):
@@ -102,6 +103,8 @@ def Show_page(p_num_to_show):
 
     label_choice_page5 = getNthChildLabel('box22', getPosInParent('event_box_curr_radio5'))
     
+    label_choice_page6 = getNthChildLabel('box33', getPosInParent('event_box_curr_radio3'))
+    
 
     
     #this REALLY is now ignored, in favor of the find_theme_path method and Ardis_kw['path']
@@ -112,19 +115,19 @@ def Show_page(p_num_to_show):
     else:
         user_icon_dir = None
         
-    if p_num_to_show >= 5:
+    if p_num_to_show >= 6:
     #This is when the last page is triggered
         res_label_obj = builder.get_object('results_summary')
         res_sum = str('<b>Action style=</b>'+label_choice_page1+'''\n<b>Places color=</b>'''+Ardis_colors[label_choice_page2]+'"'+label_choice_page2+'"'+'''\n<b>Small Apps=</b>'''+label_choice_page4+'''\n<b>Status=</b>'''+label_choice_page5+'''\n<b>DesktopEnvironment=</b>'''+user_DE+'''\n<b>Install Location=</b>'''+Ardis_kw['path'])
         res_label_obj.set_markup(res_sum)
-        d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1], apps=Ardis_apps[label_choice_page4], status=Ardis_status[label_choice_page5])
+        d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1], apps=Ardis_apps[label_choice_page4], status=Ardis_status[label_choice_page5], categories=Ardis_categories[label_choice_page6])
         ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
         dir_len = len(ardis_d_list)
         prog_step = float('1.0') / float(dir_len)
         prog_bar = builder.get_object('progressbar1')
         prog_bar.set_fraction(float('0.00'))
         
-    if p_num_to_show == 5:
+    if p_num_to_show == 6:
         nextbutton.set_label('  Build   ')
         winbox.add(new_vp)
         setPosInParent('curr_page_dot', p_num_to_show)
@@ -132,7 +135,7 @@ def Show_page(p_num_to_show):
             
     elif nextbutton.get_label() == '  Build   ':
         #The user has chosen to generate
-        d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1], apps=Ardis_apps[label_choice_page4], status=Ardis_status[label_choice_page5])
+        d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1], apps=Ardis_apps[label_choice_page4], status=Ardis_status[label_choice_page5], categories=Ardis_categories[label_choice_page6])
         ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
         dir_len = len(ardis_d_list)
         prog_step = float('1.0') / float(dir_len)
