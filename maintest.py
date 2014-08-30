@@ -5,7 +5,6 @@ import os
 import sys
 import re
 import glob
-import fnmatch
 
 w_path = os.getcwd()
 sys.path.append(str(w_path))
@@ -35,19 +34,62 @@ Ardis_kw['name'] = 'Ardis_test'
 Ardis_kw['dir'] = 'Ardis_test'
 Ardis_kw['vers'] = '0.6'
 Ardis_kw['comment'] = 'Simple and flat icon theme with long shadow - v'+Ardis_kw['vers']
-
 Ardis_kw['path'] = find_theme_path(Ardis_kw['dir'])
-
+try:
+    ardis_edition_file = open(Ardis_kw['path']+'/ArdisEdition', 'r')
+    try:
+        for line in ardis_edition_file:
+            Ardis_kw['edition'] = line
+    finally:
+        ardis_edition_file.close()
+except IOError:
+    Ardis_kw['edition'] = 'Basic'
 ardis_unlocked_places = ['Blue', 'Violet', 'Brown']
+ardis_unlocked_statuses = ['Standard Type', 'Light icons with no background']
+ardis_unlocked_categories = ['Standard Type', 'Standard type\nwith gray background']
+ardis_unlocked_apps = ['Standard Type', 'Standard type\nwith gray background']
+
 AB_Pages = {0: dict(desc='intro', viewport='viewport1', has_radios=False), 1: dict(desc='actions', viewport='viewport2', has_radios=True, rad_box='box7', lab_box='box5', img_box='box6', cur_rad='event_box_curr_radio1'), 2: dict(desc='places', viewport='viewport3', has_radios=True, rad_box='box11', lab_box='box12', img_box='box13', cur_rad='event_box_curr_radio2'), 11: dict(desc='mimetypes', viewport='viewport4', has_radios=False), 3: dict(desc='start-here', viewport='viewport5', has_radios=True, rad_box='box16', lab_box='box17', img_box='box18', cur_rad='event_box_curr_radio4'), 4: dict(desc='DE', viewport='viewport6', has_radios=True, rad_box='box21', lab_box='box22', img_box='box23', cur_rad='event_box_curr_radio5'), 6: dict(desc='thank-you', viewport='viewport7', has_radios=False), 5: dict(desc='categories', viewport='viewport8', has_radios=True, rad_box='box32', lab_box='box33', img_box='box34', cur_rad='event_box_curr_radio3')}
 
 Ardis_colors = {}
-Ardis_colors = {'Blackish':'#111111', 'Blue':'#0078ad', 'Brown':'#b59a6e', 'Dark Green':'#66ae4a', 'Light Green':'#79c843', 'Olive Green':'#669966', 'Orange':'#f38725', 'Peach':'#ef6a47', 'Pink':'#e65177', 'Red':'#cd1d31', 'Shadow Grey':'#666666', 'Sky Blue':'#6788cc', 'Soft Red':'#b93d48', 'Violet':'#924565', 'Yellow':'#ffcc67'}
+Ardis_colors = {'Blackish':'#111111', 'Blue':'#0078ad', 'Brown':'#b59a6e', 'Green':'#85d075', 'Dark Green':'#66ae4a', 'Light Green':'#79c843', 'Olive Green':'#669966', 'Orange':'#f38725', 'Peach':'#ef6a47', 'Pink':'#e65177', 'Red':'#cd1d31', 'Shadow Grey':'#666666', 'Sky Blue':'#6788cc', 'Soft Red':'#b93d48', 'Violet':'#924565', 'Yellow':'#ffcc67'}
 Ardis_actions = {'Standard Type':'standard', 'Dark icons with no background':'gray'}
-Ardis_apps = {'Standard Type':'standard', 'Standard type\nwith gray background':'grayBG'}
-Ardis_status = {'Standard Type':'standard', 'Light icons with no background':'white'}
-Ardis_categories = {'Standard Type':'standard', 'Standard type\nwith gray background':'grayBG'}
+Ardis_apps = {'Standard Type':'standard', 'Standard type\nwith gray background':'grayBG', 'Light icons with no background':'white'}
+Ardis_status = {'Standard Type':'standard', 'Light icons with no background':'white', 'Dark icons with no background':'gray'}
+Ardis_categories = {'Standard Type':'standard', 'Standard type\nwith gray background':'grayBG', 'Light icons with no background':'white'}
 
+def Ardis_Edition_Apply(edition):
+    if edition == 'Ardis Plus':
+        ardis_unlocked_places.append('Red')
+        ardis_unlocked_places.append('Green')
+        ardis_unlocked_statuses.append('Dark icons with no background')
+        ardis_unlocked_categories.append('Light icons with no background')
+        ardis_unlocked_apps.append('Light icons with no background')
+        
+        light_apps_withno_bg_preview = builder.get_object('image53')
+        light_apps_withno_bg_preview.clear()
+        light_apps_withno_bg_preview.set_from_file('Images/style_light_apps_no_bg.png')
+        
+        red_places_preview = builder.get_object('image26')
+        red_places_preview.clear()
+        red_places_preview.set_from_file('Images/places_sample_Red.png')
+        
+        green_places_preview = builder.get_object('image21')
+        green_places_preview.clear()
+        green_places_preview.set_from_file('Images/places_sample_Green.png')
+        
+        dark_status_no_bg_preview = builder.get_object('image49')
+        dark_status_no_bg_preview.clear()
+        dark_status_no_bg_preview.set_from_file('Images/style_dark_status_no_bg.png')
+        
+        light_categories_withno_bg_preview = builder.get_object('image51')
+        light_categories_withno_bg_preview.clear()
+        light_categories_withno_bg_preview.set_from_file('Images/style_light_categories_withno_bg.png')
+        
+        intro_text = builder.get_object('label51')
+        old_intro_string = intro_text.get_label()
+        new_intro_string = re.sub('Ardis Basic', 'Ardis Plus', old_intro_string)
+        intro_text.set_label(str(new_intro_string))
 
 def ardis_dirs(**ArdisDirArgs):
     themecontexts = ['actions', 'animations', 'apps', 'categories', 'devices', 'emblems', 'emotes', 'intl', 'mimetypes', 'panel', 'places', 'status']
@@ -265,7 +307,7 @@ def getNthChildLabel(targ_con, child_n):
     target_label = objects_list[child_n]
     return target_label.get_text()
 
-def hide_bonus_places(targ_x):
+def hide_bonus_choices(unlocked_dict, targ_x):
     targ_parent = builder.get_object(targ_x)
     out_list = []
     col_list = targ_parent.get_children()
@@ -273,7 +315,7 @@ def hide_bonus_places(targ_x):
     l_list = col_list[1].get_children()
     p_list = col_list[2].get_children()
     for i, v in enumerate(l_list):
-        if v.get_text() not in ardis_unlocked_places:
+        if v.get_text() not in unlocked_dict:
             out_list.append(r_list[i])
             out_list.append(p_list[i])
             out_list.append(l_list[i])
@@ -286,7 +328,7 @@ builder = Gtk.Builder()
 builder.add_from_file(w_path+'/Ardis setup unified2.glade')
 
 builder.connect_signals(Handler())
-
+Ardis_Edition_Apply(Ardis_kw['edition'])
 
 
 window = builder.get_object("window1")
@@ -295,7 +337,10 @@ mainbox = builder.get_object("box1")
 nextbutton = builder.get_object("button1")
 backbutton = builder.get_object("button2")
 pageone = builder.get_object("viewport1")
-hide_bonus_places('box10')
+hide_bonus_choices(ardis_unlocked_places, 'box10')
+hide_bonus_choices(ardis_unlocked_statuses, 'box20')
+hide_bonus_choices(ardis_unlocked_categories, 'box31')
+hide_bonus_choices(ardis_unlocked_apps, 'box15')
 current_page = 0
 window.show_all()
 backbutton.hide()

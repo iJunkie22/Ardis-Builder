@@ -996,7 +996,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
-                            <property name="label" translatable="yes">Light Green</property>
+                            <property name="label" translatable="yes">Green</property>
                             <property name="use_markup">True</property>
                           </object>
                           <packing>
@@ -1520,6 +1520,27 @@ Please select below what color of &lt;b&gt;small apps&lt;/b&gt; icon you prefer.
                             <property name="position">1</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox19">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image52">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1564,6 +1585,21 @@ with gray background</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkLabel" id="label28">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Light icons with no background</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="pack_type">end</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1602,6 +1638,19 @@ with gray background</property>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image53">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="icon_name">dialog-password</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="pack_type">end</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                       </object>
@@ -1729,6 +1778,28 @@ Please select below what type of &lt;b&gt;status&lt;/b&gt; icons you prefer</pro
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox5">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image48">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="pack_type">end</property>
                             <property name="position">3</property>
                           </packing>
                         </child>
@@ -1772,7 +1843,22 @@ Please select below what type of &lt;b&gt;status&lt;/b&gt; icons you prefer</pro
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">3</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label26">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Dark icons with no background</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="pack_type">end</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                       </object>
@@ -1813,7 +1899,20 @@ Please select below what type of &lt;b&gt;status&lt;/b&gt; icons you prefer</pro
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">3</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image49">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="icon_name">dialog-password</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="pack_type">end</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                       </object>
@@ -2129,6 +2228,27 @@ Please select below what type of &lt;b&gt;category&lt;/b&gt; icons you prefer</p
                           </packing>
                         </child>
                         <child>
+                          <object class="GtkEventBox" id="eventbox18">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image50">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
                           <object class="GtkEventBox" id="eventbox4">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -2146,7 +2266,8 @@ Please select below what type of &lt;b&gt;category&lt;/b&gt; icons you prefer</p
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">3</property>
+                            <property name="pack_type">end</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                       </object>
@@ -2190,7 +2311,22 @@ with gray background</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">3</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label27">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Light icons with no background</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="pack_type">end</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                       </object>
@@ -2231,6 +2367,19 @@ with gray background</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image51">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="icon_name">dialog-password</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="pack_type">end</property>
                             <property name="position">3</property>
                           </packing>
                         </child>
