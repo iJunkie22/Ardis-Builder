@@ -14,6 +14,7 @@ envars = os.environ
 user_home_dir = envars['HOME']
 user_DE = envars['XDG_CURRENT_DESKTOP']
 
+
 def find_theme_path(themedir):
     icon_theme_locs = []
     if user_DE == 'KDE':
@@ -51,14 +52,48 @@ ardis_unlocked_apps = ['Standard Type', 'Standard type\nwith gray background']
 
 AB_Pages = {0: dict(desc='intro', viewport='viewport1', has_radios=False), 1: dict(desc='actions', viewport='viewport2', has_radios=True, rad_box='box7', lab_box='box5', img_box='box6', cur_rad='event_box_curr_radio1'), 2: dict(desc='places', viewport='viewport3', has_radios=True, rad_box='box11', lab_box='box12', img_box='box13', cur_rad='event_box_curr_radio2'), 11: dict(desc='mimetypes', viewport='viewport4', has_radios=False), 3: dict(desc='start-here', viewport='viewport5', has_radios=True, rad_box='box16', lab_box='box17', img_box='box18', cur_rad='event_box_curr_radio4'), 4: dict(desc='DE', viewport='viewport6', has_radios=True, rad_box='box21', lab_box='box22', img_box='box23', cur_rad='event_box_curr_radio5'), 6: dict(desc='thank-you', viewport='viewport7', has_radios=False), 5: dict(desc='categories', viewport='viewport8', has_radios=True, rad_box='box32', lab_box='box33', img_box='box34', cur_rad='event_box_curr_radio3')}
 
+def default_AB_strings():
+    newdict = {}
+    newdict['Standard Type'] = 'standard'
+    newdict['Standard type\nwith gray background'] = 'grayBG'
+    newdict['Dark icons with no background'] = 'gray'
+    newdict['Light icons with no background'] = 'white'
+    return newdict
+    
+def invert_dict(s_dict):
+    n_dict = {}
+    for k, v in s_dict.items():
+        n_dict[v] = k
+    return n_dict
+
 Ardis_colors = {}
 Ardis_colors = {'Blackish':'#111111', 'Blue':'#0078ad', 'Brown':'#b59a6e', 'Green':'#85d075', 'Dark Green':'#66ae4a', 'Light Green':'#79c843', 'Olive Green':'#669966', 'Orange':'#f38725', 'Peach':'#ef6a47', 'Pink':'#e65177', 'Red':'#cd1d31', 'Shadow Grey':'#666666', 'Sky Blue':'#6788cc', 'Soft Red':'#b93d48', 'Violet':'#924565', 'Yellow':'#ffcc67'}
-Ardis_actions = {'Standard Type':'standard', 'Dark icons with no background':'gray'}
-Ardis_apps = {'Standard Type':'standard', 'Standard type\nwith gray background':'grayBG', 'Light icons with no background':'white'}
-Ardis_status = {'Standard Type':'standard', 'Light icons with no background':'white', 'Dark icons with no background':'gray'}
-Ardis_categories = {'Standard Type':'standard', 'Standard type\nwith gray background':'grayBG', 'Light icons with no background':'white'}
+Ardis_actions = default_AB_strings()
+Ardis_apps = default_AB_strings()
+Ardis_status = default_AB_strings()
+Ardis_categories = default_AB_strings()
+
+
+def set_AB_image(ob_id, ob_fname):
+    targ_img = builder.get_object(ob_id)
+    targ_img.clear()
+    targ_img.set_from_file(ob_fname)
+    return None
+    
+def set_AB_image_all(imagedict):
+    for i, f in imagedict.items():
+        set_AB_image(i, f)
 
 def Ardis_Edition_Apply(edition):
+    Ardis_Plus_Images = {}
+    Ardis_Plus_Images['image53'] = 'Images/style_light_apps_no_bg.png'
+    Ardis_Plus_Images['image26'] = 'Images/places_sample_Red.png'
+    Ardis_Plus_Images['image21'] = 'Images/places_sample_Green.png'
+    Ardis_Plus_Images['image49'] = 'Images/style_dark_status_no_bg.png'
+    Ardis_Plus_Images['image51'] = 'Images/style_light_categories_withno_bg.png'
+    intro_text = builder.get_object('label51')
+    old_intro_string = intro_text.get_label()
+    
     if edition == 'Ardis Plus':
         ardis_unlocked_places.append('Red')
         ardis_unlocked_places.append('Green')
@@ -66,29 +101,13 @@ def Ardis_Edition_Apply(edition):
         ardis_unlocked_categories.append('Light icons with no background')
         ardis_unlocked_apps.append('Light icons with no background')
         
-        light_apps_withno_bg_preview = builder.get_object('image53')
-        light_apps_withno_bg_preview.clear()
-        light_apps_withno_bg_preview.set_from_file('Images/style_light_apps_no_bg.png')
+        set_AB_image_all(Ardis_Plus_Images)
         
-        red_places_preview = builder.get_object('image26')
-        red_places_preview.clear()
-        red_places_preview.set_from_file('Images/places_sample_Red.png')
-        
-        green_places_preview = builder.get_object('image21')
-        green_places_preview.clear()
-        green_places_preview.set_from_file('Images/places_sample_Green.png')
-        
-        dark_status_no_bg_preview = builder.get_object('image49')
-        dark_status_no_bg_preview.clear()
-        dark_status_no_bg_preview.set_from_file('Images/style_dark_status_no_bg.png')
-        
-        light_categories_withno_bg_preview = builder.get_object('image51')
-        light_categories_withno_bg_preview.clear()
-        light_categories_withno_bg_preview.set_from_file('Images/style_light_categories_withno_bg.png')
-        
-        intro_text = builder.get_object('label51')
-        old_intro_string = intro_text.get_label()
         new_intro_string = re.sub('Ardis Basic', 'Ardis Plus', old_intro_string)
+        intro_text.set_label(str(new_intro_string))
+    elif edition == 'Ardis Master':
+        set_AB_image_all(Ardis_Plus_Images)
+        new_intro_string = re.sub('Ardis Basic', 'Ardis Master', old_intro_string)
         intro_text.set_label(str(new_intro_string))
 
 def ardis_dirs(**ArdisDirArgs):
@@ -107,8 +126,11 @@ def ardis_dirs(**ArdisDirArgs):
             if os.path.islink(test_s_c_dir):
                 try:
                     link_target = 'extra/'+c_dir+'/'+ArdisDirArgs[c_dir]+'/'
-                    os.unlink(test_s_c_dir)
-                    os.symlink(link_target, test_s_c_dir)
+                    if os.path.isdir(os.path.join(s_dir, link_target)):
+                        os.unlink(test_s_c_dir)
+                        os.symlink(link_target, test_s_c_dir)
+                    else:
+                        print "Hmm. Looks like "+os.path.join(s_dir, link_target)+" doesnt exist."
                 except KeyError, undef_cat:
                     print '***Oops! ', undef_cat, ' is not defined!***' 
     temp_directories = re.sub("\'\,\s\'", ",", str(themedirlist))
@@ -327,7 +349,7 @@ def hide_bonus_choices(unlocked_dict, targ_x):
 builder = Gtk.Builder()
 builder.add_from_file(w_path+'/Ardis setup unified2.glade')
 
-builder.connect_signals(Handler())
+
 Ardis_Edition_Apply(Ardis_kw['edition'])
 
 
@@ -342,6 +364,7 @@ hide_bonus_choices(ardis_unlocked_statuses, 'box20')
 hide_bonus_choices(ardis_unlocked_categories, 'box31')
 hide_bonus_choices(ardis_unlocked_apps, 'box15')
 current_page = 0
+builder.connect_signals(Handler())
 window.show_all()
 backbutton.hide()
 #pageone.show()

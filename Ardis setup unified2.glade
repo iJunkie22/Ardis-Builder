@@ -1799,8 +1799,7 @@ Please select below what type of &lt;b&gt;status&lt;/b&gt; icons you prefer</pro
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="pack_type">end</property>
-                            <property name="position">3</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                       </object>
@@ -2266,7 +2265,6 @@ Please select below what type of &lt;b&gt;category&lt;/b&gt; icons you prefer</p
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="pack_type">end</property>
                             <property name="position">2</property>
                           </packing>
                         </child>
