@@ -1,7 +1,7 @@
 #!/usr/bin/python2 -t
 #coding: utf-8
 import gi
-gi.require_version('Gtk', '3.4')
+gi.require_version('Gtk', '3.0')
 # Credit for this patch goes to https://build.opensuse.org/package/view_file/openSUSE:12.3/alacarte/alacarte-force-Gtk3.patch?expand=1
 from gi.repository import Gtk
 import os
