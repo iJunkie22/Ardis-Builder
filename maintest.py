@@ -1,5 +1,8 @@
 #!/usr/bin/python2 -t
 #coding: utf-8
+import gi
+gi.require_version('Gtk', '3.0')
+# Credit for this patch goes to https://build.opensuse.org/package/view_file/openSUSE:12.3/alacarte/alacarte-force-Gtk3.patch?expand=1
 from gi.repository import Gtk
 import os
 import sys
@@ -12,7 +15,16 @@ import Theme_Indexer
 
 envars = os.environ
 user_home_dir = envars['HOME']
-user_DE = envars['XDG_CURRENT_DESKTOP']
+user_DE = envars.get('XDG_CURRENT_DESKTOP', default=None)
+if user_DE is None:
+    # The GDM doesnt declare the fairly new (added ~2014) XDG_CURRENT_DESKTOP global...
+    user_GDMS = envars.get('GDMSESSION', default='')
+    if user_GDMS == 'kde-plasma':
+        user_DE = 'KDE'
+    else:
+        user_DE = user_GDMS
+        
+    
 
 
 def find_theme_path(themedir):
