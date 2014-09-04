@@ -40,21 +40,45 @@ def find_theme_path(themedir):
             return pos_theme_path
             break
 
+def parse_file(indexfile, targ_group):
+    new_dict = {}
+    nf = open(indexfile, 'r')
+    try:
+        new_dict = {}
+        for line in nf:
+            group_pat = re.search('((?<=^\[).*(?=\]))', line)
+            if group_pat:
+                cur_gr = group_pat.group(1)
+            if cur_gr == targ_group:
+                key_pat = re.search('(^[^=]+)\=(.*$)', line)
+                if key_pat:
+                    new_dict[key_pat.group(1)] = key_pat.group(2)
+    finally:
+        nf.close()
+    return new_dict
+        
+
 Ardis_kw = {}
 Ardis_kw['name'] = 'Ardis_test'
 Ardis_kw['dir'] = 'Ardis_test'
 Ardis_kw['vers'] = '0.6'
 Ardis_kw['comment'] = 'Simple and flat icon theme with long shadow - v'+Ardis_kw['vers']
 Ardis_kw['path'] = find_theme_path(Ardis_kw['dir'])
-try:
-    ardis_edition_file = open(Ardis_kw['path']+'/ArdisEdition', 'r')
-    try:
-        for line in ardis_edition_file:
-            Ardis_kw['edition'] = line
-    finally:
-        ardis_edition_file.close()
-except IOError:
+
+AB_rc_dict = parse_file(os.path.join(Ardis_kw['path'], "index.theme"), 'X-ArdisBuilder Settings')
+Ardis_index_dict = parse_file(os.path.join(Ardis_kw['path'], "index.theme"), 'Icon Theme')
+del Ardis_index_dict['Directories']
+
+ardis_vers_pat = re.search('((?<= \- v).*)', Ardis_index_dict['Comment'])
+if ardis_vers_pat:
+    Ardis_kw['vers'] = ardis_vers_pat.group(1)
+    
+Ardis_kw['edition'] = AB_rc_dict.get('Edition')
+print Ardis_kw['vers']
+if Ardis_kw['edition'] is None:
+    AB_rc_dict['Edition'] = 'Basic'
     Ardis_kw['edition'] = 'Basic'
+
 ardis_unlocked_places = ['Blue', 'Violet', 'Brown']
 ardis_unlocked_statuses = ['Standard Type', 'Light icons with no background']
 ardis_unlocked_categories = ['Standard Type', 'Standard type\nwith gray background']
@@ -102,9 +126,11 @@ def Ardis_Edition_Apply(edition):
     Ardis_Plus_Images['image49'] = 'Images/style_dark_status_no_bg.png'
     Ardis_Plus_Images['image51'] = 'Images/style_light_categories_withno_bg.png'
     intro_text = builder.get_object('label51')
-    old_intro_string = intro_text.get_label()
+    ye_old_intro_string = intro_text.get_label()
+    old_intro_string = re.sub('<b>Ardis Theme Version</b>', '<b>'+Ardis_kw['vers']+'</b>', ye_old_intro_string)
+    print old_intro_string
     
-    if edition == 'Ardis Plus':
+    if edition == 'Plus':
         ardis_unlocked_places.append('Red')
         ardis_unlocked_places.append('Green')
         ardis_unlocked_statuses.append('Dark icons with no background')
@@ -115,12 +141,16 @@ def Ardis_Edition_Apply(edition):
         
         new_intro_string = re.sub('Ardis Basic', 'Ardis Plus', old_intro_string)
         intro_text.set_label(str(new_intro_string))
-    elif edition == 'Ardis Master':
+    elif edition == 'Master':
         set_AB_image_all(Ardis_Plus_Images)
         new_intro_string = re.sub('Ardis Basic', 'Ardis Master', old_intro_string)
         intro_text.set_label(str(new_intro_string))
+    else:
+        intro_text.set_label(str(old_intro_string))
 
 def ardis_dirs(**ArdisDirArgs):
+    for k, v in ArdisDirArgs.items():
+        AB_rc_dict[k] = v
     themecontexts = ['actions', 'animations', 'apps', 'categories', 'devices', 'emblems', 'emotes', 'intl', 'mimetypes', 'panel', 'places', 'status']
     themedirlist = []
     theme_size_dirs = []
@@ -218,6 +248,10 @@ def Show_page(p_num_to_show):
         temp_theme_file = open(Ardis_kw['path']+"/temp_index.theme",'w')
         try:
             temp_theme_file.write('Directories='+d_string+'\n\n')
+            temp_theme_file.write('[X-ArdisBuilder Settings]\n')
+            for k, v in AB_rc_dict.items():
+                temp_theme_file.write(k+'='+v+'\n')
+            temp_theme_file.write('\n')
             for g_item in ardis_d_list[::]:
                 g_line = Theme_Indexer.define_group(g_item)
                 temp_theme_file.write(g_line+'\n')
@@ -246,7 +280,10 @@ def Show_page(p_num_to_show):
             temp_theme_file = open(Ardis_kw['path']+"/temp_index.theme",'r')
             final_theme_file = open(Ardis_kw['path']+"/index.theme",'w')
             try:
-                final_theme_file.write('[Icon Theme]\nName='+Ardis_kw['name']+'\nComment='+Ardis_kw['comment']+'\n\nDisplayDepth=32\n\nInherits=hicolor,GNOME,Oxygen\n\nExample=folder\n\nLinkOverlay=link\nLockOverlay=lockoverlay\nShareOverlay=share\nZipOverlay=zip\n\nDesktopDefault=48\nDesktopSizes=16,22,32,48,64,128,256\nToolbarDefault=22\nToolbarSizes=16,22,32,48\nMainToolbarDefault=22\nMainToolbarSizes=16,22,32,48\nSmallDefault=16\nSmallSizes=16,22,32,48\nPanelDefault=32\nPanelSizes=16,22,32,48,64,128,256\nDialogDefault=32\nDialogSizes=16,22,32\n\n')
+                final_theme_file.write('[Icon Theme]\n')
+                for k, v in Ardis_index_dict.items():
+                    final_theme_file.write(k+'='+v)
+                    final_theme_file.write('\n')
                 for line in temp_theme_file:
                     final_theme_file.write(line)
             finally:
