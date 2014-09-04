@@ -13,19 +13,17 @@ w_path = os.getcwd()
 sys.path.append(str(w_path))
 import Theme_Indexer
 envars = {}
+user_GDMS = None
 envars = os.environ.copy()
 user_home_dir = envars['HOME']
 user_DE = envars.get('XDG_CURRENT_DESKTOP')
 if user_DE is None:
     # The GDM doesnt declare the fairly new (added ~2014) XDG_CURRENT_DESKTOP global...
-    user_GDMS = envars.get('GDMSESSION', default='')
+    user_GDMS = envars.get('GDMSESSION')
     if user_GDMS == 'kde-plasma':
         user_DE = 'KDE'
     else:
         user_DE = user_GDMS
-        
-    
-
 
 def find_theme_path(themedir):
     icon_theme_locs = []
