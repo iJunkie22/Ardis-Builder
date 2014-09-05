@@ -301,7 +301,7 @@ def Show_page(p_num_to_show):
                 final_theme_file.close()
             
             #Politely Trigger updates
-            os.utime(Ardis_kw['path'])
+            os.utime(Ardis_kw['path'], None)
             theme = Gtk.IconTheme()
             theme.set_custom_theme(Ardis_kw['dir'])
             theme.rescan_if_needed()
@@ -309,8 +309,9 @@ def Show_page(p_num_to_show):
             
             #Now Rudely erase KDEs icon cache
             kiconcaches = glob.glob('/var/tmp/kdecache-*/icon-cache.kcache')
-                for kde_cache in kiconcaches:
-                    os.remove(kde_cache)
+            for kde_cache in kiconcaches:
+                os.remove(kde_cache)
+                print '***CLEARED KDE ICON CACHE "'+kde_cache+'"***'
             
             
             Gtk.main_quit()
