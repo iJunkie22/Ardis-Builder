@@ -239,12 +239,18 @@ def Show_page(p_num_to_show):
             
     elif nextbutton.get_label() == '  Build   ':
         #The user has chosen to generate
+        
+        #First we re-read all the choices
         d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1], apps=Ardis_apps[label_choice_page4], status=Ardis_status[label_choice_page5], categories=Ardis_categories[label_choice_page6], devices=Ardis_apps[label_choice_page4])
         ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
+        
+        #Initialize the progress bar
         dir_len = len(ardis_d_list)
         prog_step = float('1.0') / float(dir_len)
         prog_bar = builder.get_object('progressbar1')
         prog_bar.set_fraction(float('0.00'))
+        
+        #Start generating the temp theme
         temp_theme_file = open(Ardis_kw['path']+"/temp_index.theme",'w')
         try:
             temp_theme_file.write('Directories='+d_string+'\n\n')
@@ -255,6 +261,8 @@ def Show_page(p_num_to_show):
             for g_item in ardis_d_list[::]:
                 g_line = Theme_Indexer.define_group(g_item)
                 temp_theme_file.write(g_line+'\n')
+                
+                #Now this item of the list is done so we update the progress bar
                 old_prog = prog_bar.get_fraction()
                 new_prog = old_prog + prog_step
                 prog_bar.set_fraction(new_prog)
@@ -263,6 +271,7 @@ def Show_page(p_num_to_show):
         nextbutton.set_label('  Apply   ')
         
     else:
+    #The requested page is just a page (or the end)
         try:
             winbox.add(new_vp)
             setPosInParent('curr_page_dot', p_num_to_show)
@@ -277,6 +286,7 @@ def Show_page(p_num_to_show):
             print 'DesktopEnvironment='+user_DE
             print 'Install Location='+Ardis_kw['path']
             
+            #Apply the temp theme to theme index
             temp_theme_file = open(Ardis_kw['path']+"/temp_index.theme",'r')
             final_theme_file = open(Ardis_kw['path']+"/index.theme",'w')
             try:
@@ -290,10 +300,19 @@ def Show_page(p_num_to_show):
                 temp_theme_file.close()
                 final_theme_file.close()
             
+            #Politely Trigger updates
+            os.utime(Ardis_kw['path'])
             theme = Gtk.IconTheme()
             theme.set_custom_theme(Ardis_kw['dir'])
             theme.rescan_if_needed()
             theme.set_custom_theme(None)
+            
+            #Now Rudely erase KDEs icon cache
+            kiconcaches = glob.glob('/var/tmp/kdecache-*/icon-cache.kcache')
+                for kde_cache in kiconcaches:
+                    os.remove(kde_cache)
+            
+            
             Gtk.main_quit()
             exit()
             
