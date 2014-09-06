@@ -1,4 +1,4 @@
-#!/usr/bin/python2 -t
+#!/usr/bin/python2
 #coding: utf-8
 import gi
 gi.require_version('Gtk', '3.0')
@@ -74,7 +74,6 @@ if ardis_vers_pat:
     Ardis_kw['vers'] = ardis_vers_pat.group(1)
     
 Ardis_kw['edition'] = AB_rc_dict.get('Edition')
-print Ardis_kw['vers']
 if Ardis_kw['edition'] is None:
     AB_rc_dict['Edition'] = 'Basic'
     Ardis_kw['edition'] = 'Basic'
@@ -128,7 +127,6 @@ def Ardis_Edition_Apply(edition):
     intro_text = builder.get_object('label51')
     ye_old_intro_string = intro_text.get_label()
     old_intro_string = re.sub('<b>Ardis Theme Version</b>', '<b>'+Ardis_kw['vers']+'</b>', ye_old_intro_string)
-    print old_intro_string
     
     if edition == 'Plus':
         ardis_unlocked_places.append('Red')
@@ -305,14 +303,33 @@ def Show_page(p_num_to_show):
             os.utime(Ardis_kw['path'], None)
             theme = Gtk.IconTheme()
             theme.set_custom_theme(Ardis_kw['dir'])
+            theme.emit('changed')
             theme.rescan_if_needed()
             theme.set_custom_theme(None)
             
+            theme2 = Gtk.IconTheme.get_default()
+            theme2.emit('changed')
+            theme2.rescan_if_needed()
+            
+            #Now Rudely erase GNOMEs icon cache
+            clean_switch_GNOME = builder.get_object('switch2')
+            if clean_switch_GNOME.get_active() == True:
+                #This part is still experimental, and may not work at all
+                giconcaches = glob.glob('/usr/share/icons/gnome/icon-cache.cache')
+                for gnome_cache in giconcaches:
+                    try:
+                        os.remove(gnome_cache)
+                        print '***CLEARED GNOME ICON CACHE "'+gnome_cache+'"***'
+                    except OSError:
+                        pass
+                    
             #Now Rudely erase KDEs icon cache
-            kiconcaches = glob.glob('/var/tmp/kdecache-*/icon-cache.kcache')
-            for kde_cache in kiconcaches:
-                os.remove(kde_cache)
-                print '***CLEARED KDE ICON CACHE "'+kde_cache+'"***'
+            clean_switch_KDE = builder.get_object('switch1')
+            if clean_switch_KDE.get_active() == True:
+                kiconcaches = glob.glob('/var/tmp/kdecache-*/icon-cache.kcache')
+                for kde_cache in kiconcaches:
+                    os.remove(kde_cache)
+                    print '***CLEARED KDE ICON CACHE "'+kde_cache+'"***'
             
             
             Gtk.main_quit()
@@ -352,6 +369,18 @@ class Handler:
 
     def on_Exit_clicked(self, button):
         exit()
+        
+    def on_adv_settings_button_press(self, button, evbox):
+        advsetwin.show_all()
+        
+    def on_AdvSettings_toggle(self, tog):
+        #this is a simple test to make sure everything is connected
+        print tog.get_active()
+        
+    def hide_adv_settings(self, wind, winbool):
+        wind.hide_on_delete()
+        return True
+        #print self.get_active()
         
     def on_eventbox_radio_press(self, radio, button2):
         cur_page = getPosInParent('curr_page_dot')
@@ -422,6 +451,7 @@ Ardis_Edition_Apply(Ardis_kw['edition'])
 
 
 window = builder.get_object("window1")
+advsetwin = builder.get_object("window2")
 pageDot = builder.get_object("curr_page_dot")
 mainbox = builder.get_object("box1")
 nextbutton = builder.get_object("button1")
