@@ -169,6 +169,7 @@ def ardis_dirs(**ArdisDirArgs):
                     if os.path.isdir(os.path.join(s_dir, link_target)):
                         os.unlink(test_s_c_dir)
                         os.symlink(link_target, test_s_c_dir)
+                        os.utime(test_s_c_dir, None)
                     else:
                         print "Hmm. Looks like "+os.path.join(s_dir, link_target)+" doesnt exist."
                 except KeyError, undef_cat:
