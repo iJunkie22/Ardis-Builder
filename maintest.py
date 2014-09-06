@@ -83,7 +83,7 @@ ardis_unlocked_statuses = ['Standard Type', 'Light icons with no background']
 ardis_unlocked_categories = ['Standard Type', 'Standard type\nwith gray background']
 ardis_unlocked_apps = ['Standard Type', 'Standard type\nwith gray background']
 
-AB_Pages = {0: dict(desc='intro', viewport='viewport1', has_radios=False), 1: dict(desc='actions', viewport='viewport2', has_radios=True, rad_box='box7', lab_box='box5', img_box='box6', cur_rad='event_box_curr_radio1'), 2: dict(desc='places', viewport='viewport3', has_radios=True, rad_box='box11', lab_box='box12', img_box='box13', cur_rad='event_box_curr_radio2'), 11: dict(desc='mimetypes', viewport='viewport4', has_radios=False), 3: dict(desc='start-here', viewport='viewport5', has_radios=True, rad_box='box16', lab_box='box17', img_box='box18', cur_rad='event_box_curr_radio4'), 4: dict(desc='DE', viewport='viewport6', has_radios=True, rad_box='box21', lab_box='box22', img_box='box23', cur_rad='event_box_curr_radio5'), 6: dict(desc='thank-you', viewport='viewport7', has_radios=False), 5: dict(desc='categories', viewport='viewport8', has_radios=True, rad_box='box32', lab_box='box33', img_box='box34', cur_rad='event_box_curr_radio3')}
+AB_Pages = {0: dict(desc='intro', viewport='viewport1', has_radios=False), 1: dict(desc='actions', viewport='viewport2', has_radios=True, rad_box='box7', lab_box='box5', img_box='box6', cur_rad='event_box_curr_radio1'), 4: dict(desc='places', viewport='viewport3', has_radios=True, rad_box='box11', lab_box='box12', img_box='box13', cur_rad='event_box_curr_radio2'), 11: dict(desc='mimetypes', viewport='viewport4', has_radios=False), 2: dict(desc='small apps', viewport='viewport5', has_radios=True, rad_box='box16', lab_box='box17', img_box='box18', cur_rad='event_box_curr_radio4'), 3: dict(desc='status', viewport='viewport6', has_radios=True, rad_box='box21', lab_box='box22', img_box='box23', cur_rad='event_box_curr_radio5'), 5: dict(desc='thank-you', viewport='viewport7', has_radios=False), 20: dict(desc='categories', viewport='viewport8', has_radios=True, rad_box='box32', lab_box='box33', img_box='box34', cur_rad='event_box_curr_radio3')}
 
 def default_AB_strings():
     newdict = {}
@@ -218,7 +218,7 @@ def Show_page(p_num_to_show):
     else:
         user_icon_dir = None
         
-    if p_num_to_show >= 6:
+    if p_num_to_show >= 5:
     #This is when the last page is triggered
         res_label_obj = builder.get_object('results_summary')
         res_sum = str('<b>Action style=</b>'+label_choice_page1+'''\n<b>Places color=</b>'''+Ardis_colors[label_choice_page2]+'"'+label_choice_page2+'"'+'''\n<b>Small Apps=</b>'''+label_choice_page4+'''\n<b>Status=</b>'''+label_choice_page5+'''\n<b>DesktopEnvironment=</b>'''+user_DE+'''\n<b>Install Location=</b>'''+Ardis_kw['path'])
@@ -230,7 +230,7 @@ def Show_page(p_num_to_show):
         prog_bar = builder.get_object('progressbar1')
         prog_bar.set_fraction(float('0.00'))
         
-    if p_num_to_show == 6:
+    if p_num_to_show == 5:
         nextbutton.set_label('  Build   ')
         winbox.add(new_vp)
         setPosInParent('curr_page_dot', p_num_to_show)
