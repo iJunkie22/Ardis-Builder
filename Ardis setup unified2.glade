@@ -822,6 +822,27 @@ Please select below what type of &lt;b&gt;action&lt;/b&gt; icons you prefer. </p
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkEventBox" id="eventbox59">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="visible_window">False</property>
+                    <property name="above_child">True</property>
+                    <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image59">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="pixbuf">Images/radio_off.png</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkEventBox" id="eventbox1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -871,6 +892,20 @@ Please select below what type of &lt;b&gt;action&lt;/b&gt; icons you prefer. </p
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkLabel" id="label59">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Light icons with no background</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -910,6 +945,18 @@ Please select below what type of &lt;b&gt;action&lt;/b&gt; icons you prefer. </p
                     <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="image559">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pixbuf">Images/style_light_action_no_bg.png</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
