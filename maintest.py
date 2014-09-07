@@ -22,8 +22,10 @@ if user_DE is None:
     user_GDMS = envars.get('GDMSESSION')
     if user_GDMS == 'kde-plasma':
         user_DE = 'KDE'
-    else:
+    elif user_GDMS is not None:
         user_DE = user_GDMS
+    else:
+        user_DE = 'unknown'
 
 def find_theme_path(themedir):
     icon_theme_locs = []
@@ -221,7 +223,10 @@ def Show_page(p_num_to_show):
     if p_num_to_show >= 5:
     #This is when the last page is triggered
         res_label_obj = builder.get_object('results_summary')
-        res_sum = str('<b>Action style=</b>'+label_choice_page1+'''\n<b>Places color=</b>'''+Ardis_colors[label_choice_page2]+'"'+label_choice_page2+'"'+'''\n<b>Small Apps=</b>'''+label_choice_page4+'''\n<b>Status=</b>'''+label_choice_page5+'''\n<b>DesktopEnvironment=</b>'''+user_DE+'''\n<b>Install Location=</b>'''+Ardis_kw['path'])
+        try:
+            res_sum = str('<b>Action style=</b>'+label_choice_page1+'''\n<b>Places color=</b>'''+Ardis_colors[label_choice_page2]+'"'+label_choice_page2+'"'+'''\n<b>Small Apps=</b>'''+label_choice_page4+'''\n<b>Status=</b>'''+label_choice_page5+'''\n<b>DesktopEnvironment=</b>'''+user_DE+'''\n<b>Install Location=</b>'''+Ardis_kw['path'])
+        except TypeError:
+            res_sum = 'error'
         res_label_obj.set_markup(res_sum)
         d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1], apps=Ardis_apps[label_choice_page4], status=Ardis_status[label_choice_page5], categories=Ardis_categories[label_choice_page6], devices=Ardis_apps[label_choice_page4])
         ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
