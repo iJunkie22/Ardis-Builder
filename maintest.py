@@ -69,7 +69,9 @@ Ardis_kw['path'] = find_theme_path(Ardis_kw['dir'])
 
 AB_rc_dict = parse_file(os.path.join(Ardis_kw['path'], "index.theme"), 'X-ArdisBuilder Settings')
 Ardis_index_dict = parse_file(os.path.join(Ardis_kw['path'], "index.theme"), 'Icon Theme')
+Ardis_kw['dcount'] = len(Ardis_index_dict['Directories'].split(','))
 del Ardis_index_dict['Directories']
+
 
 ardis_vers_pat = re.search('((?<= \- v).*)', Ardis_index_dict['Comment'])
 if ardis_vers_pat:
@@ -107,7 +109,6 @@ Ardis_actions = default_AB_strings()
 Ardis_apps = default_AB_strings()
 Ardis_status = default_AB_strings()
 Ardis_categories = default_AB_strings()
-
 
 def set_AB_image(ob_id, ob_fname):
     targ_img = builder.get_object(ob_id)
@@ -180,8 +181,6 @@ def ardis_dirs(**ArdisDirArgs):
 
 def Hide_Page(p_num_to_hide):
     winbox = builder.get_object("box2")
-    #vp_to_hide = p_num_to_hide+1
-    #vp_str_to_hide = str(vp_to_hide)
     page_dict = {}
     page_dict = AB_Pages[p_num_to_hide]
     old_vp = builder.get_object(page_dict['viewport'])
@@ -191,8 +190,6 @@ def Hide_Page(p_num_to_hide):
 def Show_page(p_num_to_show):
     winbox = builder.get_object("box2")
     vp_to_show = p_num_to_show+1
-    #vp_str_to_show = str(vp_to_show)
-    #new_vp = builder.get_object('viewport'+vp_str_to_show)
     page_dict = {}
     try:
         page_dict = AB_Pages[p_num_to_show]
@@ -228,9 +225,9 @@ def Show_page(p_num_to_show):
         except TypeError:
             res_sum = 'error'
         res_label_obj.set_markup(res_sum)
-        d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1], apps=Ardis_apps[label_choice_page4], status=Ardis_status[label_choice_page5], categories=Ardis_categories[label_choice_page6], devices=Ardis_apps[label_choice_page4])
-        ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
-        dir_len = len(ardis_d_list)
+        dir_len = Ardis_kw['dcount']
+        #This alternative method uses the number of directories in the OLD list, since it should be the same anyway
+        #avoids the unnecessary calling of ardis_dirs, and the premature application of symlinks
         prog_step = float('1.0') / float(dir_len)
         prog_bar = builder.get_object('progressbar1')
         prog_bar.set_fraction(float('0.00'))
@@ -340,6 +337,7 @@ def Show_page(p_num_to_show):
             Gtk.main_quit()
             exit()
             
+        #If it made it this far it is normal and safe. YAY!
         setPosInParent('curr_page_dot', p_num_to_show)
         if p_num_to_show == 0:
             backbutton.hide()

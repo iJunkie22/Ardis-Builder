@@ -134,6 +134,7 @@
                   <object class="GtkEventBox" id="eventbox20">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Advanced Settings</property>
                     <property name="above_child">True</property>
                     <signal name="button-press-event" handler="on_adv_settings_button_press" swapped="no"/>
                     <child>
