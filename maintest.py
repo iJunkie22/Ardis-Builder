@@ -83,6 +83,7 @@ if Ardis_kw['edition'] is None:
     Ardis_kw['edition'] = 'Basic'
 
 ardis_unlocked_places = ['Blue', 'Violet', 'Brown']
+ardis_unlocked_actions = ['Standard Type', 'Dark icons with no background']
 ardis_unlocked_statuses = ['Standard Type', 'Light icons with no background']
 ardis_unlocked_categories = ['Standard Type', 'Standard type\nwith gray background']
 ardis_unlocked_apps = ['Standard Type', 'Standard type\nwith gray background']
@@ -104,7 +105,7 @@ def invert_dict(s_dict):
     return n_dict
 
 Ardis_colors = {}
-Ardis_colors = {'Blackish':'#111111', 'Blue':'#0078ad', 'Brown':'#b59a6e', 'Green':'#85d075', 'Dark Green':'#66ae4a', 'Light Green':'#79c843', 'Olive Green':'#669966', 'Orange':'#f38725', 'Peach':'#ef6a47', 'Pink':'#e65177', 'Red':'#cd1d31', 'Shadow Grey':'#666666', 'Sky Blue':'#6788cc', 'Soft Red':'#b93d48', 'Violet':'#924565', 'Yellow':'#ffcc67'}
+Ardis_colors = {'Black':'#111111', 'Blue':'#0078ad', 'Brown':'#b59a6e', 'Green':'#85d075', 'Dark Green':'#66ae4a', 'Light Green':'#79c843', 'Olive Green':'#669966', 'Orange':'#f38725', 'Peach':'#ef6a47', 'Pink':'#e65177', 'Red':'#cd1d31', 'Grey':'#666666', 'Cyan':'#6788cc', 'Soft Red':'#b93d48', 'Violet':'#924565', 'Yellow':'#ffcc67'}
 Ardis_actions = default_AB_strings()
 Ardis_apps = default_AB_strings()
 Ardis_status = default_AB_strings()
@@ -122,6 +123,7 @@ def set_AB_image_all(imagedict):
 
 def Ardis_Edition_Apply(edition):
     Ardis_Plus_Images = {}
+    Ardis_Mega_Images = {}
     Ardis_Plus_Images['image53'] = 'Images/style_light_apps_no_bg.png'
     Ardis_Plus_Images['image26'] = 'Images/places_sample_Red.png'
     Ardis_Plus_Images['image21'] = 'Images/places_sample_Green.png'
@@ -131,25 +133,46 @@ def Ardis_Edition_Apply(edition):
     ye_old_intro_string = intro_text.get_label()
     old_intro_string = re.sub('<b>Ardis Theme Version</b>', '<b>'+Ardis_kw['vers']+'</b>', ye_old_intro_string)
     
-    if edition == 'Plus':
+    if edition == 'Plus' or edition == 'Mega':
         ardis_unlocked_places.append('Red')
         ardis_unlocked_places.append('Green')
         ardis_unlocked_statuses.append('Dark icons with no background')
         ardis_unlocked_categories.append('Light icons with no background')
         ardis_unlocked_apps.append('Light icons with no background')
-        
+        ardis_unlocked_actions.append('Light icons with no background')
+
         set_AB_image_all(Ardis_Plus_Images)
         
-        new_intro_string = re.sub('Ardis Basic', 'Ardis Plus', old_intro_string)
-        intro_text.set_label(str(new_intro_string))
-    elif edition == 'Master':
-        set_AB_image_all(Ardis_Plus_Images)
-        new_intro_string = re.sub('Ardis Basic', 'Ardis Master', old_intro_string)
+        if edition == 'Plus':
+            new_intro_string = re.sub('Ardis Basic', 'Ardis Plus', old_intro_string)
+
+        elif edition == 'Mega':
+            ardis_unlocked_places.append('Cyan')
+            ardis_unlocked_places.append('Orange')
+            ardis_unlocked_places.append('Shadow Grey')
+            ardis_unlocked_places.append('Blackish')
+            ardis_unlocked_actions.append('Standard type\nwith gray background')
+            #ardis_unlocked_actions.append('Custom1')
+            #ardis_unlocked_actions.append('Custom2')
+            
+            Ardis_Mega_Images['image18'] = 'Images/places_sample_Black.png'
+            Ardis_Mega_Images['image23'] = 'Images/places_sample_Orange.png'
+            Ardis_Mega_Images['image27'] = 'Images/places_sample_Gray.png'
+            Ardis_Mega_Images['image39'] = 'Images/places_sample_Cyan.png'
+
+
+            
+            set_AB_image_all(Ardis_Mega_Images)
+            
+            new_intro_string = re.sub('Ardis Basic', 'Ardis Mega', old_intro_string)
+        
         intro_text.set_label(str(new_intro_string))
     else:
         intro_text.set_label(str(old_intro_string))
 
 def ardis_dirs(**ArdisDirArgs):
+    errorlist = []
+    errordict = {}
     for k, v in ArdisDirArgs.items():
         AB_rc_dict[k] = v
     themecontexts = ['actions', 'animations', 'apps', 'categories', 'devices', 'emblems', 'emotes', 'intl', 'mimetypes', 'panel', 'places', 'status']
@@ -172,12 +195,17 @@ def ardis_dirs(**ArdisDirArgs):
                         os.symlink(link_target, test_s_c_dir)
                         os.utime(test_s_c_dir, None)
                     else:
-                        print "Hmm. Looks like "+os.path.join(s_dir, link_target)+" doesnt exist."
+                        new_sym_error = str("Hmm. Looks like "+os.path.join(s_dir, link_target)+" doesnt exist.")
+                        
+                        errorlist.append(new_sym_error)
+                        errordict[theme_ready_path] = dict(SymLinkError=str(os.path.join(s_dir, link_target)))
                 except KeyError, undef_cat:
-                    print '***Oops! ', undef_cat, ' is not defined!***' 
+                    new_cat_error = str('***Oops! ', undef_cat, ' is not defined!***')
+                    errordict[theme_ready_path]['UndefinedCategoryError'] = str(undef_cat)
+                    errorlist.append(new_cat_error)
     temp_directories = re.sub("\'\,\s\'", ",", str(themedirlist))
     newdirectories = re.sub("(^\[\'|\'\]$)", "", temp_directories)
-    return newdirectories
+    return newdirectories, errorlist, errordict
 
 def Hide_Page(p_num_to_hide):
     winbox = builder.get_object("box2")
@@ -191,6 +219,7 @@ def Show_page(p_num_to_show):
     winbox = builder.get_object("box2")
     vp_to_show = p_num_to_show+1
     page_dict = {}
+    completeness = ''
     try:
         page_dict = AB_Pages[p_num_to_show]
     except KeyError, nullpage:
@@ -222,14 +251,24 @@ def Show_page(p_num_to_show):
         res_label_obj = builder.get_object('results_summary')
         try:
             res_sum = str('<b>Action style=</b>'+label_choice_page1+'''\n<b>Places color=</b>'''+Ardis_colors[label_choice_page2]+'"'+label_choice_page2+'"'+'''\n<b>Small Apps=</b>'''+label_choice_page4+'''\n<b>Status=</b>'''+label_choice_page5+'''\n<b>DesktopEnvironment=</b>'''+user_DE+'''\n<b>Install Location=</b>'''+Ardis_kw['path'])
-        except TypeError:
-            res_sum = 'error'
+        except TypeError, sumerror1:
+            res_sum = str(sumerror1)+'error'
+        except KeyError, sumerror2:
+            #Either the path key and/or the color key is missing
+            try:
+                #Try reporting without using the color key
+                res_sum = str('<b>Action style=</b>'+label_choice_page1+'''\n<b>Places color=</b>'''+'"'+label_choice_page2+'"'+'''\n<b>Small Apps=</b>'''+label_choice_page4+'''\n<b>Status=</b>'''+label_choice_page5+'''\n<b>DesktopEnvironment=</b>'''+user_DE+'''\n<b>Install Location=</b>'''+Ardis_kw['path'])
+            except KeyError, sumerror3:
+                #The path key is missing. This needs to be a fatal error
+                res_sum = str(sumerror3)+'error'
         res_label_obj.set_markup(res_sum)
         dir_len = Ardis_kw['dcount']
         #This alternative method uses the number of directories in the OLD list, since it should be the same anyway
         #avoids the unnecessary calling of ardis_dirs, and the premature application of symlinks
         prog_step = float('1.0') / float(dir_len)
         prog_bar = builder.get_object('progressbar1')
+        #prog_bar.text = None
+        prog_bar.set_property('text', None)
         prog_bar.set_fraction(float('0.00'))
         
     if p_num_to_show == 5:
@@ -242,9 +281,8 @@ def Show_page(p_num_to_show):
         #The user has chosen to generate
         
         #First we re-read all the choices
-        d_string = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1], apps=Ardis_apps[label_choice_page4], status=Ardis_status[label_choice_page5], categories=Ardis_categories[label_choice_page6], devices=Ardis_apps[label_choice_page4])
+        d_string, AB_e_list, AB_e_dict = ardis_dirs(places=label_choice_page2.lower(), actions=Ardis_actions[label_choice_page1], apps=Ardis_apps[label_choice_page4], status=Ardis_status[label_choice_page5], categories=Ardis_categories[label_choice_page6], devices=Ardis_apps[label_choice_page4])
         ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
-        
         #Initialize the progress bar
         dir_len = len(ardis_d_list)
         prog_step = float('1.0') / float(dir_len)
@@ -259,6 +297,7 @@ def Show_page(p_num_to_show):
             for k, v in AB_rc_dict.items():
                 temp_theme_file.write(k+'='+v+'\n')
             temp_theme_file.write('\n')
+            e_count = 0
             for g_item in ardis_d_list[::]:
                 g_line = Theme_Indexer.define_group(g_item)
                 temp_theme_file.write(g_line+'\n')
@@ -267,6 +306,15 @@ def Show_page(p_num_to_show):
                 old_prog = prog_bar.get_fraction()
                 new_prog = old_prog + prog_step
                 prog_bar.set_fraction(new_prog)
+            #print AB_e_dict.keys()
+                if g_item in AB_e_dict.keys():
+                    e_count = e_count + 1
+                    
+                #completeness = str(float(prog_bar.get_fraction()) * float(100))
+                if e_count > 0:
+                    prog_bar.set_text(completeness+'  completed with '+str(e_count)+' errors')
+            for k, v in AB_e_dict.items():
+                print k, v
         finally:
             temp_theme_file.close()
         nextbutton.set_label('  Apply   ')
@@ -282,7 +330,7 @@ def Show_page(p_num_to_show):
             
             print 'Action style='+'"'+label_choice_page1+'"'
             #print 'Places color='+Ardis_colors[label_choice_page2], '"'+label_choice_page2+'"'
-            print 'Places color='+Ardis_colors[label_choice_page2], '"'+label_choice_page2+'"'
+            print 'Places color="'+label_choice_page2+'"'
             print 'Start here='+label_choice_page4
             print 'DesktopEnvironment='+user_DE
             print 'Install Location='+Ardis_kw['path']
@@ -464,6 +512,7 @@ hide_bonus_choices(ardis_unlocked_places, 'box10')
 hide_bonus_choices(ardis_unlocked_statuses, 'box20')
 hide_bonus_choices(ardis_unlocked_categories, 'box31')
 hide_bonus_choices(ardis_unlocked_apps, 'box15')
+hide_bonus_choices(ardis_unlocked_actions, 'box3')
 current_page = 0
 builder.connect_signals(Handler())
 window.show_all()
