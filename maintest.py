@@ -12,35 +12,7 @@ import glob
 w_path = os.getcwd()
 sys.path.append(str(w_path))
 import Theme_Indexer
-envars = {}
-user_GDMS = None
-envars = os.environ.copy()
-user_home_dir = envars['HOME']
-user_DE = envars.get('XDG_CURRENT_DESKTOP')
-if user_DE is None:
-    # The GDM doesnt declare the fairly new (added ~2014) XDG_CURRENT_DESKTOP global...
-    user_GDMS = envars.get('GDMSESSION')
-    if user_GDMS == 'kde-plasma':
-        user_DE = 'KDE'
-    elif user_GDMS is not None:
-        user_DE = user_GDMS
-    else:
-        user_DE = 'unknown'
 
-def find_theme_path(themedir):
-    icon_theme_locs = []
-    if user_DE == 'KDE':
-        icon_theme_locs.append(os.path.expanduser('~/.kde/share/icons'))
-        icon_theme_locs.append(os.path.expanduser('~/.kde4/share/icons'))
-        icon_theme_locs.append(os.path.expanduser('~/.icons'))
-    else:
-        icon_theme_locs.append(os.path.expanduser('~/.icons'))
-    icon_theme_locs.append('/usr/share/icons')
-    for themes_d in icon_theme_locs:
-        pos_theme_path = os.path.join(themes_d, themedir)
-        if os.path.isdir(pos_theme_path):
-            return pos_theme_path
-            break
 
 def parse_file(indexfile, targ_group):
     new_dict = {}
@@ -59,6 +31,39 @@ def parse_file(indexfile, targ_group):
         nf.close()
     return new_dict
         
+
+envars = {}
+GDM_dict = {}
+user_GDMS = None
+envars = os.environ.copy()
+user_home_dir = envars['HOME']
+user_DE = envars.get('XDG_CURRENT_DESKTOP')
+if user_DE is None:
+    # The GDM doesnt declare the fairly new (added ~2014) XDG_CURRENT_DESKTOP global...
+    user_GDMS = envars.get('GDMSESSION')
+    if user_GDMS:
+        GDM_dict = parse_file('/usr/share/xsessions/'+user_GDMS+'.desktop', 'Desktop Entry')
+        if GDM_dict['Type'] == 'XSession':
+            # This is probably a valid session description file
+            user_DE = GDM_dict['DesktopNames']
+    else:
+        user_DE = 'unknown'
+
+def find_theme_path(themedir):
+    icon_theme_locs = []
+    if user_DE == 'KDE':
+        icon_theme_locs.append(os.path.expanduser('~/.kde/share/icons'))
+        icon_theme_locs.append(os.path.expanduser('~/.kde4/share/icons'))
+        icon_theme_locs.append(os.path.expanduser('~/.icons'))
+    else:
+        icon_theme_locs.append(os.path.expanduser('~/.icons'))
+    icon_theme_locs.append('/usr/share/icons')
+    for themes_d in icon_theme_locs:
+        pos_theme_path = os.path.join(themes_d, themedir)
+        if os.path.isdir(pos_theme_path):
+            return pos_theme_path
+            break
+
 
 Ardis_kw = {}
 Ardis_kw['name'] = 'Ardis_test'
