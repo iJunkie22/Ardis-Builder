@@ -72,6 +72,19 @@ Ardis_kw['vers'] = '0.6'
 Ardis_kw['comment'] = 'Simple and flat icon theme with long shadow - v'+Ardis_kw['vers']
 Ardis_kw['path'] = find_theme_path(Ardis_kw['dir'])
 
+# This will let gtk see non-standard icon theme paths, such as those used by kde
+ardis_theme_parent = str(os.path.dirname(Ardis_kw['path']))
+gtk_theme_paths = []
+gtk_real_theme_paths = []
+gtk_def_theme = Gtk.IconTheme.get_default()
+gtk_theme_paths = gtk_def_theme.get_search_path()
+if ardis_theme_parent not in gtk_theme_paths:
+    for p in gtk_theme_paths:
+        gtk_real_theme_paths.append(os.path.realpath(p))
+    if ardis_theme_parent not in gtk_real_theme_paths:
+        os.symlink(ardis_theme_parent, os.path.expanduser('~/.local/share/icons'))
+# End of icon theme path exposer
+
 AB_rc_dict = parse_file(os.path.join(Ardis_kw['path'], "index.theme"), 'X-ArdisBuilder Settings')
 Ardis_index_dict = parse_file(os.path.join(Ardis_kw['path'], "index.theme"), 'Icon Theme')
 Ardis_kw['dcount'] = len(Ardis_index_dict['Directories'].split(','))
