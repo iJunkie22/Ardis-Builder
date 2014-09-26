@@ -1,18 +1,45 @@
-#!/usr/bin/python2
+#!/usr/bin/python2.7
 #coding: utf-8
-import gi
-gi.require_version('Gtk', '3.0')
-# Credit for this patch goes to https://build.opensuse.org/package/view_file/openSUSE:12.3/alacarte/alacarte-force-Gtk3.patch?expand=1
-from gi.repository import Gtk
+
 import os
 import sys
 import re
 import glob
 
+mac_patch = False
+if sys.platform == 'darwin':
+    print 'MacPorts patch ACTIVATED'
+    sys.path.append('/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages')
+    mac_patch = True
+    root_shared_icons_dir = '/opt/local/share/icons'
+else:
+    root_shared_icons_dir = '/usr/share/icons'
+    
+import gi
+gi.require_version('Gtk', '3.0')
+# Credit for this patch goes to https://build.opensuse.org/package/view_file/openSUSE:12.3/alacarte/alacarte-force-Gtk3.patch?expand=1
+from gi.repository import Gtk
+
 w_path = os.getcwd()
 sys.path.append(str(w_path))
 import Theme_Indexer
 
+
+m_list = []
+m_list = sys.modules.keys()
+if "gi" not in m_list:
+    print sys.prefix
+    print sys.exec_prefix
+    print '='*30
+    print "Search Paths >>>>"
+    for p_i in sys.path:
+        print p_i
+    print '='*30
+    print 'Module List >>>>', m_list
+    sys.path.append('/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages')
+    exit()
+else:
+    pass
 
 def parse_file(indexfile, targ_group):
     new_dict = {}
@@ -46,23 +73,34 @@ if user_DE is None:
         if GDM_dict['Type'] == 'XSession':
             # This is probably a valid session description file
             user_DE = GDM_dict['DesktopNames']
+    elif mac_patch == True:
+        user_DE = 'N/A(Using XQuartz on OSX)'
     else:
         user_DE = 'unknown'
 
 def find_theme_path(themedir):
     icon_theme_locs = []
+    searched_locs = []
     if user_DE == 'KDE':
         icon_theme_locs.append(os.path.expanduser('~/.kde/share/icons'))
         icon_theme_locs.append(os.path.expanduser('~/.kde4/share/icons'))
         icon_theme_locs.append(os.path.expanduser('~/.icons'))
     else:
         icon_theme_locs.append(os.path.expanduser('~/.icons'))
-    icon_theme_locs.append('/usr/share/icons')
+        
+    icon_theme_locs.append(root_shared_icons_dir)
+    
     for themes_d in icon_theme_locs:
         pos_theme_path = os.path.join(themes_d, themedir)
+        searched_locs.append(pos_theme_path)
         if os.path.isdir(pos_theme_path):
             return pos_theme_path
             break
+    print 'Could not find the Ardis theme in any of these locations:'
+    for p in searched_locs:
+        print p
+    print 'exiting...'
+    sys.exit(1)
 
 
 Ardis_kw = {}
@@ -71,6 +109,7 @@ Ardis_kw['dir'] = 'Ardis_test'
 Ardis_kw['vers'] = '0.6'
 Ardis_kw['comment'] = 'Simple and flat icon theme with long shadow - v'+Ardis_kw['vers']
 Ardis_kw['path'] = find_theme_path(Ardis_kw['dir'])
+
 
 # This will let gtk see non-standard icon theme paths, such as those used by kde
 ardis_theme_parent = str(os.path.dirname(Ardis_kw['path']))
@@ -539,6 +578,9 @@ backbutton.hide()
 gtksettings = Gtk.Settings.get_default()
 gtksettings.props.gtk_button_images = True
 
-
+ssh_session = envars.get('SSH_CONNECTION')
+if ssh_session:
+    pass
+    #exit()
 Gtk.main()
 exit()
