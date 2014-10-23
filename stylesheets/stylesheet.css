@@ -38,7 +38,7 @@ table {
 body {
   font-size: 15px;
   line-height: 1.5; 
-  background: #fafafa url(../images/body-bg.jpg) 0 0 repeat;
+  background: #fafafa url('../images/body-bg.jpg') 0 0 repeat;
   font-family: 'Helvetica Neue', Helvetica, Arial, serif;
   font-weight: 400;
   color: #666;
@@ -55,7 +55,7 @@ header {
   padding-top: 40px;
   padding-bottom: 40px;
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif; 
-  background: #2e7bcf url(../images/header-bg.jpg) 0 0 repeat-x;
+  background: #2e7bcf url('../images/header-bg.jpg') 0 0 repeat-x;
   border-bottom: solid 1px #275da1;
   position: relative;
   z-index: 10000;
@@ -138,13 +138,13 @@ header a.button {
   position: absolute;
   right: 0;
   top: 0;
-  background: transparent url(../images/github-button.png) 0 0 no-repeat;
+  background: transparent url('../images/github-button.png') 0 0 no-repeat;
 }
 aside a.button {
   width: 138px;
   padding-left: 64px;
   display: block;
-  background: transparent url(../images/download-button.png) 0 0 no-repeat;
+  background: transparent url('../images/download-button.png') 0 0 no-repeat;
   margin-bottom: 20px;
   font-size: 21px;
 }
@@ -235,7 +235,7 @@ form {
   font-size: 40px;
   font-weight: bold;
   margin-bottom: 8px;
-  color: #474747;
+  color: #555050;
 } 
 #main-content h2:before {
   content: "//";
@@ -484,15 +484,111 @@ p.screenshot {
     border-radius: 20px;
 }
 table {
-    border: 2px solid black;
-    border-collapse: collapse;
-    width: 100%;
-    padding-top: 30px;
+    width: auto;
+    color: white;
+    background-color: #2879d0;
+    /*border: 2px solid black;
+    border-collapse: collapse;*/
+    /*width: 100%;*/
+    padding-top: 0px;
     padding-bottom: 30px;
+    border-color: #2879d0;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-width: 3px;
+    border-collapse: separate;
+    font-family: 'Helvetica Neue', Helvetica, Arial, serif;
+    font-weight: 100;
+}
+tbody {
+    border-radius: inherit;
 }
 th {
-    width: 25%;
-    border-bottom: 2px solid black;
+    /*width: 25%;*/
+    border-bottom: 1px solid white;
+    text-align: end;
+    padding: 17px 5px 5px 5px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, serif; 
+    font-weight: 100;
+    font-size: 1.6em;
+}
+td:nth-child(n+1) {
+    border-right-width: 1px;
+    border-right-style: dashed;
+    border-right-color: inherit;
+    /*border-right: 1px dashed rgba(125, 125, 125, 0.5);*/
+    border-collapse: collapse;
+    background-color: white;
+
+}
+td:last-child {
+    border-right: none;
+}
+td {
+    /*padding: 17px 5px 5px 5px;*/
+    text-align: end;
+    
+    }
+    
+td:first-child {
+    border-color: #2879d0;
+    /*border-collapse: collapse;*/
+    color: inherit;
+    background-color: inherit;
+    /*background-clip: border-box;*/
+    /*border-radius: 30px;*/
+    padding: 0px 5px 2px 20px;
+    /*width: auto;*/
+    
+    }
+
+td:nth-child(n+1) span {
+    color: white;
+    background: -webkit-linear-gradient(#5196ea 0%, #2879d0 50%);
+    /*background-color: rgba(4, 255, 54, 0.6);
+    border: 2px solid #2879d0;*/
+    /*background-color: #2879d0;*/
+    /*background-clip: border-box;*/
+    border-radius: 30px;
+    padding: 2px 20px 2px 20px;
+    /*font-weight: 100;*/
+    border-collapse: separate;
+    background-clip: border-box;
+    box-shadow: 2px 3px 1px #3b70b1;
+    margin-right: 2px;
+    margin-bottom: 3px;
+    font-size: x-small;
+    font-weight: 300;
+    /*display: table-cell;*/
+    
+}
+td:first-child span {
+    background: none;
+    box-sizing: content-box;
+    font-family: 'Helvetica Neue', Helvetica, Arial, serif;
+    font-size: 1.4em;
+    box-shadow: none;
+}
+
+caption {
+    background-color: #979797;
+    background-clip: border-box;
+    border: 4px solid #979797;
+    border-bottom-width: 0px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    margin-left: 0px;
+    margin-right: 80px;
+    
+}
+caption span {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0px 20px 0px 20px;
+    border-collapse: collapse;
+    vertical-align: bottom;
+
 }
 
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
