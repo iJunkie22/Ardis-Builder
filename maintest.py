@@ -23,11 +23,13 @@ class ArdisBuilder:
         gi.require_version('Gtk', '3.0')
         # Credit for this patch goes to
         # https://build.opensuse.org/package/view_file/openSUSE:12.3/alacarte/alacarte-force-Gtk3.patch?expand=1
-        from gi.repository import Gtk
+        if self.mac_patch is True:
+            from gi.overrides.Gtk import Gtk
+        else:
+            from gi.repository import Gtk
 
         self.w_path = os.getcwd()
         sys.path.append(str(self.w_path))
-        import Theme_Indexer
 
         # envars = {}
         self.GDM_dict = dict()
@@ -57,6 +59,7 @@ class ArdisBuilder:
 
         m_list = sys.modules.keys()
         if "gi" not in m_list:
+            # Debugging-related info. If this is triggered, please include it in the report you send :)
             print sys.prefix
             print sys.exec_prefix
             print '=' * 30
@@ -66,7 +69,7 @@ class ArdisBuilder:
             print '=' * 30
             print 'Module List >>>>', m_list
             sys.path.append('/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages')
-            exit()
+            exit(1)
         else:
             pass
 
@@ -154,9 +157,11 @@ class ArdisBuilder:
         if self.user_DE == 'KDE':
             icon_theme_locs.append(os.path.expanduser('~/.kde/share/icons'))
             icon_theme_locs.append(os.path.expanduser('~/.kde4/share/icons'))
-            icon_theme_locs.append(os.path.expanduser('~/.icons'))
-        else:
-            icon_theme_locs.append(os.path.expanduser('~/.icons'))
+
+        elif self.mac_patch is True:
+            icon_theme_locs.append(os.path.expanduser('~/Library/Preferences/KDE/share/icons'))
+
+        icon_theme_locs.append(os.path.expanduser('~/.icons'))
 
         icon_theme_locs.append(self.root_shared_icons_dir)
 
@@ -196,6 +201,7 @@ class ArdisBuilder:
             self.set_ab_image(i, f)
 
     def ardis_edition_apply(self, edition):
+        global new_intro_string
         Ardis_Plus_Images = {}
         Ardis_Mega_Images = {}
         Ardis_Plus_Images['image53'] = 'Images/style_light_apps_no_bg.png'
@@ -334,15 +340,19 @@ class ArdisBuilder:
                 # Either the path key and/or the color key is missing
                 try:
                     # Try reporting without using the color key
-                    res_sum = str(
-                        '<b>Action style=</b>' + label_choice_page1 + '''\n<b>Places color=</b>''' + '"' +
-                        label_choice_page2 + '"' + '''\n<b>Small Apps=</b>''' + label_choice_page4 +
-                        '''\n<b>Status=</b>''' + label_choice_page5 + '''\n<b>DesktopEnvironment=</b>''' +
-                        self.user_DE + '''\n<b>Install Location=</b>''' +
-                        self.Ardis_kw['path'])
+                    res_sum = ('<b>Action style=</b>{0}\n'
+                               '<b>Places color=</b>"{1}"\n'
+                               '<b>Small Apps=</b>{2}\n'
+                               '<b>Status=</b>{3}\n'
+                               '<b>DesktopEnvironment=</b>{4}\n'
+                               '<b>Install Location=</b>{5}\n'
+                               ).format(label_choice_page1, label_choice_page2, label_choice_page4, label_choice_page5,
+                                        self.user_DE, self.Ardis_kw['path'])
+
                 except KeyError, sumerror3:
                     # The path key is missing. This needs to be a fatal error
                     res_sum = str(sumerror3) + 'error'
+
             res_label_obj.set_markup(res_sum)
             dir_len = self.Ardis_kw['dcount']
             # This alternative method uses the number of directories in the OLD list, since it should be the same anyway
@@ -451,6 +461,12 @@ class ArdisBuilder:
                 theme2.emit('changed')
                 theme2.rescan_if_needed()
 
+                if self.mac_patch is True:
+                    print "-" * 40
+                    print ">>> You will need to apply {0} with: \nkwriteconfig --group Icons --key Theme {0}".format(
+                        self.Ardis_kw['name'])
+                    print "-" * 40
+
                 # Now Rudely erase GNOMEs icon cache
                 clean_switch_GNOME = builder.get_object('switch2')
                 if clean_switch_GNOME.get_active() is True:
@@ -486,7 +502,12 @@ class Handler:
     def __init__(self):
         window.show_all()
         backbutton.hide()
+        self.cur_page = getPosInParent('curr_page_dot')
+        self.nex_page = self.cur_page + 1
+        self.prev_page = self.cur_page - 1
+
         # pageone.show()
+        self.test_var = "moo"
         try:
             gtksettings = Gtk.Settings.get_default()
             gtksettings.props.gtk_button_images = True
@@ -500,20 +521,20 @@ class Handler:
         exit()
 
     def on_Next_clicked(self, button):
-        cur_page = getPosInParent('curr_page_dot')
-        nex_page = cur_page + 1
-        abapp.hide_page(cur_page)
-        abapp.show_page(nex_page)
+        self.cur_page = getPosInParent('curr_page_dot')
+        self.nex_page = self.cur_page + 1
+        abapp.hide_page(self.cur_page)
+        abapp.show_page(self.nex_page)
         # if the next page doesnt exist, the app exits now
-        setPosInParent('curr_page_dot', nex_page)
+        setPosInParent('curr_page_dot', self.nex_page)
 
     def on_Back_clicked(self, button):
         nextbutton.set_label('  Next   ')
-        cur_page = getPosInParent('curr_page_dot')
-        prev_page = cur_page - 1
-        abapp.hide_page(cur_page)
-        abapp.show_page(prev_page)
-        setPosInParent('curr_page_dot', prev_page)
+        self.cur_page = getPosInParent('curr_page_dot')
+        self.prev_page = self.cur_page - 1
+        abapp.hide_page(self.cur_page)
+        abapp.show_page(self.prev_page)
+        setPosInParent('curr_page_dot', self.prev_page)
 
     def on_Exit_clicked(self, button):
         exit()
@@ -531,8 +552,8 @@ class Handler:
         # print self.get_active()
 
     def on_eventbox_radio_press(self, radio, button2):
-        cur_page = getPosInParent('curr_page_dot')
-        page_dict = abapp.AB_Pages[cur_page]
+        self.cur_page = getPosInParent('curr_page_dot')
+        page_dict = abapp.AB_Pages[self.cur_page]
         active_radio_box = builder.get_object(page_dict['cur_rad'])
         rad_parent = radio.get_parent()
         rad_list = rad_parent.get_children()
@@ -595,7 +616,9 @@ def hide_bonus_choices(unlocked_dict, targ_x):
         i.hide()
 
 
+__warningregistry__ = dict()
 abapp = ArdisBuilder()
+
 import gi
 from gi.repository import Gtk
 import Theme_Indexer
