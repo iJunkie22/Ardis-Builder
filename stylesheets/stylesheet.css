@@ -55,10 +55,11 @@ header {
   padding-top: 40px;
   padding-bottom: 40px;
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif; 
-  background: #2e7bcf url('../images/header-bg.jpg') 0 0 repeat-x;
+  background: #2e7bcf url('../images/header-bg.jpg') 0 0 repeat;
   border-bottom: solid 1px #275da1;
   position: relative;
-  z-index: 10000;
+  height: auto;
+  /*z-index: 10000;*/
   /*width: 100%;*/
 }
 
@@ -186,10 +187,10 @@ ul, ol, dl {
 hr {
   height: 1px;
   line-height: 1px;
-  margin-top: 1em;
+  /*margin-top: 1em;*/
   padding-bottom: 1em;
   border: none;
-  background: transparent url('../images/hr.png') 0 0 no-repeat;
+  background: transparent url('../images/bg_hr.png') 0 0 repeat-x;
 }
 
 table {
@@ -338,7 +339,7 @@ footer {
   padding-top: 20px;
   padding-bottom: 30px;
   font-size: 13px;
-  color: #aaa;
+  color: #ababab;
 }
 
 footer a {
@@ -483,15 +484,16 @@ p.screenshot {
     display: block;
     border-radius: 20px;
 }
-table {
+table.bluetable {
     width: auto;
-    color: white;
-    background-color: #2879d0;
+    color: #fafafa;
+    /*background-color: #2879d0;*/
     /*border: 2px solid black;
     border-collapse: collapse;*/
     /*width: 100%;*/
     padding-top: 0px;
     padding-bottom: 30px;
+    padding-right: 20px;
     border-color: #2879d0;
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
@@ -499,21 +501,22 @@ table {
     border-width: 3px;
     border-collapse: separate;
     font-family: 'Helvetica Neue', Helvetica, Arial, serif;
-    font-weight: 100;
+    background: #2e7bcf url('../images/header-bg.jpg') 0 0 repeat;
+    /*font-weight: 100;*/
 }
-tbody {
+.bluetable tbody {
     border-radius: inherit;
 }
-th {
+.bluetable th {
     /*width: 25%;*/
     border-bottom: 1px solid white;
     text-align: end;
     padding: 17px 5px 5px 5px;
-    font-family: 'Helvetica Neue', Helvetica, Arial, serif; 
-    font-weight: 100;
+    font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
+    /*font-weight: 100;*/
     font-size: 1.6em;
 }
-td:nth-child(n+1) {
+.bluetable td:nth-child(n+1) {
     border-right-width: 1px;
     border-right-style: dashed;
     border-right-color: inherit;
@@ -522,7 +525,7 @@ td:nth-child(n+1) {
     background-color: white;
 
 }
-td:last-child {
+.bluetable td:last-child {
     border-right: none;
 }
 td {
@@ -531,11 +534,11 @@ td {
     
     }
     
-td:first-child {
+.bluetable td:first-child {
     border-color: #2879d0;
     /*border-collapse: collapse;*/
     color: inherit;
-    background-color: inherit;
+    background: inherit;
     /*background-clip: border-box;*/
     /*border-radius: 30px;*/
     padding: 0px 5px 2px 20px;
@@ -543,7 +546,7 @@ td:first-child {
     
     }
 
-td:nth-child(n+1) span {
+.bluetable td:nth-child(n+1) span {
     color: white;
     background: -webkit-linear-gradient(#5196ea 0%, #2879d0 50%);
     /*background-color: rgba(4, 255, 54, 0.6);
@@ -563,15 +566,16 @@ td:nth-child(n+1) span {
     /*display: table-cell;*/
     
 }
-td:first-child span {
+.bluetable td:first-child span {
     background: none;
     box-sizing: content-box;
-    font-family: 'Helvetica Neue', Helvetica, Arial, serif;
+    font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
     font-size: 1.4em;
     box-shadow: none;
+    color: #fafafa
 }
 
-caption {
+.bluetable caption {
     background-color: #979797;
     background-clip: border-box;
     border: 4px solid #979797;
@@ -582,20 +586,26 @@ caption {
     margin-right: 80px;
     
 }
-caption span {
+.bluetable caption span {
     margin-left: auto;
     margin-right: auto;
     padding: 0px 20px 0px 20px;
     border-collapse: collapse;
     vertical-align: bottom;
+    color: #fafafa;
 }
 .inner-nav {
-    float: right;
-    height: 30px;
+    /*float: right;*/
+    /*height: 30px;*/
     position: relative;
     width: 940px;
     vertical-align: bottom;
     margin-right: 50px;
+    overflow: auto;
+    max-width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-top: 5px;
 }
 .inner-nav a {
     color: white;
@@ -605,6 +615,9 @@ caption span {
     border: 1px solid transparent;
     border-radius: 10px;
     margin-left: 10px;
+    margin-right: 10px;
+    text-align: right;
+    
 }
 .inner-nav a:hover, .inner-nav a.current {
     border-color: white;
@@ -612,14 +625,103 @@ caption span {
     color: #2e7bcf;
 }
 #the-idea span:before {
-    content: url('../images/ktipx48.png') "THE IDEA";
+    content: url('../images/ktipx48.png');
     vertical-align: baseline;
 }
 span.imageheader {
     font-size: 48px;
 }
+div.pillbox {
+    display: block;
+}
+.pillbox a, .pillbox span {
+    color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2px;
+    /*background-color: #2e7bcf;*/
+    display: inline-block;
+}
+.pillbox a.blue, .pillbox span.blue {
+    background-color: #2e7bcf;
+}
+.pillbox a.black, .pillbox span.black {
+    background-color: #222;
+}
+.pillbox span.header {
+    margin-top: 0px;
+    /*padding: 0px;*/
+}
+span.spin {
+    -webkit-transform: rotate(270deg) translate(0px, 2em);
+    -webkit-transform-origin: bottom left;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-width: 5px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, serif;
+    font-weight: 200;
+    font-size: 0.4em;
+    margin-right: -38px;
+    /*text-align: -webkit-center;*/
+    /*width: 100%;*/
+    /*padding: 4px;*/
+    /*margin-left: 2px;*/
+    
+}
 
+table.titletable {
+    width: auto;
+    background-color: #222;
+    height: auto;
+    font-size: large;
+}
 
+footer.pillbox {
+    width: 100%;
+    display: block;
+    background-color: #4d4d4d;
+    -webkit-box-align: center;
+    display: -webkit-box;
+    box-shadow: inset 0px 2px 7px #1e1e1e;
+}
+
+footer.pillbox div.attributions {
+    margin-left: auto;
+    margin-right: auto;
+    background-color: gray;
+    border:3px solid #4d4d4d;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 7px #1e1e1e;
+    -webkit-box-align: center;
+    /*height: 30px;*/
+}
+footer.pillbox div.links {
+    margin-left: auto;
+    margin-right: auto;
+    /*display: block;*/
+    -webkit-box-align: center;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+footer.pillbox span {
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 200;
+    display: block;
+    text-align: center;
+    
+}
+footer.pillbox div.links a {
+    font-weight: 200;
+    display: inline-block;
+    text-align: center;
+    margin: 2px;
+}
 
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
 @media only screen and (min-width: 480px) and (max-width: 767px) {}
