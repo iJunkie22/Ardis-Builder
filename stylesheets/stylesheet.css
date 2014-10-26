@@ -527,7 +527,7 @@ td:last-child {
 }
 td {
     /*padding: 17px 5px 5px 5px;*/
-    text-align: end;
+    /*text-align: end;*/
     
     }
     
@@ -588,8 +588,38 @@ caption span {
     padding: 0px 20px 0px 20px;
     border-collapse: collapse;
     vertical-align: bottom;
-
 }
+.inner-nav {
+    float: right;
+    height: 30px;
+    position: relative;
+    width: 940px;
+    vertical-align: bottom;
+    margin-right: 50px;
+}
+.inner-nav a {
+    color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    float: right;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+.inner-nav a:hover, .inner-nav a.current {
+    border-color: white;
+    background-color: white;
+    color: #2e7bcf;
+}
+#the-idea span:before {
+    content: url('../images/ktipx48.png') "THE IDEA";
+    vertical-align: baseline;
+}
+span.imageheader {
+    font-size: 48px;
+}
+
+
 
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
 @media only screen and (min-width: 480px) and (max-width: 767px) {}
