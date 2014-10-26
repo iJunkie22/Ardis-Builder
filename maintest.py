@@ -230,8 +230,8 @@ class ArdisBuilder:
             elif edition == 'Mega':
                 self.ardis_unlocked_places.append('Cyan')
                 self.ardis_unlocked_places.append('Orange')
-                self.ardis_unlocked_places.append('Shadow Grey')
-                self.ardis_unlocked_places.append('Blackish')
+                self.ardis_unlocked_places.append('Grey')
+                self.ardis_unlocked_places.append('Black')
                 self.ardis_unlocked_actions.append('Standard type\nwith gray background')
                 # ardis_unlocked_actions.append('Custom1')
                 # ardis_unlocked_actions.append('Custom2')
