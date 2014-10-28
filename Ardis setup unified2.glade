@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.1 -->
+<!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.4"/>
   <object class="GtkImage" id="image1">
@@ -595,7 +595,6 @@ Please click next for further customization options.</property>
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
             <property name="width">3</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -613,7 +612,6 @@ Please click next for further customization options.</property>
             <property name="left_attach">1</property>
             <property name="top_attach">2</property>
             <property name="width">2</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -628,8 +626,6 @@ Please click next for further customization options.</property>
           <packing>
             <property name="left_attach">1</property>
             <property name="top_attach">4</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -643,8 +639,6 @@ Please click next for further customization options.</property>
           <packing>
             <property name="left_attach">2</property>
             <property name="top_attach">6</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -659,8 +653,6 @@ Please click next for further customization options.</property>
           <packing>
             <property name="left_attach">2</property>
             <property name="top_attach">4</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -674,8 +666,6 @@ Please click next for further customization options.</property>
           <packing>
             <property name="left_attach">1</property>
             <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -690,8 +680,6 @@ Please click next for further customization options.</property>
           <packing>
             <property name="left_attach">2</property>
             <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -706,7 +694,6 @@ Please click next for further customization options.</property>
             <property name="left_attach">1</property>
             <property name="top_attach">5</property>
             <property name="width">2</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -719,8 +706,6 @@ Please click next for further customization options.</property>
           <packing>
             <property name="left_attach">1</property>
             <property name="top_attach">6</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -735,7 +720,6 @@ Please click next for further customization options.</property>
             <property name="left_attach">1</property>
             <property name="top_attach">3</property>
             <property name="width">2</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -747,7 +731,6 @@ Please click next for further customization options.</property>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">1</property>
-            <property name="width">1</property>
             <property name="height">6</property>
           </packing>
         </child>
@@ -1541,7 +1524,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
-                            <property name="label" translatable="yes">Grey</property>
+                            <property name="label" translatable="yes">Gray</property>
                             <property name="use_markup">True</property>
                           </object>
                           <packing>

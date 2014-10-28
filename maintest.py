@@ -51,9 +51,9 @@ class ArdisBuilder:
                 self.user_DE = 'unknown'
 
         self.Ardis_kw = dict()
-        self.Ardis_kw['name'] = 'Ardis_test'
-        self.Ardis_kw['dir'] = 'Ardis_test'
-        self.Ardis_kw['vers'] = '0.6'
+        self.Ardis_kw['name'] = 'Ardis'
+        self.Ardis_kw['dir'] = 'Ardis'
+        self.Ardis_kw['vers'] = '1.0'
         self.Ardis_kw['comment'] = 'Simple and flat icon theme with long shadow - v' + self.Ardis_kw['vers']
         self.Ardis_kw['path'] = self.find_theme_path(self.Ardis_kw['dir'])
 
@@ -126,7 +126,7 @@ class ArdisBuilder:
         self.Ardis_colors = {'Black': '#111111', 'Blue': '#0078ad', 'Brown': '#b59a6e', 'Green': '#85d075',
                              'Dark Green': '#66ae4a', 'Light Green': '#79c843', 'Olive Green': '#669966',
                              'Orange': '#f38725', 'Peach': '#ef6a47', 'Pink': '#e65177', 'Red': '#cd1d31',
-                             'Grey': '#666666', 'Cyan': '#6788cc', 'Soft Red': '#b93d48',
+                             'Gray': '#666666', 'Cyan': '#6788cc', 'Soft Red': '#b93d48',
                              'Violet': '#924565', 'Yellow': '#ffcc67'}
         self.Ardis_actions = self.default_ab_strings()
         self.Ardis_apps = self.default_ab_strings()
@@ -230,7 +230,7 @@ class ArdisBuilder:
             elif edition == 'Mega':
                 self.ardis_unlocked_places.append('Cyan')
                 self.ardis_unlocked_places.append('Orange')
-                self.ardis_unlocked_places.append('Grey')
+                self.ardis_unlocked_places.append('Gray')
                 self.ardis_unlocked_places.append('Black')
                 self.ardis_unlocked_actions.append('Standard type\nwith gray background')
                 # ardis_unlocked_actions.append('Custom1')
