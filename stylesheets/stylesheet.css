@@ -59,6 +59,7 @@ header {
   border-bottom: solid 1px #275da1;
   position: relative;
   height: auto;
+  overflow-y: hidden;
   /*z-index: 10000;*/
   /*width: 100%;*/
 }
@@ -636,7 +637,7 @@ td {
 */
 
 .inner-nav {
-    /*float: right;*/
+    float: right;
     /*height: 30px;*/
     position: relative;
     width: 940px;
