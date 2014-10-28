@@ -233,6 +233,8 @@ class ArdisBuilder:
                 self.ardis_unlocked_places.append('Gray')
                 self.ardis_unlocked_places.append('Black')
                 self.ardis_unlocked_actions.append('Standard type\nwith gray background')
+                self.ardis_unlocked_apps.append('Dark icons with no background')
+                self.ardis_unlocked_statuses.append('Standard type\nwith gray background')
                 # ardis_unlocked_actions.append('Custom1')
                 # ardis_unlocked_actions.append('Custom2')
 
@@ -240,6 +242,8 @@ class ArdisBuilder:
                 Ardis_Mega_Images['image23'] = 'Images/places_sample_Orange.png'
                 Ardis_Mega_Images['image27'] = 'Images/places_sample_Gray.png'
                 Ardis_Mega_Images['image39'] = 'Images/places_sample_Cyan.png'
+                Ardis_Mega_Images['image56'] = 'Images/style_dark_apps_withno_bg.png'
+                Ardis_Mega_Images['image58'] = 'Images/style_dark_status_icons.png'
 
                 self.set_ab_image_all(Ardis_Mega_Images)
 
@@ -346,8 +350,8 @@ class ArdisBuilder:
                                '<b>Status=</b>{3}\n'
                                '<b>DesktopEnvironment=</b>{4}\n'
                                '<b>Install Location=</b>{5}\n'
-                               ).format(label_choice_page1, label_choice_page2, label_choice_page4, label_choice_page5,
-                                        self.user_DE, self.Ardis_kw['path'])
+                    ).format(label_choice_page1, label_choice_page2, label_choice_page4, label_choice_page5,
+                             self.user_DE, self.Ardis_kw['path'])
 
                 except KeyError, sumerror3:
                     # The path key is missing. This needs to be a fatal error

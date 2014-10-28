@@ -1985,6 +1985,27 @@ Please select below what color of &lt;b&gt;small apps&lt;/b&gt; icon you prefer.
                             <property name="position">2</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox21">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image17">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -2044,6 +2065,21 @@ with gray background</property>
                             <property name="position">2</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkLabel" id="label33">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Dark icons with no background</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="pack_type">end</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -2095,6 +2131,19 @@ with gray background</property>
                             <property name="fill">True</property>
                             <property name="pack_type">end</property>
                             <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image56">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="icon_name">dialog-password</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="pack_type">end</property>
+                            <property name="position">3</property>
                           </packing>
                         </child>
                       </object>
@@ -2246,6 +2295,27 @@ Please select below what type of &lt;b&gt;status&lt;/b&gt; icons you prefer</pro
                             <property name="position">2</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkEventBox" id="eventbox22">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="visible_window">False</property>
+                            <property name="above_child">True</property>
+                            <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
+                            <child>
+                              <object class="GtkImage" id="image57">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">Images/radio_off.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -2304,6 +2374,22 @@ Please select below what type of &lt;b&gt;status&lt;/b&gt; icons you prefer</pro
                             <property name="position">2</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkLabel" id="label34">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Standard type
+with gray background</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="pack_type">end</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -2356,6 +2442,19 @@ Please select below what type of &lt;b&gt;status&lt;/b&gt; icons you prefer</pro
                             <property name="fill">True</property>
                             <property name="pack_type">end</property>
                             <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image58">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="icon_name">dialog-password</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="pack_type">end</property>
+                            <property name="position">3</property>
                           </packing>
                         </child>
                       </object>
@@ -2418,7 +2517,7 @@ These packages feature goodies such as:
 • An ArdisBuilder plugin for building with custom colors
 • Supporting future development (&lt;i&gt;devs have to eat too&lt;/i&gt;)
 &lt;/span&gt;
-You can learn more about these packages &lt;a href=""&gt;here&lt;/a&gt;</property>
+You can learn more about these packages &lt;a href="http://ijunkie22.github.io/Ardis-Builder/"&gt;here&lt;/a&gt;</property>
                     <property name="use_markup">True</property>
                     <property name="wrap">True</property>
                     <property name="track_visited_links">False</property>
