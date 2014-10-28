@@ -484,6 +484,16 @@ p.screenshot {
     display: block;
     border-radius: 20px;
 }
+
+
+
+/*
+    ===================================
+    START OF TABLE STYLING
+    ===================================
+*/
+
+
 table.bluetable {
     width: auto;
     color: #fafafa;
@@ -516,6 +526,24 @@ table.bluetable {
     /*font-weight: 100;*/
     font-size: 1.6em;
 }
+
+.bluetable th a {
+    display: block;
+    color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+}
+
+.bluetable th a:hover {
+    border-color: white;
+    background-color: white;
+    color: #2e7bcf;
+}
+
+
+
 .bluetable td:nth-child(n+1) {
     border-right-width: 1px;
     border-right-style: dashed;
@@ -594,6 +622,19 @@ td {
     vertical-align: bottom;
     color: #fafafa;
 }
+
+
+/*
+    ===================================
+    END OF TABLE STYLING
+    ===================================
+*/
+/*
+    ===================================
+    START OF HEADER NAV BAR STYLING
+    ===================================
+*/
+
 .inner-nav {
     /*float: right;*/
     /*height: 30px;*/
@@ -617,13 +658,21 @@ td {
     margin-left: 10px;
     margin-right: 10px;
     text-align: right;
-    
 }
+
 .inner-nav a:hover, .inner-nav a.current {
     border-color: white;
     background-color: white;
     color: #2e7bcf;
 }
+
+/*
+    ===================================
+    END OF HEADER NAV BAR STYLING
+    ===================================
+*/
+
+
 #the-idea span:before {
     content: url('../images/ktipx48.png');
     vertical-align: baseline;
@@ -631,6 +680,13 @@ td {
 span.imageheader {
     font-size: 48px;
 }
+
+/*
+    ===================================
+    START OF FOOTER STYLING
+    ===================================
+*/
+
 div.pillbox {
     display: block;
 }
@@ -722,6 +778,13 @@ footer.pillbox div.links a {
     text-align: center;
     margin: 2px;
 }
+
+/*
+    ===================================
+    END OF FOOTER STYLING
+    ===================================
+*/
+
 
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
 @media only screen and (min-width: 480px) and (max-width: 767px) {}
