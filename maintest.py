@@ -132,6 +132,13 @@ class ArdisBuilder:
         self.Ardis_apps = self.default_ab_strings()
         self.Ardis_status = self.default_ab_strings()
         self.Ardis_categories = self.default_ab_strings()
+        self.Ardis_generic = self.default_ab_strings()
+        self.choices = dict()
+        self.choice_values = dict()
+
+        for k, v in self.AB_Pages.items():
+            if v['has_radios'] is True:
+                self.choices[v['desc']] = {'label_box': v['lab_box'], 'radio': v['cur_rad']}
 
     def parse_file(self, indexfile, targ_group):
         new_dict = {}
@@ -202,6 +209,14 @@ class ArdisBuilder:
 
     def ardis_edition_apply(self, edition):
         global new_intro_string
+        outro_text = builder.get_object('label46')
+        outro = ('<span size=\"x-large\">Thank You for chosing Ardis!</span>\n'
+                 '<span size=\"small\">Ardis gives you what others can\'t, it gives you what you deserve,'
+                 ' a power of customization.\n'
+                 'If you think that there\'s not enough customization options for you, and you want more,\n'
+                 'check other versions of Ardis Icon Theme here:</span>\n\n'
+                 )
+
         Ardis_Plus_Images = {}
         Ardis_Mega_Images = {}
         Ardis_Plus_Images['image53'] = 'Images/style_light_apps_no_bg.png'
@@ -226,6 +241,10 @@ class ArdisBuilder:
 
             if edition == 'Plus':
                 new_intro_string = re.sub('Ardis Basic', 'Ardis Plus', old_intro_string)
+                outro += ('  <a href=\"http://ijunkie22.github.io/Ardis-Builder/mega-theme.html\">'
+                          'Ardis Mega Icon Theme</a>\n\n'
+                          'Thank you for purchasing the Plus version, you contribution means a lot to us.\n\n'
+                          )
 
             elif edition == 'Mega':
                 self.ardis_unlocked_places.append('Cyan')
@@ -248,10 +267,22 @@ class ArdisBuilder:
                 self.set_ab_image_all(Ardis_Mega_Images)
 
                 new_intro_string = re.sub('Ardis Basic', 'Ardis Mega', old_intro_string)
+                outro += ('Thank you for purchasing our premium version of our icon theme.\n\n'
+                          'Contributions like yours help us to expand this project, and it allows '
+                          'us to make many more awesome things in the future!\n\n'
+                          )
 
             intro_text.set_label(str(new_intro_string))
         else:
             intro_text.set_label(str(old_intro_string))
+            outro += ('  <a href=\"http://ijunkie22.github.io/Ardis-Builder/plus-theme.html\">'
+                      'Ardis Plus Icon Theme</a>\n\n'
+                      '  <a href=\"http://ijunkie22.github.io/Ardis-Builder/mega-theme.html\">'
+                      'Ardis Mega Icon Theme</a>\n\n'
+                      'By purchasing one of the paid versions of Ardis, you allow us to further develop this project!\n'
+                      )
+
+        outro_text.set_label(outro)
 
     def ardis_dirs(self, **ArdisDirArgs):
         errorlist = []
@@ -311,15 +342,14 @@ class ArdisBuilder:
             page_dict = {'viewport': 'viewport99'}
         new_vp = builder.get_object(page_dict['viewport'])
 
-        label_choice_page1 = getNthChildLabel('box5', getPosInParent('event_box_curr_radio1'))
+        for k, v in self.choices.items():
+            if k == 'places':
+                self.choice_values[k] = getNthChildLabel(v['label_box'], getPosInParent(v['radio']))
+            else:
+                self.choice_values[k] = self.Ardis_generic[getNthChildLabel(v['label_box'], getPosInParent(v['radio']))]
 
-        label_choice_page2 = getNthChildLabel('box12', getPosInParent('event_box_curr_radio2'))
-
-        label_choice_page4 = getNthChildLabel('box17', getPosInParent('event_box_curr_radio4'))
-
-        label_choice_page5 = getNthChildLabel('box22', getPosInParent('event_box_curr_radio5'))
-
-        label_choice_page6 = getNthChildLabel('box33', getPosInParent('event_box_curr_radio3'))
+        if '--debug' in sys.argv:
+            print self.choice_values
 
         # this REALLY is now ignored, in favor of the find_theme_path method and Ardis_kw['path']
         if self.user_DE == 'KDE':
@@ -333,29 +363,30 @@ class ArdisBuilder:
             # This is when the last page is triggered
             res_label_obj = builder.get_object('results_summary')
             try:
-                res_sum = str('<b>Action style=</b>' + label_choice_page1 + '''\n<b>Places color=</b>''' +
-                              self.Ardis_colors[label_choice_page2] + '"' + label_choice_page2 + '"' +
-                              '''\n<b>Small Apps=</b>''' + label_choice_page4 + '''\n<b>Status=</b>''' +
-                              label_choice_page5 + '''\n<b>DesktopEnvironment=</b>''' + self.user_DE +
-                              '''\n<b>Install Location=</b>''' + self.Ardis_kw['path'])
-            except TypeError, sumerror1:
-                res_sum = str(sumerror1) + 'error'
-            except KeyError, sumerror2:
-                # Either the path key and/or the color key is missing
-                try:
-                    # Try reporting without using the color key
-                    res_sum = ('<b>Action style=</b>{0}\n'
-                               '<b>Places color=</b>"{1}"\n'
-                               '<b>Small Apps=</b>{2}\n'
-                               '<b>Status=</b>{3}\n'
-                               '<b>DesktopEnvironment=</b>{4}\n'
-                               '<b>Install Location=</b>{5}\n'
-                    ).format(label_choice_page1, label_choice_page2, label_choice_page4, label_choice_page5,
-                             self.user_DE, self.Ardis_kw['path'])
+                # Try reporting without using the color key
+                if '--debug' in sys.argv:
+                    res_sum = ('Your selected options are:\n'
+                               '  <b>Action icons</b> = {0}\n'
+                               '  <b>Folders color</b> = {1}\n'
+                               '  <b>Small icons</b> = {2}\n'
+                               '  <b>Status icons</b> = {3}\n'
+                               '  <b>DesktopEnvironment=</b>{4}\n'
+                               '  <b>Install Location=</b>{5}\n'
+                               ).format(self.choice_values['actions'].title(), self.choice_values['places'],
+                                        self.choice_values['small apps'].title(), self.choice_values['status'].title(),
+                                        self.user_DE, self.Ardis_kw['path'])
+                else:
+                    res_sum = ('Your selected options are:\n'
+                               '  <b>Action icons</b> = {0}\n'
+                               '  <b>Folders color</b> = {1}\n'
+                               '  <b>Small icons</b> = {2}\n'
+                               '  <b>Status icons</b> = {3}\n'
+                               ).format(self.choice_values['actions'].title(), self.choice_values['places'],
+                                        self.choice_values['small apps'].title(), self.choice_values['status'].title())
 
-                except KeyError, sumerror3:
-                    # The path key is missing. This needs to be a fatal error
-                    res_sum = str(sumerror3) + 'error'
+            except KeyError, sumerror3:
+                # The path key is missing. This needs to be a fatal error
+                res_sum = str(sumerror3) + 'error'
 
             res_label_obj.set_markup(res_sum)
             dir_len = self.Ardis_kw['dcount']
@@ -376,12 +407,12 @@ class ArdisBuilder:
             # The user has chosen to generate
 
             # First we re-read all the choices
-            d_string, AB_e_list, AB_e_dict = self.ardis_dirs(places=label_choice_page2.lower(),
-                                                             actions=self.Ardis_actions[label_choice_page1],
-                                                             apps=self.Ardis_apps[label_choice_page4],
-                                                             status=self.Ardis_status[label_choice_page5],
-                                                             categories=self.Ardis_categories[label_choice_page6],
-                                                             devices=self.Ardis_apps[label_choice_page4])
+            d_string, AB_e_list, AB_e_dict = self.ardis_dirs(places=self.choice_values['places'].lower(),
+                                                             actions=self.choice_values['actions'],
+                                                             apps=self.choice_values['small apps'],
+                                                             status=self.choice_values['status'],
+                                                             categories=self.choice_values['categories'],
+                                                             devices=self.choice_values['small apps'])
             ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
             # Initialize the progress bar
             dir_len = len(ardis_d_list)
@@ -428,10 +459,10 @@ class ArdisBuilder:
             except TypeError:
                 # This captures any attempt to advance to a page that doesnt exist
 
-                print 'Action style=' + '"' + label_choice_page1 + '"'
-                # print 'Places color='+Ardis_colors[label_choice_page2], '"'+label_choice_page2+'"'
-                print 'Places color="' + label_choice_page2 + '"'
-                print 'Start here=' + label_choice_page4
+                print 'Action style=' + '"' + self.choice_values['actions'] + '"'
+                # print 'Places color='+Ardis_colors[self.choice_values['places']], '"'+self.choice_values['places']+'"'
+                print 'Places color="' + self.choice_values['places'] + '"'
+                print 'Start here=' + self.choice_values['small apps']
                 print 'DesktopEnvironment=' + self.user_DE
                 print 'Install Location=' + self.Ardis_kw['path']
 

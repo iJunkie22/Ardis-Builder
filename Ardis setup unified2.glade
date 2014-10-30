@@ -130,6 +130,7 @@
               <object class="GtkBox" id="box35">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="spacing">20</property>
                 <child>
                   <object class="GtkEventBox" id="eventbox20">
                     <property name="visible">True</property>
@@ -138,10 +139,33 @@
                     <property name="above_child">True</property>
                     <signal name="button-press-event" handler="on_adv_settings_button_press" swapped="no"/>
                     <child>
-                      <object class="GtkImage" id="image55">
+                      <object class="GtkBox" id="box36">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="stock">gtk-preferences</property>
+                        <child>
+                          <object class="GtkImage" id="image55">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/configure.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label35">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes"> Settings</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                     </child>
                   </object>
@@ -152,19 +176,85 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLinkButton" id="DonateButton">
-                    <property name="label" translatable="yes">Donate</property>
+                  <object class="GtkEventBox" id="eventbox24">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="halign">start</property>
-                    <property name="relief">none</property>
-                    <property name="uri">http://ijunkie22.github.io/Ardis-Builder/</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkBox" id="box38">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkImage" id="image63">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/dialog-information.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label37">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes"> About</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEventBox" id="eventbox23">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkBox" id="box37">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkImage" id="image62">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">Images/system-file-manager.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label36">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes"> Extra Stuff</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </object>
@@ -2600,61 +2690,26 @@ Install Location=/home/ethan/.icons/</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">end</property>
+                <property name="valign">center</property>
                 <property name="margin_right">2</property>
+                <property name="margin_bottom">30</property>
                 <property name="hexpand">True</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkImage" id="image83">
-                    <property name="width_request">48</property>
-                    <property name="height_request">48</property>
+                    <property name="width_request">84</property>
+                    <property name="height_request">300</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">center</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
-                    <property name="vexpand">True</property>
-                    <property name="pixbuf">Images/inkscape.png</property>
+                    <property name="pixbuf">Images/last_page_icons_smaller.png</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="image84">
-                    <property name="width_request">48</property>
-                    <property name="height_request">48</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="hexpand">True</property>
-                    <property name="vexpand">True</property>
-                    <property name="pixbuf">Images/code-context.png</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="image86">
-                    <property name="width_request">48</property>
-                    <property name="height_request">48</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="hexpand">True</property>
-                    <property name="vexpand">True</property>
-                    <property name="pixbuf">Images/code-class.png</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
                   </packing>
                 </child>
               </object>
