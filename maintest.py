@@ -210,11 +210,9 @@ class ArdisBuilder:
     def ardis_edition_apply(self, edition):
         global new_intro_string
         outro_text = builder.get_object('label46')
-        outro = ('<span size=\"x-large\">Thank You for chosing Ardis!</span>\n'
+        outro = ('<span size=\"x-large\">Thank You for chosing Ardis!</span>\n\n'
                  '<span size=\"small\">Ardis gives you what others can\'t, it gives you what you deserve,'
-                 ' a power of customization.\n'
-                 'If you think that there\'s not enough customization options for you, and you want more,\n'
-                 'check other versions of Ardis Icon Theme here:</span>\n\n'
+                 ' a power of customization.</span>\n\n'
                  )
 
         Ardis_Plus_Images = {}
@@ -241,7 +239,10 @@ class ArdisBuilder:
 
             if edition == 'Plus':
                 new_intro_string = re.sub('Ardis Basic', 'Ardis Plus', old_intro_string)
-                outro += ('  <a href=\"http://ijunkie22.github.io/Ardis-Builder/mega-theme.html\">'
+                outro += ('<span size=\"small\">If you think that there\'s not enough customization options for you,'
+                          ' and you want more,\n'
+                          'check other versions of Ardis Icon Theme here:</span>\n\n'
+                          '  <a href=\"http://ijunkie22.github.io/Ardis-Builder/mega-theme.html\">'
                           'Ardis Mega Icon Theme</a>\n\n'
                           'Thank you for purchasing the Plus version, you contribution means a lot to us.\n\n'
                           )
@@ -275,7 +276,10 @@ class ArdisBuilder:
             intro_text.set_label(str(new_intro_string))
         else:
             intro_text.set_label(str(old_intro_string))
-            outro += ('  <a href=\"http://ijunkie22.github.io/Ardis-Builder/plus-theme.html\">'
+            outro += ('<span size=\"small\">If you think that there\'s not enough customization options for you,'
+                      ' and you want more,\n'
+                      'check other versions of Ardis Icon Theme here:</span>\n\n'
+                      '  <a href=\"http://ijunkie22.github.io/Ardis-Builder/plus-theme.html\">'
                       'Ardis Plus Icon Theme</a>\n\n'
                       '  <a href=\"http://ijunkie22.github.io/Ardis-Builder/mega-theme.html\">'
                       'Ardis Mega Icon Theme</a>\n\n'

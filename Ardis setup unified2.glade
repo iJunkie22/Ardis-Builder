@@ -123,6 +123,7 @@
             <property name="height_request">30</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="valign">end</property>
             <property name="margin_left">10</property>
             <property name="margin_right">10</property>
             <property name="layout_style">start</property>
@@ -329,7 +330,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="no_show_all">True</property>
-            <property name="valign">start</property>
+            <property name="vexpand">True</property>
             <property name="shadow_type">none</property>
             <child>
               <object class="GtkBox" id="box4">
@@ -830,6 +831,7 @@ Please click next for further customization options.</property>
   <object class="GtkViewport" id="viewport2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="shadow_type">none</property>
     <child>
       <object class="GtkBox" id="box30">
         <property name="visible">True</property>
@@ -1121,6 +1123,7 @@ with gray background</property>
   <object class="GtkViewport" id="viewport3">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="shadow_type">none</property>
     <child>
       <object class="GtkBox" id="box8">
         <property name="visible">True</property>
@@ -1151,19 +1154,19 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
           <object class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="vexpand">True</property>
+            <property name="resize_mode">immediate</property>
             <property name="hscrollbar_policy">never</property>
             <child>
               <object class="GtkViewport" id="viewport3b">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="valign">start</property>
                 <property name="margin_left">20</property>
                 <property name="vscroll_policy">natural</property>
                 <child>
                   <object class="GtkBox" id="box10">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="valign">baseline</property>
                     <property name="margin_right">20</property>
                     <property name="margin_top">20</property>
                     <property name="margin_bottom">20</property>
@@ -1876,7 +1879,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="pack_type">end</property>
             <property name="position">1</property>
@@ -1958,6 +1961,7 @@ Please select below what color of &lt;b&gt;places&lt;/b&gt; icons do you prefer.
   <object class="GtkViewport" id="viewport5">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="shadow_type">none</property>
     <child>
       <object class="GtkBox" id="box14">
         <property name="visible">True</property>
@@ -2269,6 +2273,7 @@ with gray background</property>
   <object class="GtkViewport" id="viewport6">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="shadow_type">none</property>
     <child>
       <object class="GtkBox" id="box19">
         <property name="visible">True</property>
@@ -2656,7 +2661,7 @@ Install Location=/home/ethan/.icons/</property>
                         <property name="halign">start</property>
                         <property name="margin_left">10</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&lt;b&gt;If you are happy with these options click &lt;i&gt;Build&lt;/i&gt;.&lt;/b&gt;</property>
+                        <property name="label" translatable="yes">If you are happy with these options click &lt;b&gt;&lt;i&gt;Build&lt;/i&gt;&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                         <property name="wrap">True</property>
                         <property name="ellipsize">end</property>
