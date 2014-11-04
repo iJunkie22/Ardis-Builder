@@ -464,6 +464,9 @@ footer a:hover {
     padding-right: 0;
     margin-left: 0;
   }
+  header img.sitelogo {
+      display: none;
+  }
 }
 
 
@@ -665,6 +668,10 @@ td {
     border-color: white;
     background-color: white;
     color: #2e7bcf;
+}
+
+header img.sitelogo {
+    float: left;
 }
 
 /*
