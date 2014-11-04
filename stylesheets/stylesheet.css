@@ -363,6 +363,49 @@ footer a:hover {
 * html .clearfix {height: 1%;}
 .clearfix {display: block;}
 
+/*
+    ===================================
+    START OF HEADER NAV BAR STYLING
+    ===================================
+*/
+
+.inner-nav {
+    float: right;
+    /*height: 30px;*/
+    position: relative;
+    width: 940px;
+    vertical-align: bottom;
+    margin-right: 50px;
+    overflow: auto;
+    max-width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-top: 5px;
+}
+.inner-nav a {
+    color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    float: right;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: right;
+}
+
+.inner-nav a:hover, .inner-nav a.current {
+    border-color: white;
+    background-color: white;
+    color: #2e7bcf;
+}
+
+/*
+    ===================================
+    END OF HEADER NAV BAR STYLING
+    ===================================
+*/
+
 /* #Media Queries
 ================================================== */
 
@@ -403,6 +446,46 @@ footer a:hover {
   .inner {
     width: 93%;
   }
+  .inner-nav {
+  margin-right: 5px;
+  margin-left: 0;
+  }
+  .inner-nav a {
+  margin-left: 2px;
+  margin-right: 2px;
+  }
+  .bluetable {
+  max-width: 93%;
+  
+  }
+  .bluetable td:first-child,
+  .bluetable th:first-child {
+    overflow: hidden;
+  }
+
+  #compat-index-table.bluetable td:first-child,
+  #compat-index-table.bluetable th:first-child {
+    display: none;
+  }
+  .bluetable td:nth-child(n+1) span {
+    padding: 0px 2px 0px 2px !important;
+    /*font-weight: 100;*/
+    border-collapse: separate;
+    background-clip: border-box;
+    box-shadow: 2px 3px 1px #3b70b1;
+    margin-right: 2px;
+    margin-bottom: 3px;
+    }
+  .bluetable tr:nth-child(n+1) td:nth-child(2) {
+  border-top-left-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+  background-clip: border-box !important;
+  }
+  .bluetable tr:nth-child(n+1) td:last-child{
+   border-top-right-radius: 10px !important;
+   border-bottom-right-radius: 10px !important;
+  }
+
   header {
     padding: 20px 0;
   }
@@ -464,9 +547,6 @@ footer a:hover {
     padding-right: 0;
     margin-left: 0;
   }
-  header img.sitelogo {
-      display: none;
-  }
 }
 
 
@@ -522,13 +602,14 @@ table.bluetable {
     border-radius: inherit;
 }
 .bluetable th {
-    /*width: 25%;*/
+    max-width: 15%;
     border-bottom: 1px solid white;
     text-align: end;
     padding: 17px 5px 5px 5px;
     font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
     /*font-weight: 100;*/
-    font-size: 1.6em;
+    /*font-size: 1.6em;*/
+    text-overflow: hidden;
 }
 
 .bluetable th a {
@@ -563,6 +644,7 @@ table.bluetable {
 td {
     /*padding: 17px 5px 5px 5px;*/
     /*text-align: end;*/
+    width: auto;
     
     }
     
@@ -573,7 +655,7 @@ td {
     background: inherit;
     /*background-clip: border-box;*/
     /*border-radius: 30px;*/
-    padding: 0px 5px 2px 20px;
+    /*padding: 0px 5px 2px 20px;*/
     /*width: auto;*/
     
     }
@@ -596,6 +678,7 @@ td {
     font-size: x-small;
     font-weight: 300;
     /*display: table-cell;*/
+    vertical-align: center;
     
 }
 .bluetable td:first-child span {
@@ -604,7 +687,8 @@ td {
     font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
     font-size: 1.4em;
     box-shadow: none;
-    color: #fafafa
+    color: #fafafa;
+    margin: 0;
 }
 
 .bluetable caption {
@@ -633,52 +717,7 @@ td {
     END OF TABLE STYLING
     ===================================
 */
-/*
-    ===================================
-    START OF HEADER NAV BAR STYLING
-    ===================================
-*/
 
-.inner-nav {
-    float: right;
-    /*height: 30px;*/
-    position: relative;
-    width: 940px;
-    vertical-align: bottom;
-    margin-right: 50px;
-    overflow: auto;
-    max-width: 100%;
-    display: block;
-    margin-left: auto;
-    margin-top: 5px;
-}
-.inner-nav a {
-    color: white;
-    padding-left: 5px;
-    padding-right: 5px;
-    float: right;
-    border: 1px solid transparent;
-    border-radius: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    text-align: right;
-}
-
-.inner-nav a:hover, .inner-nav a.current {
-    border-color: white;
-    background-color: white;
-    color: #2e7bcf;
-}
-
-header img.sitelogo {
-    float: left;
-}
-
-/*
-    ===================================
-    END OF HEADER NAV BAR STYLING
-    ===================================
-*/
 
 
 #the-idea span:before {
