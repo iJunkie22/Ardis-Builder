@@ -107,21 +107,50 @@ class ArdisBuilder:
         self.ardis_unlocked_categories = ['Standard Type', 'Standard type\nwith gray background']
         self.ardis_unlocked_apps = ['Standard Type', 'Standard type\nwith gray background']
 
-        self.AB_Pages = {0: dict(desc='intro', viewport='viewport1', has_radios=False),
-                         1: dict(desc='actions', viewport='viewport2', has_radios=True, rad_box='box7', lab_box='box5',
-                                 img_box='box6', cur_rad='event_box_curr_radio1'),
-                         4: dict(desc='places', viewport='viewport3', has_radios=True, rad_box='box11', lab_box='box12',
-                                 img_box='box13', cur_rad='event_box_curr_radio2'),
-                         11: dict(desc='mimetypes', viewport='viewport4', has_radios=False),
-                         2: dict(desc='small apps', viewport='viewport5', has_radios=True, rad_box='box16',
+        self.AB_Pages = {0: dict(desc='intro',
+                                 viewport='viewport1',
+                                 has_radios=False),
+                         1: dict(desc='actions',
+                                 viewport='viewport2',
+                                 has_radios=True,
+                                 rad_box='box7',
+                                 lab_box='box5',
+                                 img_box='box6',
+                                 cur_rad='event_box_curr_radio1'),
+                         4: dict(desc='places',
+                                 viewport='viewport3',
+                                 has_radios=True,
+                                 rad_box='box11',
+                                 lab_box='box12',
+                                 img_box='box13',
+                                 cur_rad='event_box_curr_radio2'),
+                         11: dict(desc='mimetypes',
+                                  viewport='viewport4',
+                                  has_radios=False),
+                         2: dict(desc='small apps',
+                                 viewport='viewport5',
+                                 has_radios=True,
+                                 rad_box='box16',
                                  lab_box='box17',
-                                 img_box='box18', cur_rad='event_box_curr_radio4'),
-                         3: dict(desc='status', viewport='viewport6', has_radios=True, rad_box='box21', lab_box='box22',
-                                 img_box='box23', cur_rad='event_box_curr_radio5'),
-                         5: dict(desc='thank-you', viewport='viewport7', has_radios=False),
-                         20: dict(desc='categories', viewport='viewport8', has_radios=True, rad_box='box32',
+                                 img_box='box18',
+                                 cur_rad='event_box_curr_radio4'),
+                         3: dict(desc='status',
+                                 viewport='viewport6',
+                                 has_radios=True,
+                                 rad_box='box21',
+                                 lab_box='box22',
+                                 img_box='box23',
+                                 cur_rad='event_box_curr_radio5'),
+                         5: dict(desc='thank-you',
+                                 viewport='viewport7',
+                                 has_radios=False),
+                         20: dict(desc='categories',
+                                  viewport='viewport8',
+                                  has_radios=True,
+                                  rad_box='box32',
                                   lab_box='box33',
-                                  img_box='box34', cur_rad='event_box_curr_radio3')}
+                                  img_box='box34',
+                                  cur_rad='event_box_curr_radio3')}
         # Ardis_colors = {}
         self.Ardis_colors = {'Black': '#111111', 'Blue': '#0078ad', 'Brown': '#b59a6e', 'Green': '#85d075',
                              'Dark Green': '#66ae4a', 'Light Green': '#79c843', 'Olive Green': '#669966',
@@ -151,7 +180,7 @@ class ArdisBuilder:
                 if group_pat:
                     cur_gr = group_pat.group(1)
                 if cur_gr == targ_group:
-                    key_pat = re.search('(^[^=]+)\=(.*$)', line)
+                    key_pat = re.search('(^[^=]+)=(.*$)', line)
                     if key_pat:
                         new_dict[key_pat.group(1)] = key_pat.group(2)
         finally:
@@ -289,8 +318,8 @@ class ArdisBuilder:
         outro_text.set_label(outro)
 
     def ardis_dirs(self, **ArdisDirArgs):
-        errorlist = []
-        errordict = {}
+        self.errorlist = []
+        self.errordict = {}
         for k, v in ArdisDirArgs.items():
             self.AB_rc_dict[k] = v
         themecontexts = ['actions', 'animations', 'apps', 'categories', 'devices', 'emblems', 'emotes', 'intl',
@@ -317,15 +346,15 @@ class ArdisBuilder:
                             new_sym_error = str(
                                 "Hmm. Looks like " + os.path.join(s_dir, link_target) + " doesnt exist.")
 
-                            errorlist.append(new_sym_error)
-                            errordict[theme_ready_path] = dict(SymLinkError=str(os.path.join(s_dir, link_target)))
+                            self.errorlist.append(new_sym_error)
+                            self.errordict[theme_ready_path] = dict(SymLinkError=str(os.path.join(s_dir, link_target)))
                     except KeyError, undef_cat:
                         new_cat_error = str('***Oops! ' + str(undef_cat) + ' is not defined!***')
-                        errordict[theme_ready_path]['UndefinedCategoryError'] = str(undef_cat)
-                        errorlist.append(new_cat_error)
+                        self.errordict[theme_ready_path]['UndefinedCategoryError'] = str(undef_cat)
+                        self.errorlist.append(new_cat_error)
         temp_directories = re.sub("\'\,\s\'", ",", str(themedirlist))
         newdirectories = re.sub("(^\[\'|\'\]$)", "", temp_directories)
-        return newdirectories, errorlist, errordict
+        return newdirectories
 
     def hide_page(self, p_num_to_hide):
         winbox = builder.get_object("box2")
@@ -411,12 +440,13 @@ class ArdisBuilder:
             # The user has chosen to generate
 
             # First we re-read all the choices
-            d_string, AB_e_list, AB_e_dict = self.ardis_dirs(places=self.choice_values['places'].lower(),
-                                                             actions=self.choice_values['actions'],
-                                                             apps=self.choice_values['small apps'],
-                                                             status=self.choice_values['status'],
-                                                             categories=self.choice_values['categories'],
-                                                             devices=self.choice_values['small apps'])
+
+            d_string = self.ardis_dirs(places=self.choice_values['places'].lower(),
+                                       actions=self.choice_values['actions'],
+                                       apps=self.choice_values['small apps'],
+                                       status=self.choice_values['status'],
+                                       categories=self.choice_values['categories'],
+                                       devices=self.choice_values['small apps'])
             ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
             # Initialize the progress bar
             dir_len = len(ardis_d_list)
@@ -441,14 +471,14 @@ class ArdisBuilder:
                     old_prog = prog_bar.get_fraction()
                     new_prog = old_prog + prog_step
                     prog_bar.set_fraction(new_prog)
-                    # print AB_e_dict.keys()
-                    if g_item in AB_e_dict.keys():
+                    # print self.errordict.keys()
+                    if g_item in self.errordict.keys():
                         e_count = e_count + 1
 
                     # completeness = str(float(prog_bar.get_fraction()) * float(100))
                     if e_count > 0:
                         prog_bar.set_text(completeness + '  completed with ' + str(e_count) + ' errors')
-                for k, v in AB_e_dict.items():
+                for k, v in self.errordict.items():
                     print k, v
             finally:
                 temp_theme_file.close()
@@ -541,6 +571,8 @@ class Handler:
     def __init__(self):
         window.show_all()
         backbutton.hide()
+        aboutbutton.hide()
+        extrastuffbutton.hide()
         self.cur_page = getPosInParent('curr_page_dot')
         self.nex_page = self.cur_page + 1
         self.prev_page = self.cur_page - 1
@@ -673,7 +705,10 @@ pageDot = builder.get_object("curr_page_dot")
 mainbox = builder.get_object("box1")
 nextbutton = builder.get_object("button1")
 backbutton = builder.get_object("button2")
+aboutbutton = builder.get_object("box38")
+extrastuffbutton = builder.get_object("box37")
 pageone = builder.get_object("viewport1")
+
 hide_bonus_choices(abapp.ardis_unlocked_places, 'box10')
 hide_bonus_choices(abapp.ardis_unlocked_statuses, 'box20')
 hide_bonus_choices(abapp.ardis_unlocked_categories, 'box31')
