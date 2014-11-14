@@ -580,8 +580,8 @@ class Handler:
         # pageone.show()
         self.test_var = "moo"
         try:
-            gtksettings = Gtk.Settings.get_default()
-            gtksettings.props.gtk_button_images = True
+            self.gtksettings = Gtk.Settings.get_default()
+            self.gtksettings.props.gtk_button_images = True
         finally:
             pass
 
