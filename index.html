@@ -14,6 +14,54 @@
     <![endif]-->
 
     <title>Ardis-builder by iJunkie22</title>
+    <script type="text/javascript">
+      
+      
+      
+      function showselector(selector_id) {
+        //document.getElementById("supported_result").value=selector_id;
+        var DE_res = ""
+        var REL_res = ""
+        var PLAT_res = document.getElementById("platform_selection").value
+        
+        switch (selector_id) {
+          
+          case "OSX":
+            document.getElementById("linux_distro_select").style.display = "none";
+            break;
+          case "Linux":
+            document.getElementById("linux_distro_select").style.display = "inline-block";
+            break;
+          case "archlinux":
+            DE_res = "XFCE";
+            REL_res = "All 2014 Builds";
+            break;
+          case "kubuntu":
+            DE_res = "KDE4";
+            REL_res = "13.10, 14.04, 14.04LTS";
+            break;
+          case "ubuntu":
+            DE_res = "Unity";
+            REL_res = "13.10, 14.04, 14.04LTS";
+            break;
+        }
+        if (PLAT_res=="") {document.getElementById("supported_result").style.color = "transparent"}
+        else {
+          document.getElementById("supported_result").style.color = "inherit";
+        };
+        if (DE_res=="") {document.getElementById("supported_de_result").style.color = "transparent"}
+        else {
+          document.getElementById("supported_de_result").style.color = "inherit";
+        };
+        if (REL_res=="") {document.getElementById("supported_rel_result").style.color = "transparent"}
+        else {
+          document.getElementById("supported_rel_result").style.color = "inherit";
+        };
+        document.getElementById("supported_result").value=PLAT_res;
+        document.getElementById("supported_de_result").value=DE_res;
+        document.getElementById("supported_rel_result").value=REL_res;
+         };     
+      </script>
   </head>
 
   <body>
@@ -68,31 +116,32 @@
 </h6>
 <hr>
 
-        <table class="bluetable" id="compat-index-table">
-            <caption><span>Compatibility Index</span></caption>
-        <thead>
-            <tr>
-            <th></th><th>Distribution</th><th>Tested</th><th>Verified</th>
-        </tr>
-        </thead>
-        <tr>
-            <td><span>Linux</span></td><td><span>Kubuntu</span></td><td><span>13.10</span><br><span>14.04LTS</span></td><td><span>13.10 - 14.04LTS</span></td>
-        </tr>
-        <tr>
-            <td><span>Linux</span></td><td><span>Arch Linux</span></td><td><span>?</span></td><td><span>?</span></td>
-        </tr>
-        <tr>
-            <td><span>Linux</span></td><td><span>OpenSuse</span></td><td><span>?</span></td><td><span>?</span></td>
-        </tr>
-        <tr>
-            <td><span>Linux</span></td><td><span>Fedora</span></td><td><span>?</span></td><td><span>?</span></td>
-        </tr>
-        <tr>
-            <td><span>Darwin</span></td><td><span>OSX</span></td><td><span>10.9</span><br><span>10.10</span></td><td><span>10.9 - 10.10</span></td>
-        </tr>
-                
-    </table>
+        
+    <span>Check if ArdisBuilder is confirmed to work with your setup:</span><br>
+    <select id="platform_selection" value="" name="platform_selection" onchange="supported_result.value=value;showselector(value)" title="Platform">
+      <option value="" selected>Select A Platform</option>
+      <option value="OSX">OSX</option>
+      <option value="Linux">Linux</option>
+    </select>
+    
+    <select id="linux_distro_select" name="linux_select" onchange="showselector(value)" title="Distribution">
+      <option value="" selected>Select A Distro</option>
+        <option value="archlinux">Arch Linux</option>
+        <option value="kubuntu">Kubuntu</option>
+        <option value="ubuntu">Ubuntu</option>
+      
+    </select>
     <br>
+    <div id="output_results">
+    <output id="supported_result" title="Platform"></output>
+    <output id="supported_de_result" title="Desktop Environment"></output>
+    <output id="supported_rel_result"title="Release"></output>
+    </div>
+    <br>
+    <br>
+    <br>
+    
+    
     <table class="bluetable" id="ardis-packs-table">
             <caption><span>Ardis Editions</span></caption>
         <tr>

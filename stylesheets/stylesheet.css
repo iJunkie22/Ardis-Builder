@@ -825,7 +825,31 @@ footer.pillbox div.links a {
     text-align: center;
     margin: 2px;
 }
-
+select {
+  display: inline-block;
+}
+output {
+  text-align: right;
+  display: block;
+  color: transparent;
+}
+output::before {
+  content: attr(title)" ";
+  display: inline-block;
+  float: left;
+  color: inherit;
+  padding-right: 100px;
+}
+#linux_distro_select {
+  display: none;
+}
+#output_results {
+  width: auto;
+  float: left;
+  display: block;
+  clear: both;
+  margin-right: auto;
+}
 /*
     ===================================
     END OF FOOTER STYLING
