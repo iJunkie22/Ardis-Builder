@@ -57,6 +57,15 @@ class ArdisBuilder:
         self.Ardis_kw['comment'] = 'Simple and flat icon theme with long shadow - v' + self.Ardis_kw['vers'],
         self.Ardis_kw['path'] = self.find_theme_path(self.Ardis_kw['dir'])
 
+        pathstat = os.stat(os.path.join(self.Ardis_kw['path'], 'index.theme'))
+
+        if pathstat.st_uid != os.getuid():
+            print pathstat.st_uid
+            print os.getuid()
+            print "***Asserting self as theme owner***"
+            os.setuid(pathstat.st_uid)
+
+
         m_list = sys.modules.keys()
         if "gi" not in m_list:
             # Debugging-related info. If this is triggered, please include it in the report you send :)
