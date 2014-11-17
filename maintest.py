@@ -5,6 +5,8 @@ import os
 import sys
 import re
 import glob
+import subprocess
+import shlex
 
 
 class ArdisBuilder:
@@ -59,11 +61,6 @@ class ArdisBuilder:
 
         pathstat = os.stat(os.path.join(self.Ardis_kw['path'], 'index.theme'))
 
-        if pathstat.st_uid != os.getuid():
-            print pathstat.st_uid
-            print os.getuid()
-            print "***Asserting self as theme owner***"
-            os.setuid(pathstat.st_uid)
 
 
         m_list = sys.modules.keys()
@@ -582,7 +579,10 @@ class Handler:
         backbutton.hide()
         aboutbutton.hide()
         extrastuffbutton.hide()
-        self.cur_page = getPosInParent('curr_page_dot')
+        self.page_dot_dot = builder.get_object('curr_page_dot')
+        self.page_dot_container = self.page_dot_dot.get_parent()
+        self.cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
+        self.page_dot_container.child_get_property(self.page_dot_dot, "position", self.cur_page)
         self.nex_page = self.cur_page + 1
         self.prev_page = self.cur_page - 1
 
@@ -601,26 +601,26 @@ class Handler:
         exit()
 
     def on_Next_clicked(self, button):
-        self.cur_page = getPosInParent('curr_page_dot')
+        self.cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
         self.nex_page = self.cur_page + 1
         abapp.hide_page(self.cur_page)
         abapp.show_page(self.nex_page)
         # if the next page doesnt exist, the app exits now
-        setPosInParent('curr_page_dot', self.nex_page)
+        self.page_dot_container.reorder_child(self.page_dot_dot, self.nex_page)
 
     def on_Back_clicked(self, button):
         nextbutton.set_label('  Next   ')
-        self.cur_page = getPosInParent('curr_page_dot')
+        self.cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
         self.prev_page = self.cur_page - 1
         abapp.hide_page(self.cur_page)
         abapp.show_page(self.prev_page)
-        setPosInParent('curr_page_dot', self.prev_page)
+        self.page_dot_container.reorder_child(self.page_dot_dot, self.prev_page)
 
     def on_Exit_clicked(self, button):
         exit()
 
-    def on_adv_settings_button_press(self, button, evbox):
-        advsetwin.show_all()
+    #def on_adv_settings_button_press(self, button, evbox):
+     #   advsetwin.show_all()
 
     def on_AdvSettings_toggle(self, tog):
         # this is a simple test to make sure everything is connected
@@ -631,15 +631,30 @@ class Handler:
         return True
         # print self.get_active()
 
-    def on_eventbox_radio_press(self, radio, button2):
-        self.cur_page = getPosInParent('curr_page_dot')
-        page_dict = abapp.AB_Pages[self.cur_page]
-        active_radio_box = builder.get_object(page_dict['cur_rad'])
+    def on_eventbox_radio_press(self, radio, image):
         rad_parent = radio.get_parent()
-        rad_list = rad_parent.get_children()
-        i = rad_list.index(radio)
-        rad_parent.reorder_child(active_radio_box, i)
+        i = rad_parent.get_children().index(radio)
+        rad_parent.reorder_child(radio, i)
 
+    def on_open_window_clicked(self, window3, *junk):
+        window3.show_all()
+        if window3 != advsetwin:
+            pathstat = os.stat(os.path.join(abapp.Ardis_kw['path'], 'index.theme'))
+            builder.get_object('lbl_cur_u_num').props.label = str(os.getuid())
+            builder.get_object('lbl_cur_o_num').props.label = str(pathstat.st_uid)
+
+
+    def on_pw_submit_clicked(self, text_entry):
+        print "sudo -S chmod -R a+rw", abapp.Ardis_kw['path']
+        args = str("sudo -S chmod -R a+rw " + abapp.Ardis_kw['path'])
+        print shlex.split(args)
+
+        test = subprocess.Popen(args, stdin=subprocess.PIPE, shell=True, stderr=subprocess.PIPE)
+        print test.communicate(input=str(text_entry.props.text + "\n"))
+
+        pathstat = os.stat(os.path.join(abapp.Ardis_kw['path'], 'index.theme'))
+        builder.get_object('lbl_cur_u_num').props.label = str(os.getuid())
+        builder.get_object('lbl_cur_o_num').props.label = str(pathstat.st_uid)
 
 def setPageDot(n):
     pageDot = builder.get_object("curr_page_dot")
