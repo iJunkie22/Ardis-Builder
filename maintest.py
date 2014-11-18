@@ -490,7 +490,7 @@ class ArdisBuilder:
                 try:
                     final_theme_file.write('[Icon Theme]\n')
                     for k, v in self.Ardis_index_dict.items():
-                        final_theme_file.write("{0}={2}\n".format(k, v))
+                        final_theme_file.write("{0}={1}\n".format(k, v))
                     for line in temp_theme_file:
                         final_theme_file.write(line)
                 finally:
@@ -618,8 +618,10 @@ class Handler:
         # this is a simple test to make sure everything is connected
         print tog.get_active()
 
-    def hide_adv_settings(self, wind, winbool):
+    def hide_adv_settings(self, wind, event):
         wind.hide_on_delete()
+        if wind.props.title == 'Password':
+            self.pw_purpose = self.old_pw_purpose
         return True
         # print self.get_active()
 
@@ -631,13 +633,10 @@ class Handler:
 
     def on_open_window_clicked(self, window3, *junk):
         window3.show_all()
-        if window3 != advsetwin:
-            print junk
+        if window3.props.title == 'Password':
             pathstat = os.stat(os.path.join(abapp.Ardis_kw['path'], 'index.theme'))
             builder.get_object('lbl_cur_u_num').props.label = str(os.getuid())
             builder.get_object('lbl_cur_o_num').props.label = str(pathstat.st_uid)
-        else:
-            print "hi"
 
     def on_pw_submit_clicked(self, text_entry):
         if self.pw_purpose == "Unlock permissions of root-installed Ardis":
