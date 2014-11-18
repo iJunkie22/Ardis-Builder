@@ -7,7 +7,7 @@ import re
 import glob
 import subprocess
 import shlex
-
+from io import StringIO
 
 
 class ArdisBuilder:
@@ -61,10 +61,6 @@ class ArdisBuilder:
                              )
         self.Ardis_kw['comment'] = 'Simple and flat icon theme with long shadow - v' + self.Ardis_kw['vers'],
         self.Ardis_kw['path'] = self.find_theme_path(self.Ardis_kw['dir'])
-
-        pathstat = os.stat(os.path.join(self.Ardis_kw['path'], 'index.theme'))
-
-
 
         m_list = sys.modules.keys()
         if "gi" not in m_list:
@@ -553,6 +549,18 @@ class ArdisBuilder:
             else:
                 backbutton.show()
 
+    def make_desktop_launcher(self):
+        #This is still in development
+        new_desk_file = StringIO()
+
+        try:
+            new_desk_file.write("[Desktop Entry]\nCategories=Settings;")
+            for line in new_desk_file:
+                print line
+        finally:
+            new_desk_file.close()
+        pass
+
 
 class Handler:
     def __init__(self):
@@ -566,7 +574,8 @@ class Handler:
         self.page_dot_container.child_get_property(self.page_dot_dot, "position", self.cur_page)
         self.nex_page = self.cur_page + 1
         self.prev_page = self.cur_page - 1
-
+        self.pw_purpose = ""
+        self.old_pw_purpose = ""
         # pageone.show()
         self.test_var = "moo"
         try:
@@ -588,6 +597,7 @@ class Handler:
         abapp.show_page(self.nex_page)
         # if the next page doesnt exist, the app exits now
         self.page_dot_container.reorder_child(self.page_dot_dot, self.nex_page)
+        self.cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
 
     def on_Back_clicked(self, button):
         nextbutton.set_label('  Next   ')
@@ -596,6 +606,7 @@ class Handler:
         abapp.hide_page(self.cur_page)
         abapp.show_page(self.prev_page)
         self.page_dot_container.reorder_child(self.page_dot_dot, self.prev_page)
+        self.cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
 
     def on_Exit_clicked(self, button):
         exit()
@@ -615,17 +626,24 @@ class Handler:
     def on_eventbox_radio_press(self, radio, image):
         rad_parent = radio.get_parent()
         i = rad_parent.get_children().index(radio)
-        rad_parent.reorder_child(radio, i)
+        cur_rad = builder.get_object(abapp.AB_Pages[self.cur_page]["cur_rad"])
+        rad_parent.reorder_child(cur_rad, i)
 
     def on_open_window_clicked(self, window3, *junk):
         window3.show_all()
         if window3 != advsetwin:
+            print junk
             pathstat = os.stat(os.path.join(abapp.Ardis_kw['path'], 'index.theme'))
             builder.get_object('lbl_cur_u_num').props.label = str(os.getuid())
             builder.get_object('lbl_cur_o_num').props.label = str(pathstat.st_uid)
+        else:
+            print "hi"
 
     def on_pw_submit_clicked(self, text_entry):
-        args = str("sudo -kS chmod -v -R a+rw " + abapp.Ardis_kw['path'])
+        if self.pw_purpose == "Unlock permissions of root-installed Ardis":
+            args = str("sudo -kS chmod -v -R a+rw " + abapp.Ardis_kw['path'])
+        else:
+            args = str("xargs echo $@")
         test = subprocess.Popen(args, stdin=subprocess.PIPE, shell=True, stderr=subprocess.PIPE)
         stdout, stderr = test.communicate(input=str(text_entry.props.text + "\n"))
         stderr_list = str(stderr).split('\n')
@@ -647,6 +665,11 @@ class Handler:
         pathstat = os.stat(os.path.join(abapp.Ardis_kw['path'], 'index.theme'))
         builder.get_object('lbl_cur_u_num').props.label = str(os.getuid())
         builder.get_object('lbl_cur_o_num').props.label = str(pathstat.st_uid)
+
+    def set_pw_context(self, button):
+        self.old_pw_purpose = self.pw_purpose
+        self.pw_purpose = button.props.label
+
 
 def setPageDot(n):
     pageDot = builder.get_object("curr_page_dot")
