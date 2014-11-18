@@ -571,7 +571,7 @@ class Handler:
         self.page_dot_dot = builder.get_object('curr_page_dot')
         self.page_dot_container = self.page_dot_dot.get_parent()
         self.cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
-        self.page_dot_container.child_get_property(self.page_dot_dot, "position", self.cur_page)
+        #self.page_dot_container.child_get_property(self.page_dot_dot, "position", self.cur_page)
         self.nex_page = self.cur_page + 1
         self.prev_page = self.cur_page - 1
         self.pw_purpose = ""
