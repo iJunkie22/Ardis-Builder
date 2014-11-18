@@ -493,7 +493,7 @@ Ardis Builder developed and coded by iJunkie22: &lt;b&gt;ijunkie22@gmail.com&lt;
         </child>
         <child>
           <object class="GtkButton" id="button5">
-            <property name="label" translatable="yes">button</property>
+            <property name="label" translatable="yes">Submit</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -585,13 +585,38 @@ Ardis Builder developed and coded by iJunkie22: &lt;b&gt;ijunkie22@gmail.com&lt;
               <object class="GtkLabel" id="label53">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">label</property>
               </object>
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">2</property>
               </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">3</property>
+            <property name="width">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolledwindow5">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkViewport" id="viewport9">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkLabel" id="pw_stderr_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="track_visited_links">False</property>
+                  </object>
+                </child>
+              </object>
             </child>
           </object>
           <packing>

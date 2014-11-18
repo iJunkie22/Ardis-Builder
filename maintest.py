@@ -9,6 +9,7 @@ import subprocess
 import shlex
 
 
+
 class ArdisBuilder:
     def __init__(self):
         self.mac_patch = False
@@ -27,8 +28,10 @@ class ArdisBuilder:
         # https://build.opensuse.org/package/view_file/openSUSE:12.3/alacarte/alacarte-force-Gtk3.patch?expand=1
         if self.mac_patch is True:
             from gi.overrides.Gtk import Gtk
+            from gi.overrides.Gdk import Gdk
         else:
             from gi.repository import Gtk
+            from gi.repository import Gdk
 
         self.w_path = os.getcwd()
         sys.path.append(str(self.w_path))
@@ -204,7 +207,6 @@ class ArdisBuilder:
             icon_theme_locs.append(os.path.expanduser('~/Library/Preferences/KDE/share/icons'))
 
         icon_theme_locs.append(os.path.expanduser('~/.icons'))
-
         icon_theme_locs.append(self.root_shared_icons_dir)
 
         for themes_d in icon_theme_locs:
@@ -390,38 +392,23 @@ class ArdisBuilder:
         if '--debug' in sys.argv:
             print self.choice_values
 
-        # this REALLY is now ignored, in favor of the find_theme_path method and Ardis_kw['path']
-        if self.user_DE == 'KDE':
-            user_icon_dir = str(self.user_home_dir + '/.kde/share/icons/')
-        elif self.user_DE is not None:
-            user_icon_dir = str(self.user_home_dir + '/.icons/')
-        else:
-            user_icon_dir = None
-
         if p_num_to_show >= 5:
             # This is when the last page is triggered
             res_label_obj = builder.get_object('results_summary')
             try:
-                # Try reporting without using the color key
+
+                res_sum = ('Your selected options are:\n'
+                           '  <b>Action icons</b> = {0}\n'
+                           '  <b>Folders color</b> = {1}\n'
+                           '  <b>Small icons</b> = {2}\n'
+                           '  <b>Status icons</b> = {3}\n'
+                           ).format(self.choice_values['actions'].title(), self.choice_values['places'],
+                                    self.choice_values['small apps'].title(), self.choice_values['status'].title())
                 if '--debug' in sys.argv:
-                    res_sum = ('Your selected options are:\n'
-                               '  <b>Action icons</b> = {0}\n'
-                               '  <b>Folders color</b> = {1}\n'
-                               '  <b>Small icons</b> = {2}\n'
-                               '  <b>Status icons</b> = {3}\n'
-                               '  <b>DesktopEnvironment=</b>{4}\n'
-                               '  <b>Install Location=</b>{5}\n'
-                               ).format(self.choice_values['actions'].title(), self.choice_values['places'],
-                                        self.choice_values['small apps'].title(), self.choice_values['status'].title(),
-                                        self.user_DE, self.Ardis_kw['path'])
-                else:
-                    res_sum = ('Your selected options are:\n'
-                               '  <b>Action icons</b> = {0}\n'
-                               '  <b>Folders color</b> = {1}\n'
-                               '  <b>Small icons</b> = {2}\n'
-                               '  <b>Status icons</b> = {3}\n'
-                               ).format(self.choice_values['actions'].title(), self.choice_values['places'],
-                                        self.choice_values['small apps'].title(), self.choice_values['status'].title())
+                    res_sum = ('{0}'
+                               '  <b>DesktopEnvironment=</b>{1}\n'
+                               '  <b>Install Location=</b>{2}\n'
+                               ).format(res_sum, self.user_DE, self.Ardis_kw['path'])
 
             except KeyError, sumerror3:
                 # The path key is missing. This needs to be a fatal error
@@ -431,9 +418,7 @@ class ArdisBuilder:
             dir_len = self.Ardis_kw['dcount']
             # This alternative method uses the number of directories in the OLD list, since it should be the same anyway
             # avoids the unnecessary calling of ardis_dirs, and the premature application of symlinks
-            prog_step = float('1.0') / float(dir_len)
             prog_bar = builder.get_object('progressbar1')
-            # prog_bar.text = None
             prog_bar.set_property('text', None)
             prog_bar.set_fraction(float('0.00'))
 
@@ -444,9 +429,7 @@ class ArdisBuilder:
 
         elif nextbutton.get_label() == '  Build   ':
             # The user has chosen to generate
-
             # First we re-read all the choices
-
             d_string = self.ardis_dirs(places=self.choice_values['places'].lower(),
                                        actions=self.choice_values['actions'],
                                        apps=self.choice_values['small apps'],
@@ -463,8 +446,7 @@ class ArdisBuilder:
             # Start generating the temp theme
             temp_theme_file = open(self.Ardis_kw['path'] + "/temp_index.theme", 'w')
             try:
-                temp_theme_file.write('Directories=' + d_string + '\n\n')
-                temp_theme_file.write('[X-ArdisBuilder Settings]\n')
+                temp_theme_file.write('Directories=%s\n\n[X-ArdisBuilder Settings]\n' % d_string)
                 for k, v in self.AB_rc_dict.items():
                     temp_theme_file.write(k + '=' + v + '\n')
                 temp_theme_file.write('\n')
@@ -483,7 +465,7 @@ class ArdisBuilder:
 
                     # completeness = str(float(prog_bar.get_fraction()) * float(100))
                     if e_count > 0:
-                        prog_bar.set_text(completeness + '  completed with ' + str(e_count) + ' errors')
+                        prog_bar.set_text('{0} completed with {1} errors'.format(completeness, str(e_count)))
                 for k, v in self.errordict.items():
                     print k, v
             finally:
@@ -512,8 +494,7 @@ class ArdisBuilder:
                 try:
                     final_theme_file.write('[Icon Theme]\n')
                     for k, v in self.Ardis_index_dict.items():
-                        final_theme_file.write(k + '=' + v)
-                        final_theme_file.write('\n')
+                        final_theme_file.write("{0}={2}\n".format(k, v))
                     for line in temp_theme_file:
                         final_theme_file.write(line)
                 finally:
@@ -643,14 +624,25 @@ class Handler:
             builder.get_object('lbl_cur_u_num').props.label = str(os.getuid())
             builder.get_object('lbl_cur_o_num').props.label = str(pathstat.st_uid)
 
-
     def on_pw_submit_clicked(self, text_entry):
-        print "sudo -S chmod -R a+rw", abapp.Ardis_kw['path']
-        args = str("sudo -S chmod -R a+rw " + abapp.Ardis_kw['path'])
-        print shlex.split(args)
-
+        args = str("sudo -kS chmod -v -R a+rw " + abapp.Ardis_kw['path'])
         test = subprocess.Popen(args, stdin=subprocess.PIPE, shell=True, stderr=subprocess.PIPE)
-        print test.communicate(input=str(text_entry.props.text + "\n"))
+        stdout, stderr = test.communicate(input=str(text_entry.props.text + "\n"))
+        stderr_list = str(stderr).split('\n')
+        stderr_list.remove('Password:')
+        if '' in stderr_list:
+            stderr_list.remove('')
+
+        stderr_label = builder.get_object('pw_stderr_label')
+        if len(stderr_list) == 0:
+            new_label = "Success!"
+            new_color = Gdk.RGBA(red=0, green=1.0, blue=0, alpha=0.5)
+        else:
+            new_label = "Incorrect Password"
+            new_color = Gdk.RGBA(red=1.0, green=0.5, blue=0, alpha=0.5)
+
+        stderr_label.props.label = new_label
+        stderr_label.override_background_color(0, new_color)
 
         pathstat = os.stat(os.path.join(abapp.Ardis_kw['path'], 'index.theme'))
         builder.get_object('lbl_cur_u_num').props.label = str(os.getuid())
@@ -716,6 +708,7 @@ abapp = ArdisBuilder()
 
 import gi
 from gi.repository import Gtk
+from gi.repository import Gdk
 import Theme_Indexer
 
 builder = Gtk.Builder()
