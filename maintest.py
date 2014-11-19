@@ -59,6 +59,16 @@ class ArdisBuilder:
                              dir='Ardis',
                              vers='1.0',
                              )
+
+        if "--override" in sys.argv:
+            for item in sys.argv:
+                parts = item.split("=")
+                if len(parts) == 2:
+                    k, v = parts[0], parts[1]
+                    if k in self.Ardis_kw.keys():
+                        self.Ardis_kw[k] = v
+                        print parts, "override used"
+
         self.Ardis_kw['comment'] = 'Simple and flat icon theme with long shadow - v' + self.Ardis_kw['vers'],
         self.Ardis_kw['path'] = self.find_theme_path(self.Ardis_kw['dir'])
 
@@ -640,7 +650,8 @@ class Handler:
 
     def on_pw_submit_clicked(self, text_entry):
         if self.pw_purpose == "Unlock permissions of root-installed Ardis":
-            args = str("sudo -kS chmod -v -R a+rw " + abapp.Ardis_kw['path'])
+            args = str("sudo -kS chmod -v -R a+rw '%s'" % abapp.Ardis_kw['path'])
+            print args
         else:
             args = str("xargs echo $@")
         test = subprocess.Popen(args, stdin=subprocess.PIPE, shell=True, stderr=subprocess.PIPE)
