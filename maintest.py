@@ -8,6 +8,127 @@ import glob
 import subprocess
 import shlex
 from io import StringIO
+from time import sleep
+
+mypath = __file__
+os.chdir(os.path.dirname(mypath))
+
+
+class ArdisDict:
+    def __init__(self):
+        self.unlocked = dict(places=['Blue', 'Violet', 'Brown'],
+                             actions=['Standard Type', 'Dark icons with no background'],
+                             statuses=['Standard Type', 'Light icons with no background'],
+                             categories=['Standard Type', 'Standard type\nwith gray background'],
+                             apps=['Standard Type', 'Standard type\nwith gray background']
+                             )
+
+        self.labels = {'Standard Type': 'standard',
+                       'Standard type\nwith gray background': 'grayBG',
+                       'Dark icons with no background': 'gray',
+                       'Light icons with no background': 'white'
+                       }
+
+        self.images = dict(plus=dict(image53='Images/style_light_apps_no_bg.png',
+                                     image26='Images/places_sample_Red.png',
+                                     image21='Images/places_sample_Green.png',
+                                     image49='Images/style_dark_status_no_bg.png',
+                                     image51='Images/style_light_categories_withno_bg.png'
+                                     ),
+                           mega=dict(image18='Images/places_sample_Black.png',
+                                     image23='Images/places_sample_Orange.png',
+                                     image27='Images/places_sample_Gray.png',
+                                     image39='Images/places_sample_Cyan.png',
+                                     image56='Images/style_dark_apps_withno_bg.png',
+                                     image58='Images/style_dark_status_icons.png'
+                                     )
+                           )
+        self.image_sets = []
+        self.ye_old_intro_string = None
+
+    def apply_unlocks(self, edition):
+        ed_level = [None, 'Basic', 'Plus', 'Mega'].index(edition)
+
+        if ed_level > 1:
+            self.unlocked['places'].append('Red')
+            self.unlocked['places'].append('Green')
+            self.unlocked['statuses'].append('Dark icons with no background')
+            self.unlocked['categories'].append('Light icons with no background')
+            self.unlocked['apps'].append('Light icons with no background')
+            self.unlocked['actions'].append('Light icons with no background')
+            self.image_sets.append('plus')
+        if ed_level > 2:
+            self.unlocked['places'].append('Cyan')
+            self.unlocked['places'].append('Orange')
+            self.unlocked['places'].append('Gray')
+            self.unlocked['places'].append('Black')
+            self.unlocked['actions'].append('Standard type\nwith gray background')
+            self.unlocked['apps'].append('Dark icons with no background')
+            self.unlocked['statuses'].append('Standard type\nwith gray background')
+            self.image_sets.append('mega')
+
+    def refresh_unlocked_icons(self, gtkbuilder):
+        for i_set in self.image_sets:
+            for k, v in self.images[i_set].items():
+                obj = gtkbuilder.get_object(k)
+                obj.clear()
+                obj.set_from_file(v)
+        return True
+
+    def apply_edition_labels(self, gtkbuilder, edition=None, vers=None, theme="Ardis"):
+        ed_level = [None, 'Basic', 'Plus', 'Mega'].index(edition)
+
+        def replace_intro(self, gtkbuilder, edition):
+            intro_lbl_obj = gtkbuilder.get_object('label51')
+            new_intro_string = re.sub('Ardis Basic', 'Ardis Plus', old_intro_string)
+
+        outro_text = gtkbuilder.get_object('label46')
+        outro = (str('<span>Thank You for choosing %s!</span>\n\n' % theme) +
+                 str('<span>%s gives you what others can\'t, it gives you what you deserve,' % theme) +
+                 str(' a power of customization.</span>\n\n')
+                 )
+        intro_text = gtkbuilder.get_object('label51')
+        if self.ye_old_intro_string is None:
+            self.ye_old_intro_string = intro_text.get_label()
+        if vers:
+            old_intro_string = re.sub('<b>Ardis Theme Version</b>', '<b>%s</b>' % vers,
+                                      self.ye_old_intro_string)
+        else:
+            old_intro_string = self.ye_old_intro_string
+
+        if ed_level == 2:
+            new_intro_string = re.sub('Ardis Basic', '%s Plus' % theme, old_intro_string)
+            outro += ('<span>If you think that there\'s not enough customization options for you,'
+                      ' and you want more,\n' +
+                      str('check other version of %s Icon Theme here:</span>\n\n' % theme) +
+                      '  <a href=\"http://kotusworks.wordpress.com/artwork/' +
+                      str('%s-icon-theme/#%s_mega\">' % (theme.lower(), theme.lower())) +
+                      str(theme + ' Mega Icon Theme</a>\n\n') +
+                      str('Thank you for purchasing the Plus version, you contribution means a lot to us.\n\n')
+                      )
+            intro_text.set_label(str(new_intro_string))
+        if ed_level == 3:
+            new_intro_string = re.sub('Ardis Basic', '%s Mega' % theme, old_intro_string)
+
+            outro += ('Thank you for purchasing our premium version of our icon theme.\n\n'
+                      'Contributions like yours help us to expand this project, and it allows '
+                      'us to make many more awesome things in the future!\n\n'
+                      )
+            intro_text.set_label(str(new_intro_string))
+        if ed_level <= 1:
+            outro += ('<span>If you think that there\'s not enough customization options for you,'
+                      ' and you want more,\n' +
+                      str('check other versions of %s Icon Theme here:</span>\n\n' % theme) +
+                      str('  <a href=\"http://kotusworks.wordpress.com/artwork/%s-icon-theme/#%s_plus\">' %
+                          (theme.lower(), theme.lower())) +
+                      str('%s Plus Icon Theme</a>\n\n' % theme) +
+                      str('  <a href=\"http://kotusworks.wordpress.com/artwork/%s-icon-theme/#%s_mega\">' %
+                          (theme.lower(), theme.lower())) +
+                      str('%s Mega Icon Theme</a>\n\n' % theme) +
+                      str('By purchasing one of the paid versions of %s, ' % theme) +
+                      'you allow us to further develop this project!\n'
+                      )
+        outro_text.set_label(outro)
 
 
 class ArdisBuilder:
@@ -88,33 +209,7 @@ class ArdisBuilder:
         else:
             pass
 
-        # This will let gtk see non-standard icon theme paths, such as those used by kde
-        ardis_theme_parent = str(os.path.dirname(self.Ardis_kw['path']))
-        # gtk_theme_paths = []
-        gtk_real_theme_paths = []
-        gtk_def_theme = Gtk.IconTheme.get_default()
-        gtk_theme_paths = gtk_def_theme.get_search_path()
-        if ardis_theme_parent not in gtk_theme_paths:
-            for p in gtk_theme_paths:
-                gtk_real_theme_paths.append(os.path.realpath(p))
-            if ardis_theme_parent not in gtk_real_theme_paths:
-                os.symlink(ardis_theme_parent, os.path.expanduser('~/.local/share/icons'))
-        # End of icon theme path exposer
-
-        self.AB_rc_dict = self.parse_file(os.path.join(self.Ardis_kw['path'], "index.theme"),
-                                          'X-ArdisBuilder Settings')
-        self.Ardis_index_dict = self.parse_file(os.path.join(self.Ardis_kw['path'], "index.theme"), 'Icon Theme')
-        self.Ardis_kw['dcount'] = len(self.Ardis_index_dict['Directories'].split(','))
-        del self.Ardis_index_dict['Directories']
-
-        ardis_vers_pat = re.search('((?<= \- v).*)', self.Ardis_index_dict['Comment'])
-        if ardis_vers_pat:
-            self.Ardis_kw['vers'] = ardis_vers_pat.group(1)
-
-        self.Ardis_kw['edition'] = self.AB_rc_dict.get('Edition')
-        if self.Ardis_kw['edition'] is None:
-            self.AB_rc_dict['Edition'] = 'Basic'
-            self.Ardis_kw['edition'] = 'Basic'
+        self.load_index_to_dict(self.Ardis_kw['path'])
 
         self.ardis_unlocked_places = ['Blue', 'Violet', 'Brown']
         self.ardis_unlocked_actions = ['Standard Type', 'Dark icons with no background']
@@ -184,6 +279,39 @@ class ArdisBuilder:
             if v['has_radios'] is True:
                 self.choices[v['desc']] = {'label_box': v['lab_box'], 'radio': v['cur_rad']}
 
+    def load_index_to_dict(self, path):
+        self.AB_rc_dict = self.parse_file(os.path.join(path, "index.theme"),
+                                          'X-ArdisBuilder Settings')
+        self.Ardis_index_dict = self.parse_file(os.path.join(path, "index.theme"), 'Icon Theme')
+        self.Ardis_kw['dcount'] = len(self.Ardis_index_dict['Directories'].split(','))
+        del self.Ardis_index_dict['Directories']
+
+        ardis_vers_pat = re.search('((?<= \- v).*)', self.Ardis_index_dict['Comment'])
+        if ardis_vers_pat:
+            self.Ardis_kw['vers'] = ardis_vers_pat.group(1)
+
+        self.Ardis_kw['edition'] = self.AB_rc_dict.get('Edition')
+        if self.Ardis_kw['edition'] is None:
+            self.AB_rc_dict['Edition'] = 'Basic'
+            self.Ardis_kw['edition'] = 'Basic'
+        return True
+
+    def expose_kde_theme_to_gtk(self, path):
+        # This will let gtk see non-standard icon theme paths, such as those used by kde
+        ardis_theme_parent = str(os.path.dirname(path))
+        # gtk_theme_paths = []
+        gtk_real_theme_paths = []
+        gtk_def_theme = Gtk.IconTheme.get_default()
+        gtk_theme_paths = gtk_def_theme.get_search_path()
+        if ardis_theme_parent not in gtk_theme_paths:
+            for p in gtk_theme_paths:
+                gtk_real_theme_paths.append(os.path.realpath(p))
+            if ardis_theme_parent not in gtk_real_theme_paths:
+                os.symlink(ardis_theme_parent, os.path.expanduser('~/.local/share/icons'))
+            return True
+        # End of icon theme path exposer
+        return False
+
     def parse_file(self, indexfile, targ_group):
         new_dict = {}
         nf = open(indexfile, 'r')
@@ -202,9 +330,10 @@ class ArdisBuilder:
             nf.close()
         return new_dict
 
-    def find_theme_path(self, themedir):
+    def find_theme_path(self, themedir, showall=False):
         icon_theme_locs = []
         searched_locs = []
+        themes_here = []
         if self.user_DE == 'KDE':
             icon_theme_locs.append(os.path.expanduser('~/.kde/share/icons'))
             icon_theme_locs.append(os.path.expanduser('~/.kde4/share/icons'))
@@ -216,10 +345,21 @@ class ArdisBuilder:
         icon_theme_locs.append(self.root_shared_icons_dir)
 
         for themes_d in icon_theme_locs:
+
+            if os.path.isdir(themes_d):
+                for item in os.listdir(themes_d):
+                    if os.path.isdir(os.path.join(themes_d, item)):
+                        match = re.search("(Ardis|Ursa)", item, flags=re.IGNORECASE)
+                        if match:
+                            themes_here.append(os.path.join(themes_d, item))
+            if "--debug" in sys.argv:
+                print "--> Found these themes %s" % themes_here
             pos_theme_path = os.path.join(themes_d, themedir)
             searched_locs.append(pos_theme_path)
-            if os.path.isdir(pos_theme_path):
+            if os.path.isdir(pos_theme_path) and showall is False:
                 return pos_theme_path
+        if len(themes_here) > 0 and showall is True:
+            return themes_here
         print 'Could not find the Ardis theme in any of these locations:'
         for p in searched_locs:
             print p
@@ -257,7 +397,6 @@ class ArdisBuilder:
                  '<span>Ardis gives you what others can\'t, it gives you what you deserve,'
                  ' a power of customization.</span>\n\n'
                  )
-
         Ardis_Plus_Images = {}
         Ardis_Mega_Images = {}
         Ardis_Plus_Images['image53'] = 'Images/style_light_apps_no_bg.png'
@@ -331,7 +470,7 @@ class ArdisBuilder:
 
         outro_text.set_label(outro)
 
-    def ardis_dirs(self, **ArdisDirArgs):
+    def ardis_dirs(self, path, **ArdisDirArgs):
         self.errorlist = []
         self.errordict = {}
         for k, v in ArdisDirArgs.items():
@@ -340,16 +479,18 @@ class ArdisBuilder:
                          'mimetypes', 'panel', 'places', 'status']
         themedirlist = []
         theme_size_dirs = []
-        theme_size_dirs = glob.glob(self.Ardis_kw['path'] + '/*x*/')
+        theme_size_dirs = glob.glob('%s/*x*/' % path)
         theme_size_dirs.sort()
         for s_dir in theme_size_dirs:
             for c_dir in themecontexts:
                 test_s_c_dir = os.path.join(s_dir, c_dir)
                 if os.path.isdir(test_s_c_dir):
-                    theme_ready_path = os.path.relpath(test_s_c_dir, self.Ardis_kw['path'])
+                    theme_ready_path = os.path.relpath(test_s_c_dir, path)
                     themedirlist.append(re.sub('\/$', '', theme_ready_path))
                     # The index is now happy, now we need to make any needed symlinks
                 if os.path.islink(test_s_c_dir):
+                    if "--debug" in sys.argv:
+                        print "-->ardis_dirs-->Found symlink %s" % test_s_c_dir
                     try:
                         link_target = 'extra/' + c_dir + '/' + ArdisDirArgs[c_dir] + '/'
                         if os.path.isdir(os.path.join(s_dir, link_target)):
@@ -358,14 +499,20 @@ class ArdisBuilder:
                             os.utime(test_s_c_dir, None)
                         else:
                             new_sym_error = str(
-                                "Hmm. Looks like " + os.path.join(s_dir, link_target) + " doesnt exist.")
-
+                                "Hmm. Looks like %s doesnt exist." % os.path.join(s_dir, link_target))
+                            if "--debug" in sys.argv:
+                                print "-->ardis_dirs-->%s" % new_sym_error
                             self.errorlist.append(new_sym_error)
                             self.errordict[theme_ready_path] = dict(SymLinkError=str(os.path.join(s_dir, link_target)))
                     except KeyError, undef_cat:
-                        new_cat_error = str('***Oops! ' + str(undef_cat) + ' is not defined!***')
+                        new_cat_error = str('***Oops! %s is not defined!***' % str(undef_cat))
+                        if "--debug" in sys.argv:
+                            print "-->ardis_dirs-->%s" % new_cat_error
                         self.errordict[theme_ready_path]['UndefinedCategoryError'] = str(undef_cat)
                         self.errorlist.append(new_cat_error)
+        if "--debug" in sys.argv:
+            print "-->ardis_dirs-->%s" % str(self.errordict)
+            print "-->ardis_dirs-->%s" % str(self.errorlist)
         temp_directories = re.sub("\'\,\s\'", ",", str(themedirlist))
         newdirectories = re.sub("(^\[\'|\'\]$)", "", temp_directories)
         return newdirectories
@@ -436,7 +583,8 @@ class ArdisBuilder:
         elif nextbutton.get_label() == '  Build   ':
             # The user has chosen to generate
             # First we re-read all the choices
-            d_string = self.ardis_dirs(places=self.choice_values['places'].lower(),
+            d_string = self.ardis_dirs(self.Ardis_kw['path'],
+                                       places=self.choice_values['places'].lower(),
                                        actions=self.choice_values['actions'],
                                        apps=self.choice_values['small apps'],
                                        status=self.choice_values['status'],
@@ -574,7 +722,19 @@ class ArdisBuilder:
 
 class Handler:
     def __init__(self):
-        window.show_all()
+        #splash_win.show_all()
+        #sleep(1)
+        #splash_win.hide()
+        #window.show_all
+        self.combobox = builder.get_object('comboboxtext1')
+        if len(abapp.find_theme_path('Ardis', showall=True)) > 1:
+            for i in abapp.find_theme_path('Ardis', showall=True):
+                self.combobox.append_text(str(i))
+            picker_win.show_all()
+            #This will call the prompt
+            #for now, the stuff is static
+        else:
+            self.on_splash_show(hidden=True)
         backbutton.hide()
         aboutbutton.hide()
         extrastuffbutton.hide()
@@ -593,6 +753,100 @@ class Handler:
             self.gtksettings.props.gtk_button_images = True
         finally:
             pass
+
+    def on_splash_mapped(self, *args):
+        #print "hi"
+        #splash_box.show_now()
+        #splash_prog_lbl.show_now()
+        #sleep(3)
+        pass
+
+    def on_splash_lbl_drawn(self, *args):
+        print "drawn"
+
+    def on_picker_submit_clicked(self, *args):
+        choice = self.combobox.get_active_text()
+        if choice:
+            abapp.Ardis_kw['path'] = choice
+            abapp.Ardis_kw['dir'] = os.path.basename(choice)
+            self.on_splash_show(hidden=False)
+            window.show_all()
+
+
+    def on_splash_show(self, hidden=False, *args):
+        #print "drawn2"
+        if hidden is False:
+            splash_win.show_all()
+        if hidden is True:
+            splash_win.hide()
+        splash_prog_lbl = builder.get_object('splash_prog_lbl')
+        splash_progbar = builder.get_object('splash_progbar')
+        splash_prog_lbl.props.label = "Reading theme index into memory"
+        abapp.load_index_to_dict(abapp.Ardis_kw['path'])
+        splash_progbar.set_fraction(0.1)
+
+        splash_prog_lbl.props.label = "Reading edition-specific properties"
+        theme_dict.apply_unlocks(abapp.Ardis_kw['edition'])
+        splash_progbar.set_fraction(0.2)
+
+        splash_prog_lbl.props.label = "Loading additional preview icons"
+        theme_dict.refresh_unlocked_icons(builder)
+        splash_progbar.set_fraction(0.3)
+
+        splash_prog_lbl.props.label = "Hiding Locked Items"
+        hide_bonus_choices(theme_dict.unlocked['places'], 'box10')
+        splash_progbar.set_fraction(0.4)
+        hide_bonus_choices(theme_dict.unlocked['statuses'], 'box20')
+        splash_progbar.set_fraction(0.5)
+        hide_bonus_choices(theme_dict.unlocked['categories'], 'box31')
+        splash_progbar.set_fraction(0.6)
+        hide_bonus_choices(theme_dict.unlocked['apps'], 'box15')
+        splash_progbar.set_fraction(0.7)
+        hide_bonus_choices(theme_dict.unlocked['actions'], 'box3')
+        splash_progbar.set_fraction(0.8)
+
+        theme_dict.apply_edition_labels(builder, abapp.AB_rc_dict['Edition'], theme=abapp.Ardis_kw['dir'])
+        splash_progbar.set_fraction(1.0)
+        if "--debug" not in sys.argv:
+            splash_win.hide()
+            window.show_all()
+            return False
+        print "done"
+        #sleep(3)
+        print "woken"
+        print Gtk.main_level()
+        print splash_prog_lbl.props.label
+        for prop in dir(splash_prog_lbl.props):
+            try:
+                print "\n", prop
+                print splash_prog_lbl.props.__getattribute__(str(prop))
+            except AttributeError:
+                pass
+            except TypeError:
+                pass
+        Gtk.main_quit()
+        Gtk.main()
+
+    def on_splash_lbl_realized(self, *args):
+        #print "realized"
+        #sleep(1)
+        pass
+
+    def print_event(self, *args):
+        if "--debug" not in sys.argv:
+            return None
+        print args, "hi"
+        event = args[1]
+        try:
+            #print dir(event)
+            print event.get_event_type()
+        except AttributeError:
+            pass
+        print ""
+
+    def on_splash_lbl_show(self, *args):
+        print "shown"
+        #sleep(1)
 
     def on_window1_delete_event(self, arg1, arg2):
         # Captures exit request made by a window manager
@@ -643,6 +897,7 @@ class Handler:
 
     def on_open_window_clicked(self, window3, *junk):
         window3.show_all()
+        theme_dict.apply_edition_labels(builder, "Mega", theme="Ardis")
         if window3.props.title == 'Password':
             pathstat = os.stat(os.path.join(abapp.Ardis_kw['path'], 'index.theme'))
             builder.get_object('lbl_cur_u_num').props.label = str(os.getuid())
@@ -747,9 +1002,13 @@ import Theme_Indexer
 builder = Gtk.Builder()
 builder.add_from_file(abapp.w_path + '/Ardis setup unified2.glade')
 
-abapp.ardis_edition_apply(abapp.Ardis_kw['edition'])
+theme_dict = ArdisDict()
+#abapp.ardis_edition_apply(abapp.Ardis_kw['edition'])
+
 
 window = builder.get_object("window1")
+splash_win = builder.get_object("AB_splash_window")
+picker_win = builder.get_object('picker')
 advsetwin = builder.get_object("window2")
 pageDot = builder.get_object("curr_page_dot")
 mainbox = builder.get_object("box1")
@@ -759,17 +1018,31 @@ aboutbutton = builder.get_object("box38")
 extrastuffbutton = builder.get_object("box37")
 pageone = builder.get_object("viewport1")
 
-hide_bonus_choices(abapp.ardis_unlocked_places, 'box10')
-hide_bonus_choices(abapp.ardis_unlocked_statuses, 'box20')
-hide_bonus_choices(abapp.ardis_unlocked_categories, 'box31')
-hide_bonus_choices(abapp.ardis_unlocked_apps, 'box15')
-hide_bonus_choices(abapp.ardis_unlocked_actions, 'box3')
+
+
+
+#hide_bonus_choices(abapp.ardis_unlocked_places, 'box10')
+#hide_bonus_choices(abapp.ardis_unlocked_statuses, 'box20')
+#hide_bonus_choices(abapp.ardis_unlocked_categories, 'box31')
+#hide_bonus_choices(abapp.ardis_unlocked_apps, 'box15')
+#hide_bonus_choices(abapp.ardis_unlocked_actions, 'box3')
 current_page = 0
 builder.connect_signals(Handler())
 
 ssh_session = abapp.envars.get('SSH_CONNECTION')
+#splash_win.show_now()
+builder.get_object('splash_prog_lbl').show_now()
+builder.get_object('splash_progbar').show_now()
+#sleep(2)
+
+splash_prog_lbl = builder.get_object('splash_prog_lbl')
+splash_progbar = builder.get_object('splash_progbar')
+splash_box = builder.get_object('AB_splash_rootbox')
+
+
 if ssh_session:
     pass
     # exit()
-Gtk.main()
+blah = Gtk.main()
+
 exit()

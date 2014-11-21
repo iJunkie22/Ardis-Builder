@@ -2,6 +2,108 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.4"/>
+  <object class="GtkWindow" id="AB_splash_window">
+    <property name="width_request">440</property>
+    <property name="height_request">250</property>
+    <property name="can_focus">False</property>
+    <property name="events">GDK_EXPOSURE_MASK | GDK_ENTER_NOTIFY_MASK | GDK_STRUCTURE_MASK | GDK_VISIBILITY_NOTIFY_MASK</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center</property>
+    <property name="default_width">438</property>
+    <property name="default_height">250</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">splashscreen</property>
+    <property name="urgency_hint">True</property>
+    <property name="decorated">False</property>
+    <property name="deletable">False</property>
+    <property name="startup_id">A</property>
+    <signal name="event" handler="print_event" swapped="no"/>
+    <signal name="event-after" handler="print_event" swapped="no"/>
+    <signal name="map-event" handler="on_splash_mapped" after="yes" swapped="no"/>
+    <child>
+      <object class="GtkBox" id="AB_splash_rootbox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkImage" id="image65">
+            <property name="width_request">96</property>
+            <property name="height_request">96</property>
+            <property name="visible">True</property>
+            <property name="app_paintable">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="pixbuf">icons/icon_96x96.png</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label48">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="vexpand">True</property>
+            <property name="label" translatable="yes">ArdisBuilder</property>
+            <signal name="draw" handler="on_splash_lbl_drawn" after="yes" swapped="no"/>
+            <signal name="draw" handler="print_event" swapped="no"/>
+            <signal name="event" handler="print_event" swapped="no"/>
+            <signal name="event-after" handler="print_event" swapped="no"/>
+            <signal name="realize" handler="on_splash_lbl_realized" after="yes" swapped="no"/>
+            <signal name="show" handler="on_splash_lbl_show" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box41">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="vexpand">True</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkProgressBar" id="splash_progbar">
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">False</property>
+                <property name="double_buffered">False</property>
+                <property name="valign">center</property>
+                <property name="vexpand">True</property>
+                <property name="show_text">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="splash_prog_lbl">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">label</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -821,6 +923,86 @@ Please click next for further customization options.</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">Images/page_indicator1.png</property>
+  </object>
+  <object class="GtkWindow" id="picker">
+    <property name="width_request">440</property>
+    <property name="height_request">250</property>
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Choose your target</property>
+    <property name="window_position">center</property>
+    <property name="default_width">440</property>
+    <property name="default_height">250</property>
+    <property name="decorated">False</property>
+    <child>
+      <object class="GtkBox" id="box43">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkImage" id="image66">
+            <property name="width_request">96</property>
+            <property name="height_request">96</property>
+            <property name="visible">True</property>
+            <property name="app_paintable">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="vexpand">True</property>
+            <property name="pixbuf">icons/icon_96x96.png</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label52">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="valign">center</property>
+            <property name="vexpand">True</property>
+            <property name="label" translatable="yes">Please select which ArdisBuilder-compatible theme to modify:</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBoxText" id="comboboxtext1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="valign">center</property>
+            <property name="vexpand">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="button3">
+            <property name="label" translatable="yes">Done!</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="vexpand">True</property>
+            <property name="relief">none</property>
+            <signal name="clicked" handler="on_picker_submit_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
   </object>
   <object class="GtkStatusIcon" id="statusicon1">
     <property name="file">icons/ardis-builder-small.png</property>
