@@ -735,9 +735,7 @@ class Handler:
             #for now, the stuff is static
         else:
             self.on_splash_show(hidden=True)
-        backbutton.hide()
-        aboutbutton.hide()
-        extrastuffbutton.hide()
+
         self.page_dot_dot = builder.get_object('curr_page_dot')
         self.page_dot_container = self.page_dot_dot.get_parent()
         self.cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
@@ -769,8 +767,8 @@ class Handler:
         if choice:
             abapp.Ardis_kw['path'] = choice
             abapp.Ardis_kw['dir'] = os.path.basename(choice)
+            picker_win.hide()
             self.on_splash_show(hidden=False)
-            window.show_all()
 
 
     def on_splash_show(self, hidden=False, *args):
@@ -810,6 +808,8 @@ class Handler:
         if "--debug" not in sys.argv:
             splash_win.hide()
             window.show_all()
+            backbutton.hide()
+            extrastuffbutton.hide()
             return False
         print "done"
         #sleep(3)
@@ -824,8 +824,8 @@ class Handler:
                 pass
             except TypeError:
                 pass
-        Gtk.main_quit()
-        Gtk.main()
+        splash_win.hide()
+        window.show_all()
 
     def on_splash_lbl_realized(self, *args):
         #print "realized"
@@ -889,14 +889,35 @@ class Handler:
         return True
         # print self.get_active()
 
-    def on_eventbox_radio_press(self, radio, image):
+    def on_eventbox_radio_press(self, radio, void):
+        """
+
+        :param radio: Gtk.EventBox
+        :param void: null
+        """
         rad_parent = radio.get_parent()
-        i = rad_parent.get_children().index(radio)
+        rad_siblings = rad_parent.get_children()
+        i = int(rad_siblings.index(radio))
+
+        if "--debug" in sys.argv:
+            rad_grammy = rad_parent.get_parent()
+            rad_uncles = rad_grammy.get_children()
+            lbl_siblings = rad_uncles[1].get_children()
+
+            rad_pos = int(list(c.props.name for c in rad_siblings).index('cur_rad'))
+            try:
+                chosen = str(list(abapp.Ardis_generic[x.props.label] for x in lbl_siblings)[i])
+            except KeyError, e:
+                chosen = str(list(x.props.label for x in lbl_siblings)[i])
+            finally:
+                print chosen
+
         cur_rad = builder.get_object(abapp.AB_Pages[self.cur_page]["cur_rad"])
         rad_parent.reorder_child(cur_rad, i)
 
     def on_open_window_clicked(self, window3, *junk):
         window3.show_all()
+
         theme_dict.apply_edition_labels(builder, "Mega", theme="Ardis")
         if window3.props.title == 'Password':
             pathstat = os.stat(os.path.join(abapp.Ardis_kw['path'], 'index.theme'))
@@ -989,6 +1010,7 @@ def hide_bonus_choices(unlocked_dict, targ_x):
             out_list.append(l_list[i])
     for i in out_list:
         i.hide()
+
 
 
 __warningregistry__ = dict()
