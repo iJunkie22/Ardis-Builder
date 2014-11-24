@@ -176,9 +176,11 @@ class ArdisBuilder:
             else:
                 self.user_DE = 'unknown'
 
-        self.Ardis_kw = dict(name='Ardis',
-                             dir='Ardis',
+        self.Ardis_kw = dict(name=None,
+                             dir=None,
                              vers='1.0',
+                             comment=None,
+                             path=None
                              )
 
         if "--override" in sys.argv:
@@ -189,9 +191,6 @@ class ArdisBuilder:
                     if k in self.Ardis_kw.keys():
                         self.Ardis_kw[k] = v
                         print parts, "override used"
-
-        self.Ardis_kw['comment'] = 'Simple and flat icon theme with long shadow - v' + self.Ardis_kw['vers'],
-        self.Ardis_kw['path'] = self.find_theme_path(self.Ardis_kw['dir'])
 
         m_list = sys.modules.keys()
         if "gi" not in m_list:
@@ -280,6 +279,8 @@ class ArdisBuilder:
                 self.choices[v['desc']] = {'label_box': v['lab_box'], 'radio': v['cur_rad']}
 
     def load_index_to_dict(self, path):
+        if path is None:
+            return False
         self.AB_rc_dict = self.parse_file(os.path.join(path, "index.theme"),
                                           'X-ArdisBuilder Settings')
         self.Ardis_index_dict = self.parse_file(os.path.join(path, "index.theme"), 'Icon Theme')
@@ -330,7 +331,7 @@ class ArdisBuilder:
             nf.close()
         return new_dict
 
-    def find_theme_path(self, themedir, showall=False):
+    def find_theme_path(self, themedir=None, showall=False):
         icon_theme_locs = []
         searched_locs = []
         themes_here = []
@@ -351,15 +352,21 @@ class ArdisBuilder:
                     if os.path.isdir(os.path.join(themes_d, item)):
                         match = re.search("(Ardis|Ursa)", item, flags=re.IGNORECASE)
                         if match:
+                            if showall is False:
+                                return os.path.join(themes_d, item)
                             themes_here.append(os.path.join(themes_d, item))
             if "--debug" in sys.argv:
                 print "--> Found these themes %s" % themes_here
-            pos_theme_path = os.path.join(themes_d, themedir)
-            searched_locs.append(pos_theme_path)
-            if os.path.isdir(pos_theme_path) and showall is False:
-                return pos_theme_path
-        if len(themes_here) > 0 and showall is True:
-            return themes_here
+            if themedir:
+                pos_theme_path = os.path.join(themes_d, themedir)
+                searched_locs.append(pos_theme_path)
+                if os.path.isdir(pos_theme_path) and showall is False:
+                    return pos_theme_path
+        if showall is True:
+            if len(themes_here) == 1:
+                return themes_here[0]
+            if len(themes_here) > 1:
+                return themes_here
         print 'Could not find the Ardis theme in any of these locations:'
         for p in searched_locs:
             print p
@@ -732,8 +739,8 @@ class Handler:
                 self.combobox.append_text(str(i))
             picker_win.show_all()
             #This will call the prompt
-            #for now, the stuff is static
         else:
+            abapp.load_index_to_dict(abapp.find_theme_path())
             self.on_splash_show(hidden=True)
 
         self.page_dot_dot = builder.get_object('curr_page_dot')
