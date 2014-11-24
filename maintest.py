@@ -770,7 +770,6 @@ class Handler:
             picker_win.hide()
             self.on_splash_show(hidden=False)
 
-
     def on_splash_show(self, hidden=False, *args):
         #print "drawn2"
         if hidden is False:
@@ -785,6 +784,7 @@ class Handler:
 
         splash_prog_lbl.props.label = "Reading edition-specific properties"
         theme_dict.apply_unlocks(abapp.Ardis_kw['edition'])
+        #theme_dict.apply_unlocks(abapp.AB_rc_dict['Edition'])
         splash_progbar.set_fraction(0.2)
 
         splash_prog_lbl.props.label = "Loading additional preview icons"
@@ -802,7 +802,7 @@ class Handler:
         splash_progbar.set_fraction(0.7)
         hide_bonus_choices(theme_dict.unlocked['actions'], 'box3')
         splash_progbar.set_fraction(0.8)
-
+        #theme_dict.refresh_unlocked_icons(builder)
         theme_dict.apply_edition_labels(builder, abapp.AB_rc_dict['Edition'], theme=abapp.Ardis_kw['dir'])
         splash_progbar.set_fraction(1.0)
         if "--debug" not in sys.argv:
@@ -984,32 +984,26 @@ def getPosInCont(targ_obj, targ_con):
 
 def getPosInParent(targ_obj):
     target_object = builder.get_object(targ_obj)
-    taget_container = target_object.get_parent()
-    objects_list = taget_container.get_children()
-    return objects_list.index(target_object)
+    output = list(target_object.get_parent().get_children()).index(target_object)
+    return output
 
 
 def getNthChildLabel(targ_con, child_n):
     taget_container = builder.get_object(targ_con)
-    objects_list = taget_container.get_children()
-    target_label = objects_list[child_n]
-    return target_label.get_text()
+    output = taget_container.get_children()[child_n].get_text()
+    return output
 
 
 def hide_bonus_choices(unlocked_dict, targ_x):
     targ_parent = builder.get_object(targ_x)
     out_list = []
     col_list = targ_parent.get_children()
-    r_list = col_list[0].get_children()
-    l_list = col_list[1].get_children()
-    p_list = col_list[2].get_children()
-    for i, v in enumerate(l_list):
-        if v.get_text() not in unlocked_dict:
-            out_list.append(r_list[i])
-            out_list.append(p_list[i])
-            out_list.append(l_list[i])
-    for i in out_list:
-        i.hide()
+    for i, v in enumerate(list(z.get_text() for z in col_list[1].get_children())):
+
+        if v not in unlocked_dict:
+            out_list.extend(list(x.get_children()[i] for x in col_list))
+    for obj in out_list:
+        obj.hide()
 
 
 

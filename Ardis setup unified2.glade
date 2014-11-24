@@ -1540,7 +1540,6 @@ Please select below what type of &lt;b&gt;action&lt;/b&gt; icons you prefer. </p
                   <object class="GtkEventBox" id="event_box_curr_radio1">
                     <property name="name">cur_rad</property>
                     <property name="visible">True</property>
-                    <property name="sensitive">False</property>
                     <property name="can_focus">False</property>
                     <property name="visible_window">False</property>
                     <property name="above_child">True</property>
