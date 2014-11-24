@@ -84,7 +84,7 @@ header h2 {
 
 .inner {
   position: relative;
-  width: 940px;
+  max-width: 940px;
   margin: 0 auto;
 }
 
@@ -368,14 +368,18 @@ footer a:hover {
     START OF HEADER NAV BAR STYLING
     ===================================
 */
-
+div#nav {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+}
 .inner-nav {
     float: right;
     /*height: 30px;*/
     position: relative;
-    width: 940px;
+    width: 100%;
     vertical-align: bottom;
-    margin-right: 50px;
+    margin-right: 0px;
     overflow: auto;
     max-width: 100%;
     display: block;
@@ -390,7 +394,7 @@ footer a:hover {
     border: 1px solid transparent;
     border-radius: 10px;
     margin-left: 10px;
-    margin-right: 10px;
+    margin-right: 0px;
     text-align: right;
 }
 
@@ -415,11 +419,12 @@ footer a:hover {
 /* Tablet Portrait size to standard 960 (devices and browsers) */
 @media only screen and (min-width: 768px) and (max-width: 959px) {
   .inner {
-    width: 740px;
+    min-width: 768px;
+    max-width: 740px;
   }
-  header h1, header h2 {
+  /*header h1, header h2 {
     width: 340px;
-  }
+  }*/
   header h1 {
     font-size: 60px;
   }
@@ -446,13 +451,41 @@ footer a:hover {
   .inner {
     width: 93%;
   }
+  header h1 {
+    display: inline-block;
+  }
+  header h2 {
+    display: none;
+    position: absolute;
+  }
+  div#nav {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  display: block;
+}
   .inner-nav {
-  margin-right: 5px;
+  margin-right: 0px;
   margin-left: 0;
+  display: block;
+  position: relative;
   }
   .inner-nav a {
   margin-left: 2px;
   margin-right: 2px;
+  background-color: #9ddcff;
+  color: #2879d0;
+  -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;                     
+    border-radius: 5px;
+  
+  }
+  .inner-nav a[title="README"], .inner-nav a[title="Support"] {
+    display: none;
+    margin: 0px;
+  }
+  .inner-nav a span {
+    display: none;
   }
   .bluetable {
   max-width: 93%;
@@ -506,7 +539,7 @@ footer a:hover {
     width: auto;
     height: auto;
     display: inline-block;
-    margin-top: 15px;
+    margin-top: 0px;
     padding: 5px 10px;
     position: relative;
     text-align: center;
@@ -728,6 +761,11 @@ span.imageheader {
     font-size: 48px;
 }
 
+div.selects {
+  display: block;
+  padding: 10px;
+}
+
 /*
     ===================================
     START OF FOOTER STYLING
@@ -863,4 +901,22 @@ output::before {
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 @media only screen and (max-width: 479px) {}
 
-
+@media only screen and (max-width: 450px) {
+  header h1 {
+    font-size: 40px;
+  }
+  }
+@media only screen and (max-width: 400px) {
+  header h1 {
+    font-size: 30px;
+  }
+  body {
+    min-width: 340px;
+  }
+  header a.button {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+@viewport {
+  width: screen-width;
+}

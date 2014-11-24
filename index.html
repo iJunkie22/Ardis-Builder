@@ -70,20 +70,22 @@
         <h1>Ardis-builder</h1>
         <h2>Official setup and customization wizard for the Ardis Icon Theme</h2>
         <a href="https://github.com/iJunkie22/Ardis-Builder" class="button"><small>View project on</small>GitHub</a>
+        <div id="nav">
+        	<div class="inner-nav">
+          <a href="mega-theme.html" title="Ardis Mega"><span>Ardis </span>Mega</a>
+          <a href="plus-theme.html" title="Ardis Plus"><span>Ardis </span>Plus</a>
+          <a href="basic-theme.html" title="Ardis Basic"><span>Ardis </span>Basic</a>
+      </div>
+      <div class="inner-nav">
+          <a href="https://github.com/iJunkie22/Ardis-Builder" title="README">README</a>
+        <a href="https://github.com/iJunkie22/Ardis-Builder/wiki" title="Wiki">Wiki</a>
+        <!-- <a href="https://github.com/iJunkie22/Ardis-Builder" title="Support">Support</a>-->
+        <a href="about.html" title="About">About</a>
+        <a class="current" href="index.html" title="Home">Home</a>
+      </div>
+        </div>
+      </div>
       
-      </div>
-      <div class="inner-nav">
-          <a href="mega-theme.html">Ardis Mega</a>
-          <a href="plus-theme.html">Ardis Plus</a>
-          <a href="basic-theme.html">Ardis Basic</a>
-      </div>
-      <div class="inner-nav">
-          <a href="https://github.com/iJunkie22/Ardis-Builder">README</a>
-        <a href="https://github.com/iJunkie22/Ardis-Builder/wiki">Wiki</a>
-        <a href="https://github.com/iJunkie22/Ardis-Builder">Support</a>
-        <a href="about.html">About</a>
-        <a class="current" href="index.html">Home</a>
-      </div>
       
     </header>
 
@@ -103,22 +105,13 @@
 <h4>
 <a id="artwork-by-kotusworks------code-by-ijunkie22" class="anchor" href="#artwork-by-kotusworks------code-by-ijunkie22"><span class="octicon octicon-link"></span></a>Artwork by Kotusworks   |   Code by iJunkie22</h4>
 
-<h6>
-<a id="github---httpsgithubcomijunkie22ardis-builder" class="anchor" href="#github---httpsgithubcomijunkie22ardis-builder"><span class="octicon octicon-link"></span></a>GitHub - <a href="https://github.com/iJunkie22/Ardis-Builder">https://github.com/iJunkie22/Ardis-Builder</a>
-</h6>
-
-<h6>
-<a id="deviantart---httpkotusworksdeviantartcomartardis-icon-theme-450178304" class="anchor" href="#deviantart---httpkotusworksdeviantartcomartardis-icon-theme-450178304"><span class="octicon octicon-link"></span></a>deviantART - <a href="http://kotusworks.deviantart.com/art/Ardis-Icon-Theme-450178304">http://kotusworks.deviantart.com/art/Ardis-Icon-Theme-450178304</a>
-</h6>
-
-<h6>
-<a id="trello---httpstrellocombrkn5p8kqardis" class="anchor" href="#trello---httpstrellocombrkn5p8kqardis"><span class="octicon octicon-link"></span></a>Trello - <a href="https://trello.com/b/Rkn5p8kQ/ardis">https://trello.com/b/Rkn5p8kQ/ardis</a>
-</h6>
 <hr>
 
-        
-    <span>Check if ArdisBuilder is confirmed to work with your setup:</span><br>
-    <select id="platform_selection" value="" name="platform_selection" onchange="supported_result.value=value;showselector(value)" title="Platform">
+    
+    
+    <h2>Check if ArdisBuilder is confirmed to work with your setup:</h2>
+    <div class="selects">
+    <select id="platform_selection" name="platform_selection" onchange="supported_result.value=value;showselector(value)" title="Platform">
       <option value="" selected>Select A Platform</option>
       <option value="OSX">OSX</option>
       <option value="Linux">Linux</option>
@@ -131,7 +124,7 @@
         <option value="ubuntu">Ubuntu</option>
       
     </select>
-    <br>
+    </div>
     <div id="output_results">
     <output id="supported_result" title="Platform"></output>
     <output id="supported_de_result" title="Desktop Environment"></output>
@@ -140,7 +133,7 @@
     <br>
     <br>
     <br>
-    
+    <hr>
     
     <table class="bluetable" id="ardis-packs-table">
             <caption><span>Ardis Editions</span></caption>
