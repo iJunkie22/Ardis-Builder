@@ -10,6 +10,8 @@ import shlex
 from io import StringIO
 from time import sleep
 
+
+
 mypath = __file__
 os.chdir(os.path.dirname(mypath))
 
@@ -278,14 +280,15 @@ class ArdisBuilder:
             if v['has_radios'] is True:
                 self.choices[v['desc']] = {'label_box': v['lab_box'], 'radio': v['cur_rad']}
 
-    def load_index_to_dict(self, path):
+    def load_index_to_dict(self, path, keepdirs=False):
         if path is None:
             return False
         self.AB_rc_dict = self.parse_file(os.path.join(path, "index.theme"),
                                           'X-ArdisBuilder Settings')
         self.Ardis_index_dict = self.parse_file(os.path.join(path, "index.theme"), 'Icon Theme')
         self.Ardis_kw['dcount'] = len(self.Ardis_index_dict['Directories'].split(','))
-        del self.Ardis_index_dict['Directories']
+        if keepdirs is False:
+            del self.Ardis_index_dict['Directories']
 
         ardis_vers_pat = re.search('((?<= \- v).*)', self.Ardis_index_dict['Comment'])
         if ardis_vers_pat:
@@ -352,7 +355,7 @@ class ArdisBuilder:
                     if os.path.isdir(os.path.join(themes_d, item)):
                         match = re.search("(Ardis|Ursa)", item, flags=re.IGNORECASE)
                         if match:
-                            if showall is False:
+                            if themedir is None and showall is False:
                                 return os.path.join(themes_d, item)
                             themes_here.append(os.path.join(themes_d, item))
             if "--debug" in sys.argv:
@@ -372,6 +375,26 @@ class ArdisBuilder:
             print p
         print 'exiting...'
         sys.exit(1)
+
+    def map_index_to_dict(self, path, verbose=False):
+        index_file = os.path.join(path, "index.theme")
+        new_dict = self.parse_file(index_file, 'Icon Theme')
+        index_dict = dict()
+        if verbose is True:
+            print "[Icon Theme]"
+            for k, v in new_dict.items():
+                print "%s=%s" % (k, v)
+        for i in new_dict['Directories'].split(','):
+            d_dict = self.parse_file(index_file, i)
+            if d_dict['Context'] not in index_dict.keys():
+                index_dict[d_dict['Context']] = dict()
+
+            for fullpath in glob.iglob("%s/*" % os.path.join(path, i)):
+                filename = os.path.relpath(fullpath, os.path.join(path, i)).split('.')[0]
+                if filename not in index_dict[d_dict['Context']].keys():
+                    index_dict[d_dict['Context']][filename] = list()
+                index_dict[d_dict['Context']][filename].append(d_dict['Size'])
+        return index_dict
 
     def default_ab_strings(self):
         newdict = dict()
@@ -816,7 +839,7 @@ class Handler:
             splash_win.hide()
             window.show_all()
             backbutton.hide()
-            extrastuffbutton.hide()
+            #extrastuffbutton.hide()
             return False
         print "done"
         #sleep(3)
@@ -838,6 +861,51 @@ class Handler:
         #print "realized"
         #sleep(1)
         pass
+
+    def moo(self, *args):
+        print "moo"
+
+    def remap(self, *args):
+        print args
+        #obj.unmap()
+
+        #obj.map()
+        print "unmapping"
+        args[0].unmap()
+        print "remapping"
+        args[0].map()
+        print "remapped"
+        return True
+
+    def reset_buffer(self, buffer):
+        buffer.set_text("")
+
+    def on_extras_btn_click(self, button):
+        combo_box_theme = builder.get_object('comboboxtext2')
+        text_buffer = builder.get_object('textbuffer2')
+        if button.props.name == "print_self_index":
+            theme_choice = combo_box_theme.get_active_text()
+            oxy_theme_path = abapp.find_theme_path(themedir=theme_choice, showall=False)
+            if oxy_theme_path is None:
+                return False
+
+            ardis_dict = abapp.map_index_to_dict(abapp.Ardis_kw['path'], verbose=False)
+            oxygen_dict = abapp.map_index_to_dict(oxy_theme_path, verbose=False)
+
+            dif_dict1 = oxygen_dict
+            for c, c_dict in oxygen_dict.items():
+                if c in ardis_dict.keys():
+                    for f_n, f_list in c_dict.items():
+                        if f_n in ardis_dict[c].keys():
+                            for s in f_list:
+                                if s in ardis_dict[c][f_n]:
+                                    dif_dict1[c][f_n].remove(s)
+
+            read_mapped_index(dif_dict1, buffer=text_buffer)
+
+            return True
+        else:
+            return False
 
     def print_event(self, *args):
         if "--debug" not in sys.argv:
@@ -1011,6 +1079,21 @@ def hide_bonus_choices(unlocked_dict, targ_x):
             out_list.extend(list(x.get_children()[i] for x in col_list))
     for obj in out_list:
         obj.hide()
+
+
+def read_mapped_index(mapped_dict, buffer=None):
+    for k, v in mapped_dict.items():
+        if buffer:
+            buffer.insert_at_cursor(str("\n\n\n[%s]\n" % k))
+        else:
+            print "\n\n\n[%s]" % k
+        for a in sorted(v.keys()):
+            temp_directories = re.sub("\'\,\s\'", ",", str(v[a]))
+            item_directories = re.sub("(^\[\'|\'\]$)", "", temp_directories)
+            if buffer:
+                buffer.insert_at_cursor(str("%s=%s\n" % (a, item_directories)))
+            else:
+                print "%s=%s" % (a, item_directories)
 
 
 

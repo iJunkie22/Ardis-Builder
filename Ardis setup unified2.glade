@@ -528,6 +528,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   <object class="GtkEventBox" id="eventbox23">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <signal name="button-press-event" handler="on_open_window_clicked" object="extraswin" swapped="no"/>
                     <child>
                       <object class="GtkBox" id="box37">
                         <property name="visible">True</property>
@@ -1258,6 +1259,110 @@ Please click next for further customization options.</property>
     <property name="has_tooltip">True</property>
     <property name="tooltip_text" translatable="yes">Ardis Builder</property>
     <property name="title" translatable="yes">Ardis Builder</property>
+  </object>
+  <object class="GtkTextBuffer" id="textbuffer2"/>
+  <object class="GtkWindow" id="extraswin">
+    <property name="width_request">440</property>
+    <property name="height_request">250</property>
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Extras</property>
+    <property name="window_position">center</property>
+    <property name="default_width">440</property>
+    <property name="default_height">250</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="transient_for">window1</property>
+    <signal name="delete-event" handler="hide_adv_settings" swapped="no"/>
+    <child>
+      <object class="GtkGrid" id="grid3">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkLabel" id="label54">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">start</property>
+            <property name="label" translatable="yes">Compare to:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolledwindow6">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkTextView" id="textview1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="wrap_mode">word</property>
+                <property name="buffer">textbuffer2</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+            <property name="width">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBoxText" id="comboboxtext2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">start</property>
+            <items>
+              <item id="&lt;Enter ID&gt;" translatable="yes">oxygen</item>
+              <item translatable="yes">gnome</item>
+              <item translatable="yes">hicolor</item>
+            </items>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
+            <property name="width">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="button4">
+            <property name="label" translatable="yes">Print missing icons</property>
+            <property name="name">print_self_index</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="halign">start</property>
+            <property name="valign">start</property>
+            <signal name="clicked" handler="on_extras_btn_click" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">1</property>
+            <property name="width">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="button6">
+            <property name="label" translatable="yes">Reset</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="halign">start</property>
+            <property name="valign">start</property>
+            <signal name="clicked" handler="reset_buffer" object="textbuffer2" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
   </object>
   <object class="GtkTextTagTable" id="texttagtable1">
     <child type="tag">
