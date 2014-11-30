@@ -741,6 +741,7 @@ Copyright (c) 2014 Ivan Kotus</property>
     <property name="logo">icons/icon_128x128.png</property>
     <property name="license_type">artistic</property>
     <signal name="close" handler="hide_adv_settings" swapped="no"/>
+    <signal name="delete-event" handler="hide_adv_settings" swapped="no"/>
     <signal name="response" handler="hide_adv_settings" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkBox" id="aboutdialog-vbox1">
