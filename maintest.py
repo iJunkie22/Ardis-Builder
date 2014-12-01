@@ -13,6 +13,7 @@ from time import sleep
 
 
 mypath = __file__
+assert isinstance(mypath, str)
 os.chdir(os.path.dirname(mypath))
 
 
@@ -275,12 +276,18 @@ class ArdisBuilder:
         self.Ardis_generic = self.default_ab_strings()
         self.choices = dict()
         self.choice_values = dict()
+        self.AB_rc_dict = dict()
+        self.Ardis_index_dict = dict()
 
         for k, v in self.AB_Pages.items():
             if v['has_radios'] is True:
                 self.choices[v['desc']] = {'label_box': v['lab_box'], 'radio': v['cur_rad']}
 
     def load_index_to_dict(self, path, keepdirs=False):
+        """
+Reads the ArdisBuilder settings and Icon Theme settings from an index file to self. Returns True if successful.
+        :rtype : bool
+        """
         if path is None:
             return False
         self.AB_rc_dict = self.parse_file(os.path.join(path, "index.theme"),
@@ -302,6 +309,10 @@ class ArdisBuilder:
 
     def expose_kde_theme_to_gtk(self, path):
         # This will let gtk see non-standard icon theme paths, such as those used by kde
+        """
+
+        :rtype : bool
+        """
         ardis_theme_parent = str(os.path.dirname(path))
         # gtk_theme_paths = []
         gtk_real_theme_paths = []
@@ -317,6 +328,13 @@ class ArdisBuilder:
         return False
 
     def parse_file(self, indexfile, targ_group):
+        """
+Selectively reads a specific group in a standard config file into a dict object.
+
+        :param indexfile: path to config file
+        :param targ_group: group str
+        :rtype : dict
+        """
         new_dict = {}
         nf = open(indexfile, 'r')
         try:
@@ -377,6 +395,14 @@ class ArdisBuilder:
         sys.exit(1)
 
     def map_index_to_dict(self, path, verbose=False):
+        """
+Recursively reads a theme index file, and obeys the index to find all sizes for any given icon.
+Organizes this information into a dict with Contexts as top-level keys, icon names as second-level keys, and
+a list containing the sizes of the icon, stored as the value of the icon name keys.
+        :param path: path to index file
+        :param verbose: whether to print the index
+        :rtype : dict
+        """
         index_file = os.path.join(path, "index.theme")
         new_dict = self.parse_file(index_file, 'Icon Theme')
         index_dict = dict()
@@ -397,6 +423,10 @@ class ArdisBuilder:
         return index_dict
 
     def default_ab_strings(self):
+        """
+Acts as a starting point for the ArdisBuilder-to-theme-directory translation dicts.
+        :rtype : dict
+        """
         newdict = dict()
         newdict['Standard Type'] = 'standard'
         newdict['Standard type\nwith gray background'] = 'grayBG'
@@ -411,6 +441,10 @@ class ArdisBuilder:
         return n_dict
 
     def set_ab_image(self, ob_id, ob_fname):
+        """
+
+        :rtype : None
+        """
         targ_img = builder.get_object(ob_id)
         targ_img.clear()
         targ_img.set_from_file(ob_fname)
@@ -501,6 +535,13 @@ class ArdisBuilder:
         outro_text.set_label(outro)
 
     def ardis_dirs(self, path, **ArdisDirArgs):
+        """
+
+
+        :param path: theme path
+        :param ArdisDirArgs: AB theme settings for each context
+        :rtype : str
+        """
         self.errorlist = []
         self.errordict = {}
         for k, v in ArdisDirArgs.items():
@@ -551,6 +592,9 @@ class ArdisBuilder:
         winbox = builder.get_object("box2")
         page_dict = {}
         page_dict = self.AB_Pages[p_num_to_hide]
+        assert isinstance(page_dict, dict)
+        assert isinstance(page_dict['viewport'], str)
+
         old_vp = builder.get_object(page_dict['viewport'])
         if nextbutton.get_label() == '  Next   ':
             winbox.remove(old_vp)
@@ -558,12 +602,12 @@ class ArdisBuilder:
     def show_page(self, p_num_to_show):
         winbox = builder.get_object("box2")
         vp_to_show = p_num_to_show + 1
-        page_dict = {}
         completeness = ''
         try:
             page_dict = self.AB_Pages[p_num_to_show]
         except KeyError, nullpage:
             page_dict = {'viewport': 'viewport99'}
+        assert isinstance(page_dict, dict)
         new_vp = builder.get_object(page_dict['viewport'])
 
         for k, v in self.choices.items():
@@ -958,6 +1002,10 @@ class Handler:
         print tog.get_active()
 
     def hide_adv_settings(self, wind, event):
+        """
+
+        :rtype : bool
+        """
         wind.hide_on_delete()
         if wind.props.title == 'Password':
             self.pw_purpose = self.old_pw_purpose
@@ -987,7 +1035,9 @@ class Handler:
             finally:
                 print chosen
 
-        cur_rad = builder.get_object(abapp.AB_Pages[self.cur_page]["cur_rad"])
+        cur_dict = abapp.AB_Pages[self.cur_page]
+        assert isinstance(cur_dict, dict)
+        cur_rad = builder.get_object(cur_dict["cur_rad"])
         rad_parent.reorder_child(cur_rad, i)
 
     def on_open_window_clicked(self, window3, *junk):
