@@ -17,6 +17,85 @@ assert isinstance(mypath, str)
 os.chdir(os.path.dirname(mypath))
 
 
+class ArdisThemeGen:
+    def __init__(self):
+        self.rgb_color = dict(r=0, g=0, b=0)
+        self.hexdigits = "0123456789ABCDEF"
+        self.dec_rep = 0
+        self.counter = 0
+
+    def start_shell(self):
+        self.args = str("xargs echo $@")
+        self.args = "while read line; do (${line}); done"
+        self.args = "xargs exec ($@)"
+        self.test = subprocess.Popen(self.args, stdin=subprocess.PIPE, shell=True)
+
+    def hex_to_dec(self, hex_str, step=2):
+        """
+Iterates over hex string with a step of 2 by default, converting to base 10 and yielding each step's result.
+        :param hex_str: string
+        """
+        counter = 1
+        old_num = 0
+        for i in hex_str.upper():
+            cur_num = int(self.hexdigits.index(i))
+
+            if divmod(counter, step)[1] == 0:
+                yield int(old_num + cur_num)
+                old_num = 0
+            else:
+                old_num = ((old_num + cur_num) * 16)
+
+            counter += 1
+
+    def set_color_from_hex(self, new_color):
+        assert isinstance(new_color, str)
+        if new_color[0] == "#":
+            new_color = new_color[1::]
+        self.dec_rep = list(self.hex_to_dec(new_color, step=6))[0]
+        rgb_tuple = tuple(self.hex_to_dec(new_color))
+        self.rgb_color["r"], self.rgb_color["g"], self.rgb_color["b"] = rgb_tuple
+
+    @property
+    def rgb_str(self):
+        """
+Returns catenated rgb representation of rgb_color dict.
+
+        :return: str
+        """
+        return 'rgb(%s,%s,%s)' % (self.rgb_color["r"], self.rgb_color["g"], self.rgb_color["b"])
+
+    def imagemagick_str(self, infile, outfile):
+        return "convert '%s' +level-colors ,'%s' '%s'" % (infile, self.rgb_str, outfile)
+
+    def set_color_from_gdk_str(self, new_color):
+        new_color_str = new_color[4::][0:-1]
+        new_color_list = new_color_str.split(",")
+        self.rgb_color["r"], self.rgb_color["g"], self.rgb_color["b"] = new_color_list
+        self.dec_rep = "custom"
+
+    def theme_folder_list(self, path, dirs=False, files=False):
+        checked_dirs = list()
+        for folder_path in glob.iglob("%s/*/extra/actions/white/*" % path):
+            dir_tuple = folder_path.rpartition("/white/")
+            a, b, c = dir_tuple
+            if a not in checked_dirs:
+                checked_dirs.append(a)
+                if os.path.isdir("%s/%s/" % (a, str(self.dec_rep))) is False:
+                    if dirs is True:
+                        yield 'mkdir %s/%s' % (a, str(self.dec_rep))
+            if files is True:
+                yield self.imagemagick_str(folder_path, "%s/%s/%s" % (a, str(self.dec_rep), c))
+
+    def generate(self, input_command):
+        self.test = subprocess.Popen(input_command, shell=True)
+        self.test.wait()
+        self.counter += 1
+        x, y = divmod(int(self.counter), 50)
+        if y == 0:
+            print "%s items done" % self.counter
+
+
 class ArdisDict:
     def __init__(self):
         self.unlocked = dict(places=['Blue', 'Violet', 'Brown'],
@@ -29,7 +108,8 @@ class ArdisDict:
         self.labels = {'Standard Type': 'standard',
                        'Standard type\nwith gray background': 'grayBG',
                        'Dark icons with no background': 'gray',
-                       'Light icons with no background': 'white'
+                       'Light icons with no background': 'white',
+                       'Custom': 'custom'
                        }
 
         self.images = dict(plus=dict(image53='Images/style_light_apps_no_bg.png',
@@ -66,6 +146,7 @@ class ArdisDict:
             self.unlocked['places'].append('Gray')
             self.unlocked['places'].append('Black')
             self.unlocked['actions'].append('Standard type\nwith gray background')
+            self.unlocked['actions'].append('Custom')
             self.unlocked['apps'].append('Dark icons with no background')
             self.unlocked['statuses'].append('Standard type\nwith gray background')
             self.image_sets.append('mega')
@@ -308,9 +389,8 @@ Reads the ArdisBuilder settings and Icon Theme settings from an index file to se
         return True
 
     def expose_kde_theme_to_gtk(self, path):
-        # This will let gtk see non-standard icon theme paths, such as those used by kde
         """
-
+This will let gtk see non-standard icon theme paths, such as those used by kde, by making symlinks.
         :rtype : bool
         """
         ardis_theme_parent = str(os.path.dirname(path))
@@ -432,6 +512,7 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
         newdict['Standard type\nwith gray background'] = 'grayBG'
         newdict['Dark icons with no background'] = 'gray'
         newdict['Light icons with no background'] = 'white'
+        newdict['Custom'] = 'custom'
         return newdict
 
     def invert_dict(self, s_dict):
@@ -833,6 +914,24 @@ class Handler:
         #sleep(3)
         pass
 
+    def start_spinner(self, *args):
+        #gen_spinner.start()
+        self.on_gen_colorized()
+        #self.stop_spinner()
+        return None
+
+    def stop_spinner(self, *args):
+        gen_spinner.stop()
+        return None
+
+    def on_gen_colorized(self, *args):
+        for result in custom_color_gen.theme_folder_list(abapp.Ardis_kw['path'], dirs=True):
+            custom_color_gen.generate(result)
+        for result2 in custom_color_gen.theme_folder_list(abapp.Ardis_kw['path'], files=True):
+            custom_color_gen.generate(result2)
+        gen_lbl.show()
+        return None
+
     def on_splash_lbl_drawn(self, *args):
         print "drawn"
 
@@ -854,6 +953,7 @@ class Handler:
         splash_progbar = builder.get_object('splash_progbar')
         splash_prog_lbl.props.label = "Reading theme index into memory"
         abapp.load_index_to_dict(abapp.Ardis_kw['path'])
+
         splash_progbar.set_fraction(0.1)
 
         splash_prog_lbl.props.label = "Reading edition-specific properties"
@@ -1012,6 +1112,16 @@ class Handler:
         return True
         # print self.get_active()
 
+    def on_color_chosen(self, widget, prop):
+        color_btn = builder.get_object("action_color_btn")
+        new_color = widget.props.rgba
+        for i in color_btn.get_children():
+            i.override_background_color(0, new_color)
+        color_str = widget.props.rgba.to_string()
+        custom_color_gen.set_color_from_gdk_str(color_str)
+        gen_lbl.hide()
+
+
     def on_eventbox_radio_press(self, radio, void):
         """
 
@@ -1160,7 +1270,7 @@ builder.add_from_file(abapp.w_path + '/Ardis setup unified2.glade')
 
 theme_dict = ArdisDict()
 #abapp.ardis_edition_apply(abapp.Ardis_kw['edition'])
-
+custom_color_gen = ArdisThemeGen()
 
 window = builder.get_object("window1")
 splash_win = builder.get_object("AB_splash_window")
@@ -1173,7 +1283,8 @@ backbutton = builder.get_object("button2")
 aboutbutton = builder.get_object("box38")
 extrastuffbutton = builder.get_object("box37")
 pageone = builder.get_object("viewport1")
-
+gen_spinner = builder.get_object("spinner1")
+gen_lbl = builder.get_object("lbl_gen_status")
 
 
 

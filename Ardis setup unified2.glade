@@ -308,6 +308,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       </object>
     </child>
   </object>
+  <object class="GtkActionGroup" id="actiongroup1"/>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -977,6 +978,69 @@ Copyright (c) 2014 Ivan Kotus</property>
             <property name="left_attach">0</property>
             <property name="top_attach">2</property>
             <property name="width">4</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window4">
+    <property name="can_focus">False</property>
+    <property name="transient_for">window1</property>
+    <signal name="delete-event" handler="hide_adv_settings" swapped="no"/>
+    <child>
+      <object class="GtkBox" id="box42">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkColorChooserWidget" id="colorchooserwidget1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <property name="rgba">rgb(255,255,255)</property>
+            <signal name="notify::rgba" handler="on_color_chosen" swapped="no"/>
+            <child>
+              <object class="GtkBox" id="box44">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkButton" id="color_apply_btn">
+                    <property name="label" translatable="yes">Run Generator (Be patient while it runs)</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="button-press-event" handler="start_spinner" swapped="yes"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="lbl_gen_status">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Done</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </object>
@@ -1726,6 +1790,27 @@ Please select below what type of &lt;b&gt;action&lt;/b&gt; icons you prefer. </p
                     <property name="position">3</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkEventBox" id="eventbox25">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="visible_window">False</property>
+                    <property name="above_child">True</property>
+                    <signal name="button-press-event" handler="on_eventbox_radio_press" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image67">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="pixbuf">Images/radio_off.png</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1797,6 +1882,20 @@ with gray background</property>
                     <property name="position">3</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkLabel" id="label55">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Custom</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1859,6 +1958,20 @@ with gray background</property>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="action_color_btn">
+                    <property name="label" translatable="yes">Select Color</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="button-press-event" handler="on_open_window_clicked" object="window4" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">4</property>
                   </packing>
                 </child>
               </object>
