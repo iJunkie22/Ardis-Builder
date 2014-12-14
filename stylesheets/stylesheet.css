@@ -907,16 +907,53 @@ output::before {
   }
   }
 @media only screen and (max-width: 400px) {
+  #main-content h2 {
+    font-size: 25px;
+  }
+  .inner-nav a {
+    margin-left: 0px;
+    margin-right: 0px;
+    
+  }
+  .inner-nav a[title="Ardis Plus"], .inner-nav a[title="About"] {
+    border-radius: 0px;
+    border-left: 1px solid #2e7bcf;
+    border-right: 1px solid #2e7bcf;
+  }
+  .inner-nav a[title="Ardis Basic"], .inner-nav a[title="Home"] {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+  .inner-nav a[title="Ardis Mega"], .inner-nav a[title="Wiki"] {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+  }
   header h1 {
     font-size: 30px;
   }
   body {
-    min-width: 340px;
+    min-width: 320px;
   }
   header a.button {
     padding-left: 5px;
     padding-right: 5px;
   }
+  #ardis-packs-table {
+    display: none;
+  }
+  br.padder {
+    display: none;
+  }
+  hr.padder {
+    visibility: hidden;
+  }
+  p.screenshot {
+    display: none;
+  }
+  output::before {
+    padding-right: 70px;
+  }
+}
 @viewport {
   width: screen-width;
 }
