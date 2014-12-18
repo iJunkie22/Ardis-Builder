@@ -642,7 +642,7 @@ table.bluetable {
     font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
     /*font-weight: 100;*/
     /*font-size: 1.6em;*/
-    text-overflow: hidden;
+    text-overflow: clip;
 }
 
 .bluetable th a {
@@ -711,7 +711,7 @@ td {
     font-size: x-small;
     font-weight: 300;
     /*display: table-cell;*/
-    vertical-align: center;
+    vertical-align: middle;
     
 }
 .bluetable td:first-child span {
@@ -954,6 +954,23 @@ output::before {
     padding-right: 70px;
   }
 }
-@viewport {
+/*@viewport {
   width: screen-width;
+}*/
+
+input[type="radio"].page-radio {
+  content: url('../images/radio_off.png');
+  -webkit-appearance: none;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin: 0px;
+  vertical-align: middle;
+}
+span.page-radio {
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+input[type="radio"].page-radio#curPage {
+  content: url('../images/radio_on.png');
 }
