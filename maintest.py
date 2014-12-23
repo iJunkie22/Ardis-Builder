@@ -9,7 +9,7 @@ import subprocess
 import shlex
 from io import StringIO
 from time import sleep
-
+import ardisutils
 
 
 mypath = __file__
@@ -50,10 +50,8 @@ Iterates over hex string with a step of 2 by default, converting to base 10 and 
 
     def set_color_from_hex(self, new_color):
         assert isinstance(new_color, str)
-        if new_color[0] == "#":
-            new_color = new_color[1::]
-        self.dec_rep = list(self.hex_to_dec(new_color, step=6))[0]
-        rgb_tuple = tuple(self.hex_to_dec(new_color))
+        rgb_tuple = ardisutils.ArdisColor(hex=new_color).color255
+        self.dec_rep = "custom"
         self.rgb_color["r"], self.rgb_color["g"], self.rgb_color["b"] = rgb_tuple
 
     @property
@@ -1153,7 +1151,7 @@ class Handler:
     def on_open_window_clicked(self, window3, *junk):
         window3.show_all()
 
-        theme_dict.apply_edition_labels(builder, "Mega", theme="Ardis")
+        theme_dict.apply_edition_labels(builder, abapp.Ardis_kw['edition'], theme=abapp.Ardis_kw['dir'])
         if window3.props.title == 'Password':
             pathstat = os.stat(os.path.join(abapp.Ardis_kw['path'], 'index.theme'))
             builder.get_object('lbl_cur_u_num').props.label = str(os.getuid())
@@ -1287,6 +1285,22 @@ gen_spinner = builder.get_object("spinner1")
 gen_lbl = builder.get_object("lbl_gen_status")
 
 
+test_filterer = ardisutils.LineProcessor()
+test_filterer.el_to_clean = "text"
+
+test_filterer.filter_to_file("/Users/ethan/PycharmProjects/ardisutils/places_sample_Blue.svg",
+                             "/Users/ethan/PycharmProjects/ardisutils/places_sample_Blue_small.svg")
+
+test_filterer.filters = "colorize:#00FF00"
+test_filterer.import_options(None)
+
+test_filterer.filter_to_file("/Users/ethan/PycharmProjects/ardisutils/places_sample_Blue.svg",
+                             "/Users/ethan/PycharmProjects/ardisutils/places_sample_Blue_small_green.svg")
+
+test_filterer.filters = "colorize:#FF0000"
+test_filterer.import_options(None)
+test_filterer.filter_to_file("/Users/ethan/PycharmProjects/ardisutils/places_sample_Blue.svg",
+                             "/Users/ethan/PycharmProjects/ardisutils/places_sample_Blue_small_red.svg")
 
 #hide_bonus_choices(abapp.ardis_unlocked_places, 'box10')
 #hide_bonus_choices(abapp.ardis_unlocked_statuses, 'box20')
