@@ -6,9 +6,8 @@ import sys
 import re
 import glob
 import subprocess
-import shlex
 from io import StringIO
-from time import sleep
+
 import ardisutils
 
 
@@ -159,10 +158,6 @@ class ArdisDict:
 
     def apply_edition_labels(self, gtkbuilder, edition=None, vers=None, theme="Ardis"):
         ed_level = [None, 'Basic', 'Plus', 'Mega'].index(edition)
-
-        def replace_intro(self, gtkbuilder, edition):
-            intro_lbl_obj = gtkbuilder.get_object('label51')
-            new_intro_string = re.sub('Ardis Basic', 'Ardis Plus', old_intro_string)
 
         outro_text = gtkbuilder.get_object('label46')
         outro = (str('<span>Thank You for choosing %s!</span>\n\n' % theme) +
@@ -386,7 +381,8 @@ Reads the ArdisBuilder settings and Icon Theme settings from an index file to se
             self.Ardis_kw['edition'] = 'Basic'
         return True
 
-    def expose_kde_theme_to_gtk(self, path):
+    @staticmethod
+    def expose_kde_theme_to_gtk(path):
         """
 This will let gtk see non-standard icon theme paths, such as those used by kde, by making symlinks.
         :rtype : bool
@@ -405,7 +401,8 @@ This will let gtk see non-standard icon theme paths, such as those used by kde, 
         # End of icon theme path exposer
         return False
 
-    def parse_file(self, indexfile, targ_group):
+    @staticmethod
+    def parse_file(indexfile, targ_group):
         """
 Selectively reads a specific group in a standard config file into a dict object.
 
@@ -500,7 +497,8 @@ a list containing the sizes of the icon, stored as the value of the icon name ke
                 index_dict[d_dict['Context']][filename].append(d_dict['Size'])
         return index_dict
 
-    def default_ab_strings(self):
+    @staticmethod
+    def default_ab_strings():
         """
 Acts as a starting point for the ArdisBuilder-to-theme-directory translation dicts.
         :rtype : dict
@@ -513,13 +511,15 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
         newdict['Custom'] = 'custom'
         return newdict
 
-    def invert_dict(self, s_dict):
+    @staticmethod
+    def invert_dict(s_dict):
         n_dict = {}
         for k, v in s_dict.items():
             n_dict[v] = k
         return n_dict
 
-    def set_ab_image(self, ob_id, ob_fname):
+    @staticmethod
+    def set_ab_image(ob_id, ob_fname):
         """
 
         :rtype : None
@@ -534,7 +534,6 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
             self.set_ab_image(i, f)
 
     def ardis_edition_apply(self, edition):
-        global new_intro_string
         outro_text = builder.get_object('label46')
         outro = ('<span>Thank You for chosing Ardis!</span>\n\n'
                  '<span>Ardis gives you what others can\'t, it gives you what you deserve,'
@@ -561,6 +560,7 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
             self.ardis_unlocked_actions.append('Light icons with no background')
 
             self.set_ab_image_all(Ardis_Plus_Images)
+            new_intro_string = None
 
             if edition == 'Plus':
                 new_intro_string = re.sub('Ardis Basic', 'Ardis Plus', old_intro_string)
@@ -636,7 +636,7 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
                 test_s_c_dir = os.path.join(s_dir, c_dir)
                 if os.path.isdir(test_s_c_dir):
                     theme_ready_path = os.path.relpath(test_s_c_dir, path)
-                    themedirlist.append(re.sub('\/$', '', theme_ready_path))
+                    themedirlist.append(re.sub('/$', '', theme_ready_path))
                     # The index is now happy, now we need to make any needed symlinks
                 if os.path.islink(test_s_c_dir):
                     if "--debug" in sys.argv:
@@ -663,7 +663,7 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
         if "--debug" in sys.argv:
             print "-->ardis_dirs-->%s" % str(self.errordict)
             print "-->ardis_dirs-->%s" % str(self.errorlist)
-        temp_directories = re.sub("\'\,\s\'", ",", str(themedirlist))
+        temp_directories = re.sub("\',\s\'", ",", str(themedirlist))
         newdirectories = re.sub("(^\[\'|\'\]$)", "", temp_directories)
         return newdirectories
 
@@ -768,7 +768,7 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
                     prog_bar.set_fraction(new_prog)
                     # print self.errordict.keys()
                     if g_item in self.errordict.keys():
-                        e_count = e_count + 1
+                        e_count += 1
 
                     # completeness = str(float(prog_bar.get_fraction()) * float(100))
                     if e_count > 0:
@@ -860,7 +860,8 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
             else:
                 backbutton.show()
 
-    def make_desktop_launcher(self):
+    @staticmethod
+    def make_desktop_launcher():
         #This is still in development
         new_desk_file = StringIO()
 
@@ -918,11 +919,13 @@ class Handler:
         #self.stop_spinner()
         return None
 
-    def stop_spinner(self, *args):
+    @staticmethod
+    def stop_spinner(*args):
         gen_spinner.stop()
         return None
 
-    def on_gen_colorized(self, *args):
+    @staticmethod
+    def on_gen_colorized(*args):
         for result in custom_color_gen.theme_folder_list(abapp.Ardis_kw['path'], dirs=True):
             custom_color_gen.generate(result)
         for result2 in custom_color_gen.theme_folder_list(abapp.Ardis_kw['path'], files=True):
@@ -930,7 +933,8 @@ class Handler:
         gen_lbl.show()
         return None
 
-    def on_splash_lbl_drawn(self, *args):
+    @staticmethod
+    def on_splash_lbl_drawn(*args):
         print "drawn"
 
     def on_picker_submit_clicked(self, *args):
@@ -941,7 +945,8 @@ class Handler:
             picker_win.hide()
             self.on_splash_show(hidden=False)
 
-    def on_splash_show(self, hidden=False, *args):
+    @staticmethod
+    def on_splash_show(hidden=False, *args):
         #print "drawn2"
         if hidden is False:
             splash_win.show_all()
@@ -1004,10 +1009,12 @@ class Handler:
         #sleep(1)
         pass
 
-    def moo(self, *args):
+    @staticmethod
+    def moo(*args):
         print "moo"
 
-    def remap(self, *args):
+    @staticmethod
+    def remap(*args):
         print args
         #obj.unmap()
 
@@ -1019,10 +1026,12 @@ class Handler:
         print "remapped"
         return True
 
-    def reset_buffer(self, buffer):
-        buffer.set_text("")
+    @staticmethod
+    def reset_buffer(buffer_obj):
+        buffer_obj.set_text("")
 
-    def on_extras_btn_click(self, button):
+    @staticmethod
+    def on_extras_btn_click(button):
         combo_box_theme = builder.get_object('comboboxtext2')
         text_buffer = builder.get_object('textbuffer2')
         if button.props.name == "print_self_index":
@@ -1043,13 +1052,14 @@ class Handler:
                                 if s in ardis_dict[c][f_n]:
                                     dif_dict1[c][f_n].remove(s)
 
-            read_mapped_index(dif_dict1, buffer=text_buffer)
+            read_mapped_index(dif_dict1, buffer_obj=text_buffer)
 
             return True
         else:
             return False
 
-    def print_event(self, *args):
+    @staticmethod
+    def print_event(*args):
         if "--debug" not in sys.argv:
             return None
         print args, "hi"
@@ -1061,11 +1071,13 @@ class Handler:
             pass
         print ""
 
-    def on_splash_lbl_show(self, *args):
+    @staticmethod
+    def on_splash_lbl_show(*args):
         print "shown"
         #sleep(1)
 
-    def on_window1_delete_event(self, arg1, arg2):
+    @staticmethod
+    def on_window1_delete_event(arg1, arg2):
         # Captures exit request made by a window manager
         # Disabling this means closing the window leaves a ZOMBIE!!!
         Gtk.main_quit()
@@ -1089,13 +1101,15 @@ class Handler:
         self.page_dot_container.reorder_child(self.page_dot_dot, self.prev_page)
         self.cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
 
-    def on_Exit_clicked(self, button):
+    @staticmethod
+    def on_Exit_clicked(button):
         exit()
 
     #def on_adv_settings_button_press(self, button, evbox):
      #   advsetwin.show_all()
 
-    def on_AdvSettings_toggle(self, tog):
+    @staticmethod
+    def on_AdvSettings_toggle(tog):
         # this is a simple test to make sure everything is connected
         print tog.get_active()
 
@@ -1110,7 +1124,8 @@ class Handler:
         return True
         # print self.get_active()
 
-    def on_color_chosen(self, widget, prop):
+    @staticmethod
+    def on_color_chosen(widget, prop):
         color_btn = builder.get_object("action_color_btn")
         new_color = widget.props.rgba
         for i in color_btn.get_children():
@@ -1134,6 +1149,7 @@ class Handler:
             rad_grammy = rad_parent.get_parent()
             rad_uncles = rad_grammy.get_children()
             lbl_siblings = rad_uncles[1].get_children()
+            chosen = None
 
             rad_pos = int(list(c.props.name for c in rad_siblings).index('cur_rad'))
             try:
@@ -1148,7 +1164,8 @@ class Handler:
         cur_rad = builder.get_object(cur_dict["cur_rad"])
         rad_parent.reorder_child(cur_rad, i)
 
-    def on_open_window_clicked(self, window3, *junk):
+    @staticmethod
+    def on_open_window_clicked(window3, *junk):
         window3.show_all()
 
         theme_dict.apply_edition_labels(builder, abapp.Ardis_kw['edition'], theme=abapp.Ardis_kw['dir'])
@@ -1239,17 +1256,17 @@ def hide_bonus_choices(unlocked_dict, targ_x):
         obj.hide()
 
 
-def read_mapped_index(mapped_dict, buffer=None):
+def read_mapped_index(mapped_dict, buffer_obj=None):
     for k, v in mapped_dict.items():
-        if buffer:
-            buffer.insert_at_cursor(str("\n\n\n[%s]\n" % k))
+        if buffer_obj:
+            buffer_obj.insert_at_cursor(str("\n\n\n[%s]\n" % k))
         else:
             print "\n\n\n[%s]" % k
         for a in sorted(v.keys()):
-            temp_directories = re.sub("\'\,\s\'", ",", str(v[a]))
+            temp_directories = re.sub("\',\s\'", ",", str(v[a]))
             item_directories = re.sub("(^\[\'|\'\]$)", "", temp_directories)
-            if buffer:
-                buffer.insert_at_cursor(str("%s=%s\n" % (a, item_directories)))
+            if buffer_obj:
+                buffer_obj.insert_at_cursor(str("%s=%s\n" % (a, item_directories)))
             else:
                 print "%s=%s" % (a, item_directories)
 
@@ -1258,7 +1275,6 @@ def read_mapped_index(mapped_dict, buffer=None):
 __warningregistry__ = dict()
 abapp = ArdisBuilder()
 
-import gi
 from gi.repository import Gtk
 from gi.repository import Gdk
 import Theme_Indexer

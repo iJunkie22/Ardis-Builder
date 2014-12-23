@@ -1,5 +1,11 @@
 #!/usr/bin/python2.7
+"""
+ArdisUtils (C) 2014 Ethan Randall
+"""
 #coding: utf-8
+__author__ = "Ethan Randall"
+
+
 import re
 from optparse import OptionParser
 import colorsys
@@ -49,6 +55,12 @@ class EmptyClass:
 
 
 class LineProcessor:
+    """
+    This class encompasses the options and methods ArdisUtils uses for processing(filtering) an SVG document.
+    The purpose of this class is to supply python bindings to what was originally a linear command-line utility, and to
+    enable the same config to be used multiple times.
+    """
+
     def __init__(self):
         self.colorize_filter = None
         self.shadow_filter = None
@@ -58,6 +70,10 @@ class LineProcessor:
         self.filters = None
 
     def import_options(self, opts_in):
+        """
+        This method is what allows ArdisUtils to be run from a CLI!
+        :param opts_in: Either an instance of OptionParser's options object, or None
+        """
         opts = EmptyClass()
         if hasattr(opts_in, "filters") is True and hasattr(opts, "el_to_clean") is True:
             opts = opts_in
@@ -74,16 +90,16 @@ class LineProcessor:
         if opts.filters:
             filters_list = re.split(';', opts.filters)
             for filter_x in filters_list:
-                colorize_opt = re.match('colorize:(#?)(hide|[A-Fa-f0-9]+|#[A-Fa-f0-9]+)', filter_x)
+                colorize_opt = re.match('colorize:(#?)(hide|\X+|#\X+)', filter_x)
                 if colorize_opt:
                     self.colorize_filter = colorize_opt.groups()[-1]
-                white_opt = re.match('white:(#?)([A-Fa-f0-9]+)', filter_x)
+                white_opt = re.match('white:(#?)(\X+)', filter_x)
                 if white_opt:
                     self.white_filter = white_opt.groups()[-1]
-                shadow_opt = re.match('shadows:(#?)(hide|[A-Fa-f0-9]+)', filter_x)
+                shadow_opt = re.match('shadows:(#?)(hide|\X+)', filter_x)
                 if shadow_opt:
                     self.shadow_filter = shadow_opt.groups()[-1]
-                resize_opt = re.match('resize:([0-9]+px)\,([0-9]+px)', filter_x)
+                resize_opt = re.match('resize:(\d+px),(\d+px)', filter_x)
                 if resize_opt:
                     self.resize_filter = dict(width=resize_opt.group(1),
                                               height=resize_opt.group(2)
@@ -98,15 +114,15 @@ class LineProcessor:
             return input_line
         if self.colorize_filter == 'hide':
             output_line = re.sub('('
-                                 '((?<=[";]fill\:)(\#([a-fA-F0-9]*)([a-eA-E1-9]+)([a-fA-F0-9]*))(?=[";]))'
-                                 '|((?<=\sfill\=\")(\#([a-fA-F0-9]*)([a-eA-E1-9]+)([a-fA-F0-9]*))(?=\"))'
-                                 ')',
+                                 '((?<=[";](fill|stop-color):)(#(\X*)([a-eA-E1-9]+)(\X*))(?=[";]))'
+                                 '|'
+                                 '((?<=\s(fill|stop-color)=\")(#\X*)([a-eA-E1-9]+)(\X*))(?=\"))',
                                  'none', input_line)
             return output_line
         else:
             output_line = re.sub('('
-                                 '((?<=[";]fill\:\#)(([a-fA-F0-9]*)([a-eA-E1-9]+)([a-fA-F0-9]*))(?=[";]))'
-                                 '|((?<=\sfill\=\"\#)(([a-fA-F0-9]*)([a-eA-E1-9]+)([a-fA-F0-9]*))(?=\"))'
+                                 '((?<=[";](fill|stop-color):#)((\X*)([a-eA-E1-9]+)(\X*))(?=[";]))'
+                                 '|((?<=\s(fill|stop-color)=\"#)((\X*)([a-eA-E1-9]+)(\X*))(?=\"))'
                                  ')',
                                  str(self.colorize_filter), input_line)
             return output_line
@@ -118,7 +134,7 @@ class LineProcessor:
         """
         if self.white_filter is None:
             return input_line
-        output_line = re.sub('(((?<=[";]fill\:\#)(([fF]+))(?=[";]))|((?<=\sfill\=\"\#)(([fF]+))(?=\")))',
+        output_line = re.sub('(((?<=[";]fill:#)([fF]+)(?=[";]))|((?<=\sfill=\"#)([fF]+)(?=\")))',
                              str(self.white_filter), input_line)
         return output_line
 
@@ -129,14 +145,14 @@ class LineProcessor:
         """
         if self.shadow_filter is None:
             return input_line
-        match = re.search('opacity\:(0\.(2|3)[0-9]*)[";]', input_line)
+        match = re.search('opacity:(0\.(2|3)\d*)[";]', input_line)
         if match is None:
             return input_line
         if self.shadow_filter == 'hide':
-            output_line = re.sub('opacity\:(0\.(2|3)[0-9]*)', 'opacity:0.0', input_line)
+            output_line = re.sub('opacity:(0\.(2|3)\d*)', 'opacity:0.0', input_line)
             return output_line
         else:
-            output_line = re.sub('((?<=[";]fill\:\#)(([a-fA-F0-9]*)([a-eA-E0-9]+)([a-fA-F0-9]*))(?=[";]))',
+            output_line = re.sub('(((?<=[";]fill:#)((\X*)([a-eA-E\d]+)\X*))(?=[";]))',
                                  str(self.shadow_filter), input_line)
             return output_line
 
@@ -147,10 +163,10 @@ class LineProcessor:
         """
         if self.resize_filter is None:
             return input_line
-        resizematch = re.match('\s*(width|height)\=\"[0-9]+(em|ex|px|in|cm|mm|pt|pc|%%)?\"', input_line)
+        resizematch = re.match('\s*(width|height)=\"\d+(em|ex|px|in|cm|mm|pt|pc|%%)?\"', input_line)
         if resizematch:
             size_axis = str(resizematch.group(1))
-            output_line = re.sub('((?<=\=\")([0-9]+(em|ex|px|in|cm|mm|pt|pc|%%)?)(?=\"))',
+            output_line = re.sub('((?<==\")(\d+(em|ex|px|in|cm|mm|pt|pc|%%)?)(?=\"))',
                                  self.resize_filter[size_axis], input_line)
             return output_line
         else:
@@ -165,10 +181,9 @@ class LineProcessor:
         try:
             for line_in in file_in:
                 if self.el_to_clean == "text":
-                    m_begin = None
                     m_begin = re.search(r'^\s*<text|^\s*<tspan', line_in)
                     if m_begin:
-                        el_buf = el_buf + 1
+                        el_buf += 1
                 if el_buf == 0:
                     line_filtered = line_in
                     line_filtered = self.do_resize_filter(line_filtered)
@@ -177,10 +192,9 @@ class LineProcessor:
                     line_filtered = self.do_white_filter(line_filtered)
                     yield line_filtered
                 else:
-                    m_ended = None
                     m_ended = re.search(r'^\s*..text.|.*\s/>', line_in)
                     if m_ended:
-                        el_buf = el_buf - 1
+                        el_buf -= 1
         finally:
             file_in.close()
 
@@ -244,6 +258,8 @@ class ArdisColor:
 
     def to_hex(self, str255):
         """
+
+        :param str255: Can be any data type representing the value (out of 255). Will be converted to int for use.
         :rtype : str
         """
         int255 = int(str255)
@@ -316,8 +332,9 @@ Gives a tuple of int values representing the (h, s, v) with the maxes (255, 100,
 
 
 if __name__ == "__main__":
-
-    if __debug__ is True:
+    from os import environ as evar_dict
+    if evar_dict.get('PYCHARM_HOSTED') == '1':
+    #if __debug__ is True:
         test_color = ArdisColor(hex="#FF33AA")
         print test_color.color255
         print test_color.color_hex
@@ -346,7 +363,7 @@ if __name__ == "__main__":
                 m_start = None
                 m_start = re.search(r'^\s*<text|^\s*<tspan', line)
                 if m_start:
-                    el_c = el_c + 1
+                    el_c += 1
             if el_c == 0:
                 filtered_line = line
 
@@ -360,7 +377,7 @@ if __name__ == "__main__":
                 m_end = None
                 m_end = re.search(r'^\s*..text.|.*\s/>', line)
                 if m_end:
-                    el_c = el_c - 1
+                    el_c -= 1
 
     finally:
             file_input.close()
@@ -373,7 +390,8 @@ if __name__ == "__main__":
             new_e_fname = re.sub('\.svg$', export_ext, options.out_filename)
         else:
             new_e_fname = options.export_filename
-        import shlex, subprocess
+        import shlex
+        import subprocess
         command_line = str('/usr/bin/convert -background "none" "'+options.out_filename+'" "'+new_e_fname+'"')
         clargs = shlex.split(command_line)
         subprocess.Popen(clargs)

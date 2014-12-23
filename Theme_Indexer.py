@@ -1,5 +1,4 @@
 import re
-import string
 
 
 class ThemeIndex:
@@ -17,15 +16,15 @@ class ThemeIndex:
         self.directory_list.append(new_dir)
     
     def update_dirs_string(self):
-        self.temp_directories = re.sub("\'\,\s\'", ",", str(self.directory_list))
+        self.temp_directories = re.sub("\',\s\'", ",", str(self.directory_list))
         self.directories = re.sub("(^\[\'|\'\]$)", "", self.temp_directories)
         self.temp_directories = None
         
     def parse_config_string(self, c_str):
-        name_pat = re.search('((?<=^Name\=).*)', c_str)
+        name_pat = re.search('((?<=^Name=).*)', c_str)
         if name_pat:
             self.name = name_pat.group(1)
-        comm_pat = re.search('((?<=^Comment\=).*)', c_str)
+        comm_pat = re.search('((?<=^Comment=).*)', c_str)
         if comm_pat:
             self.comment = comm_pat.group(1)
                 
@@ -37,7 +36,7 @@ context_dict = {'actions':'Actions', 'apps':'Applications', 'categories':'Catego
 
 def define_group(g_path):
     header = str('['+g_path+']')
-    dir_parts = re.split('\/', g_path)
+    dir_parts = re.split('/', g_path)
     type_t = 'Type=Scalable'
     size_d = 'Size='+dir_parts[0]
     size_t = re.search('([0-9]+$)', size_d)
@@ -60,7 +59,7 @@ def define_group(g_path):
 def smart_define_group(g_path):
     header = str('['+g_path+']')
     g_re = re.match(r'(((?P<size>[0-9]+)x(?P=size))/(?P<context>(actions|animations|apps|categories|devices|emblems|emotes|intl|mimetypes|places|status)))', g_path)
-    dir_parts = re.split('\/', g_path)
+    dir_parts = re.split('/', g_path)
     type_t = 'Type=Scalable'
     size_d = 'Size='+dir_parts[0]
     size_t = re.search('([0-9]+$)', size_d)
