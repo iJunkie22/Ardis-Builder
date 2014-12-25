@@ -783,7 +783,7 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
             # The requested page is just a page (or the end)
             try:
                 winbox.add(new_vp)
-                setPosInParent('curr_page_dot', p_num_to_show)
+                #setPosInParent('curr_page_dot', p_num_to_show)
 
             except TypeError:
                 # This captures any attempt to advance to a page that doesnt exist
@@ -854,7 +854,7 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
                 exit()
 
             # If it made it this far it is normal and safe. YAY!
-            setPosInParent('curr_page_dot', p_num_to_show)
+            #setPosInParent('curr_page_dot', p_num_to_show)
             if p_num_to_show == 0:
                 backbutton.hide()
             else:
@@ -892,10 +892,8 @@ class Handler:
 
         self.page_dot_dot = builder.get_object('curr_page_dot')
         self.page_dot_container = self.page_dot_dot.get_parent()
-        self.cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
+        #self.cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
         #self.page_dot_container.child_get_property(self.page_dot_dot, "position", self.cur_page)
-        self.nex_page = self.cur_page + 1
-        self.prev_page = self.cur_page - 1
         self.pw_purpose = ""
         self.old_pw_purpose = ""
         # pageone.show()
@@ -905,6 +903,24 @@ class Handler:
             self.gtksettings.props.gtk_button_images = True
         finally:
             pass
+
+    def get_cur_page(self):
+        #page_dot_container = self.page_dot_dot.get_parent()
+        cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
+        return int(cur_page)
+
+    @property
+    def cur_page(self):
+        output = self.get_cur_page()
+        return int(output)
+
+    @property
+    def nex_page(self):
+        return int(self.cur_page + 1)
+
+    @property
+    def prev_page(self):
+        return int(self.cur_page - 1)
 
     def on_splash_mapped(self, *args):
         #print "hi"
@@ -1084,22 +1100,16 @@ class Handler:
         exit()
 
     def on_Next_clicked(self, button):
-        self.cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
-        self.nex_page = self.cur_page + 1
         abapp.hide_page(self.cur_page)
         abapp.show_page(self.nex_page)
         # if the next page doesnt exist, the app exits now
         self.page_dot_container.reorder_child(self.page_dot_dot, self.nex_page)
-        self.cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
 
     def on_Back_clicked(self, button):
         nextbutton.set_label('  Next   ')
-        self.cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
-        self.prev_page = self.cur_page - 1
         abapp.hide_page(self.cur_page)
         abapp.show_page(self.prev_page)
         self.page_dot_container.reorder_child(self.page_dot_dot, self.prev_page)
-        self.cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
 
     @staticmethod
     def on_Exit_clicked(button):
@@ -1133,7 +1143,6 @@ class Handler:
         color_str = widget.props.rgba.to_string()
         custom_color_gen.set_color_from_gdk_str(color_str)
         gen_lbl.hide()
-
 
     def on_eventbox_radio_press(self, radio, void):
         """
@@ -1271,13 +1280,13 @@ def read_mapped_index(mapped_dict, buffer_obj=None):
                 print "%s=%s" % (a, item_directories)
 
 
-
 __warningregistry__ = dict()
 abapp = ArdisBuilder()
 
 from gi.repository import Gtk
 from gi.repository import Gdk
 import Theme_Indexer
+
 
 builder = Gtk.Builder()
 builder.add_from_file(abapp.w_path + '/Ardis setup unified2.glade')
@@ -1299,24 +1308,6 @@ extrastuffbutton = builder.get_object("box37")
 pageone = builder.get_object("viewport1")
 gen_spinner = builder.get_object("spinner1")
 gen_lbl = builder.get_object("lbl_gen_status")
-
-
-test_filterer = ardisutils.LineProcessor()
-test_filterer.el_to_clean = "text"
-
-test_filterer.filter_to_file("/Users/ethan/PycharmProjects/ardisutils/places_sample_Blue.svg",
-                             "/Users/ethan/PycharmProjects/ardisutils/places_sample_Blue_small.svg")
-
-test_filterer.filters = "colorize:#00FF00"
-test_filterer.import_options(None)
-
-test_filterer.filter_to_file("/Users/ethan/PycharmProjects/ardisutils/places_sample_Blue.svg",
-                             "/Users/ethan/PycharmProjects/ardisutils/places_sample_Blue_small_green.svg")
-
-test_filterer.filters = "colorize:#FF0000"
-test_filterer.import_options(None)
-test_filterer.filter_to_file("/Users/ethan/PycharmProjects/ardisutils/places_sample_Blue.svg",
-                             "/Users/ethan/PycharmProjects/ardisutils/places_sample_Blue_small_red.svg")
 
 #hide_bonus_choices(abapp.ardis_unlocked_places, 'box10')
 #hide_bonus_choices(abapp.ardis_unlocked_statuses, 'box20')
