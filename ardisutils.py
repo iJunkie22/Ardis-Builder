@@ -2,7 +2,7 @@
 """
 ArdisUtils (C) 2014 Ethan Randall
 """
-#coding: utf-8
+# coding: utf-8
 __author__ = "Ethan Randall"
 
 
@@ -334,7 +334,7 @@ Gives a tuple of int values representing the (h, s, v) with the maxes (255, 100,
 if __name__ == "__main__":
     from os import environ as evar_dict
     if evar_dict.get('PYCHARM_HOSTED') == '1':
-    #if __debug__ is True:
+        # if __debug__ is True:
         test_color = ArdisColor(hex="#FF33AA")
         print test_color.color255
         print test_color.color_hex

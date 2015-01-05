@@ -130,18 +130,14 @@ class ArdisDict:
         ed_level = [None, 'Basic', 'Plus', 'Mega'].index(edition)
 
         if ed_level > 1:
-            self.unlocked['places'].append('Red')
-            self.unlocked['places'].append('Green')
+            self.unlocked['places'].extend(['Red', 'Green'])
             self.unlocked['statuses'].append('Dark icons with no background')
             self.unlocked['categories'].append('Light icons with no background')
             self.unlocked['apps'].append('Light icons with no background')
             self.unlocked['actions'].append('Light icons with no background')
             self.image_sets.append('plus')
         if ed_level > 2:
-            self.unlocked['places'].append('Cyan')
-            self.unlocked['places'].append('Orange')
-            self.unlocked['places'].append('Gray')
-            self.unlocked['places'].append('Black')
+            self.unlocked['places'].extend(['Cyan', 'Orange', 'Gray', 'Black'])
             self.unlocked['actions'].append('Standard type\nwith gray background')
             self.unlocked['actions'].append('Custom')
             self.unlocked['apps'].append('Dark icons with no background')
@@ -432,8 +428,7 @@ Selectively reads a specific group in a standard config file into a dict object.
         searched_locs = []
         themes_here = []
         if self.user_DE == 'KDE':
-            icon_theme_locs.append(os.path.expanduser('~/.kde/share/icons'))
-            icon_theme_locs.append(os.path.expanduser('~/.kde4/share/icons'))
+            icon_theme_locs.extend(list(os.path.expanduser('~/.kde' + i + '/share/icons') for i in ['', '4']))
 
         elif self.mac_patch is True:
             icon_theme_locs.append(os.path.expanduser('~/Library/Preferences/KDE/share/icons'))
@@ -532,86 +527,6 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
     def set_ab_image_all(self, imagedict):
         for i, f in imagedict.items():
             self.set_ab_image(i, f)
-
-    def ardis_edition_apply(self, edition):
-        outro_text = builder.get_object('label46')
-        outro = ('<span>Thank You for chosing Ardis!</span>\n\n'
-                 '<span>Ardis gives you what others can\'t, it gives you what you deserve,'
-                 ' a power of customization.</span>\n\n'
-                 )
-        Ardis_Plus_Images = {}
-        Ardis_Mega_Images = {}
-        Ardis_Plus_Images['image53'] = 'Images/style_light_apps_no_bg.png'
-        Ardis_Plus_Images['image26'] = 'Images/places_sample_Red.png'
-        Ardis_Plus_Images['image21'] = 'Images/places_sample_Green.png'
-        Ardis_Plus_Images['image49'] = 'Images/style_dark_status_no_bg.png'
-        Ardis_Plus_Images['image51'] = 'Images/style_light_categories_withno_bg.png'
-        intro_text = builder.get_object('label51')
-        ye_old_intro_string = intro_text.get_label()
-        old_intro_string = re.sub('<b>Ardis Theme Version</b>', '<b>' + self.Ardis_kw['vers'] + '</b>',
-                                  ye_old_intro_string)
-
-        if edition == 'Plus' or edition == 'Mega':
-            self.ardis_unlocked_places.append('Red')
-            self.ardis_unlocked_places.append('Green')
-            self.ardis_unlocked_statuses.append('Dark icons with no background')
-            self.ardis_unlocked_categories.append('Light icons with no background')
-            self.ardis_unlocked_apps.append('Light icons with no background')
-            self.ardis_unlocked_actions.append('Light icons with no background')
-
-            self.set_ab_image_all(Ardis_Plus_Images)
-            new_intro_string = None
-
-            if edition == 'Plus':
-                new_intro_string = re.sub('Ardis Basic', 'Ardis Plus', old_intro_string)
-                outro += ('<span>If you think that there\'s not enough customization options for you,'
-                          ' and you want more,\n'
-                          'check other version of Ardis Icon Theme here:</span>\n\n'
-                          '  <a href=\"http://kotusworks.wordpress.com/artwork/ardis-icon-theme/#ardis_mega\">'
-                          'Ardis Mega Icon Theme</a>\n\n'
-                          'Thank you for purchasing the Plus version, you contribution means a lot to us.\n\n'
-                          )
-
-            elif edition == 'Mega':
-                self.ardis_unlocked_places.append('Cyan')
-                self.ardis_unlocked_places.append('Orange')
-                self.ardis_unlocked_places.append('Gray')
-                self.ardis_unlocked_places.append('Black')
-                self.ardis_unlocked_actions.append('Standard type\nwith gray background')
-                self.ardis_unlocked_apps.append('Dark icons with no background')
-                self.ardis_unlocked_statuses.append('Standard type\nwith gray background')
-                # ardis_unlocked_actions.append('Custom1')
-                # ardis_unlocked_actions.append('Custom2')
-
-                Ardis_Mega_Images['image18'] = 'Images/places_sample_Black.png'
-                Ardis_Mega_Images['image23'] = 'Images/places_sample_Orange.png'
-                Ardis_Mega_Images['image27'] = 'Images/places_sample_Gray.png'
-                Ardis_Mega_Images['image39'] = 'Images/places_sample_Cyan.png'
-                Ardis_Mega_Images['image56'] = 'Images/style_dark_apps_withno_bg.png'
-                Ardis_Mega_Images['image58'] = 'Images/style_dark_status_icons.png'
-
-                self.set_ab_image_all(Ardis_Mega_Images)
-
-                new_intro_string = re.sub('Ardis Basic', 'Ardis Mega', old_intro_string)
-                outro += ('Thank you for purchasing our premium version of our icon theme.\n\n'
-                          'Contributions like yours help us to expand this project, and it allows '
-                          'us to make many more awesome things in the future!\n\n'
-                          )
-
-            intro_text.set_label(str(new_intro_string))
-        else:
-            intro_text.set_label(str(old_intro_string))
-            outro += ('<span>If you think that there\'s not enough customization options for you,'
-                      ' and you want more,\n'
-                      'check other versions of Ardis Icon Theme here:</span>\n\n'
-                      '  <a href=\"http://kotusworks.wordpress.com/artwork/ardis-icon-theme/#ardis_plus\">'
-                      'Ardis Plus Icon Theme</a>\n\n'
-                      '  <a href=\"http://kotusworks.wordpress.com/artwork/ardis-icon-theme/#ardis_mega\">'
-                      'Ardis Mega Icon Theme</a>\n\n'
-                      'By purchasing one of the paid versions of Ardis, you allow us to further develop this project!\n'
-                      )
-
-        outro_text.set_label(outro)
 
     def ardis_dirs(self, path, **ArdisDirArgs):
         """
@@ -783,7 +698,6 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
             # The requested page is just a page (or the end)
             try:
                 winbox.add(new_vp)
-                #setPosInParent('curr_page_dot', p_num_to_show)
 
             except TypeError:
                 # This captures any attempt to advance to a page that doesnt exist
@@ -854,7 +768,6 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
                 exit()
 
             # If it made it this far it is normal and safe. YAY!
-            #setPosInParent('curr_page_dot', p_num_to_show)
             if p_num_to_show == 0:
                 backbutton.hide()
             else:
@@ -862,11 +775,17 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
 
     @staticmethod
     def make_desktop_launcher():
-        #This is still in development
+        # This is still in development
+        entry_dict = dict(Exec=mypath,
+                          Categories="Settings;",
+                          Name="Ardis-Builder"
+                          )
         new_desk_file = StringIO()
 
         try:
             new_desk_file.write("[Desktop Entry]\nCategories=Settings;")
+            for k, v in entry_dict.items():
+                new_desk_file.write("%s=%s" % (k, v))
             for line in new_desk_file:
                 print line
         finally:
@@ -876,24 +795,18 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
 
 class Handler:
     def __init__(self):
-        #splash_win.show_all()
-        #sleep(1)
-        #splash_win.hide()
-        #window.show_all
         self.combobox = builder.get_object('comboboxtext1')
         if len(abapp.find_theme_path('Ardis', showall=True)) > 1:
             for i in abapp.find_theme_path('Ardis', showall=True):
                 self.combobox.append_text(str(i))
             picker_win.show_all()
-            #This will call the prompt
+            # This will call the prompt
         else:
             abapp.load_index_to_dict(abapp.find_theme_path())
             self.on_splash_show(hidden=True)
 
         self.page_dot_dot = builder.get_object('curr_page_dot')
         self.page_dot_container = self.page_dot_dot.get_parent()
-        #self.cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
-        #self.page_dot_container.child_get_property(self.page_dot_dot, "position", self.cur_page)
         self.pw_purpose = ""
         self.old_pw_purpose = ""
         # pageone.show()
@@ -905,7 +818,6 @@ class Handler:
             pass
 
     def get_cur_page(self):
-        #page_dot_container = self.page_dot_dot.get_parent()
         cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
         return int(cur_page)
 
@@ -923,16 +835,10 @@ class Handler:
         return int(self.cur_page - 1)
 
     def on_splash_mapped(self, *args):
-        #print "hi"
-        #splash_box.show_now()
-        #splash_prog_lbl.show_now()
-        #sleep(3)
         pass
 
     def start_spinner(self, *args):
-        #gen_spinner.start()
         self.on_gen_colorized()
-        #self.stop_spinner()
         return None
 
     @staticmethod
@@ -963,7 +869,6 @@ class Handler:
 
     @staticmethod
     def on_splash_show(hidden=False, *args):
-        #print "drawn2"
         if hidden is False:
             splash_win.show_all()
         if hidden is True:
@@ -977,7 +882,6 @@ class Handler:
 
         splash_prog_lbl.props.label = "Reading edition-specific properties"
         theme_dict.apply_unlocks(abapp.Ardis_kw['edition'])
-        #theme_dict.apply_unlocks(abapp.AB_rc_dict['Edition'])
         splash_progbar.set_fraction(0.2)
 
         splash_prog_lbl.props.label = "Loading additional preview icons"
@@ -995,17 +899,15 @@ class Handler:
         splash_progbar.set_fraction(0.7)
         hide_bonus_choices(theme_dict.unlocked['actions'], 'box3')
         splash_progbar.set_fraction(0.8)
-        #theme_dict.refresh_unlocked_icons(builder)
+        # theme_dict.refresh_unlocked_icons(builder)
         theme_dict.apply_edition_labels(builder, abapp.AB_rc_dict['Edition'], theme=abapp.Ardis_kw['dir'])
         splash_progbar.set_fraction(1.0)
         if "--debug" not in sys.argv:
             splash_win.hide()
             window.show_all()
             backbutton.hide()
-            #extrastuffbutton.hide()
             return False
         print "done"
-        #sleep(3)
         print "woken"
         print Gtk.main_level()
         print splash_prog_lbl.props.label
@@ -1021,8 +923,6 @@ class Handler:
         window.show_all()
 
     def on_splash_lbl_realized(self, *args):
-        #print "realized"
-        #sleep(1)
         pass
 
     @staticmethod
@@ -1032,9 +932,6 @@ class Handler:
     @staticmethod
     def remap(*args):
         print args
-        #obj.unmap()
-
-        #obj.map()
         print "unmapping"
         args[0].unmap()
         print "remapping"
@@ -1081,7 +978,6 @@ class Handler:
         print args, "hi"
         event = args[1]
         try:
-            #print dir(event)
             print event.get_event_type()
         except AttributeError:
             pass
@@ -1090,7 +986,6 @@ class Handler:
     @staticmethod
     def on_splash_lbl_show(*args):
         print "shown"
-        #sleep(1)
 
     @staticmethod
     def on_window1_delete_event(arg1, arg2):
@@ -1114,9 +1009,6 @@ class Handler:
     @staticmethod
     def on_Exit_clicked(button):
         exit()
-
-    #def on_adv_settings_button_press(self, button, evbox):
-     #   advsetwin.show_all()
 
     @staticmethod
     def on_AdvSettings_toggle(tog):
@@ -1292,7 +1184,6 @@ builder = Gtk.Builder()
 builder.add_from_file(abapp.w_path + '/Ardis setup unified2.glade')
 
 theme_dict = ArdisDict()
-#abapp.ardis_edition_apply(abapp.Ardis_kw['edition'])
 custom_color_gen = ArdisThemeGen()
 
 window = builder.get_object("window1")
@@ -1309,24 +1200,17 @@ pageone = builder.get_object("viewport1")
 gen_spinner = builder.get_object("spinner1")
 gen_lbl = builder.get_object("lbl_gen_status")
 
-#hide_bonus_choices(abapp.ardis_unlocked_places, 'box10')
-#hide_bonus_choices(abapp.ardis_unlocked_statuses, 'box20')
-#hide_bonus_choices(abapp.ardis_unlocked_categories, 'box31')
-#hide_bonus_choices(abapp.ardis_unlocked_apps, 'box15')
-#hide_bonus_choices(abapp.ardis_unlocked_actions, 'box3')
 current_page = 0
 builder.connect_signals(Handler())
 
 ssh_session = abapp.envars.get('SSH_CONNECTION')
-#splash_win.show_now()
+
 builder.get_object('splash_prog_lbl').show_now()
 builder.get_object('splash_progbar').show_now()
-#sleep(2)
 
 splash_prog_lbl = builder.get_object('splash_prog_lbl')
 splash_progbar = builder.get_object('splash_progbar')
 splash_box = builder.get_object('AB_splash_rootbox')
-
 
 if ssh_session:
     pass
