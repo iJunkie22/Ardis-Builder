@@ -155,53 +155,58 @@ class ArdisDict:
     def apply_edition_labels(self, gtkbuilder, edition=None, vers=None, theme="Ardis"):
         ed_level = [None, 'Basic', 'Plus', 'Mega'].index(edition)
 
+        about_dialog = gtkbuilder.get_object('aboutdialog1')
         outro_text = gtkbuilder.get_object('label46')
-        outro = (str('<span>Thank You for choosing %s!</span>\n\n' % theme) +
-                 str('<span>%s gives you what others can\'t, it gives you what you deserve,' % theme) +
-                 str(' a power of customization.</span>\n\n')
-                 )
+        outro_buffer = StringIO()
+        outro_buffer.writelines([u'<span>Thank You for choosing %s!</span>\n\n' % theme,
+                                 u'<span>%s gives you what others can\'t, it gives you what you deserve,' % theme,
+                                 u' a power of customization.</span>\n\n']
+                                )
+
         intro_text = gtkbuilder.get_object('label51')
         if self.ye_old_intro_string is None:
             self.ye_old_intro_string = intro_text.get_label()
+
+        ab_vers = about_dialog.props.version
+
         if vers:
             old_intro_string = re.sub('<b>Ardis Theme Version</b>', '<b>%s</b>' % vers,
                                       self.ye_old_intro_string)
         else:
             old_intro_string = self.ye_old_intro_string
 
-        if ed_level == 2:
-            new_intro_string = re.sub('Ardis Basic', '%s Plus' % theme, old_intro_string)
-            outro += ('<span>If you think that there\'s not enough customization options for you,'
-                      ' and you want more,\n' +
-                      str('check other version of %s Icon Theme here:</span>\n\n' % theme) +
-                      '  <a href=\"http://kotusworks.wordpress.com/artwork/' +
-                      str('%s-icon-theme/#%s_mega\">' % (theme.lower(), theme.lower())) +
-                      str(theme + ' Mega Icon Theme</a>\n\n') +
-                      str('Thank you for purchasing the Plus version, you contribution means a lot to us.\n\n')
-                      )
-            intro_text.set_label(str(new_intro_string))
-        if ed_level == 3:
-            new_intro_string = re.sub('Ardis Basic', '%s Mega' % theme, old_intro_string)
+        old_intro_string = re.sub('<b>AB Version</b>', '<b>%s</b>' % ab_vers,
+                                  old_intro_string)
 
-            outro += ('Thank you for purchasing our premium version of our icon theme.\n\n'
-                      'Contributions like yours help us to expand this project, and it allows '
-                      'us to make many more awesome things in the future!\n\n'
-                      )
-            intro_text.set_label(str(new_intro_string))
-        if ed_level <= 1:
-            outro += ('<span>If you think that there\'s not enough customization options for you,'
-                      ' and you want more,\n' +
-                      str('check other versions of %s Icon Theme here:</span>\n\n' % theme) +
-                      str('  <a href=\"http://kotusworks.wordpress.com/artwork/%s-icon-theme/#%s_plus\">' %
-                          (theme.lower(), theme.lower())) +
-                      str('%s Plus Icon Theme</a>\n\n' % theme) +
-                      str('  <a href=\"http://kotusworks.wordpress.com/artwork/%s-icon-theme/#%s_mega\">' %
-                          (theme.lower(), theme.lower())) +
-                      str('%s Mega Icon Theme</a>\n\n' % theme) +
-                      str('By purchasing one of the paid versions of %s, ' % theme) +
-                      'you allow us to further develop this project!\n'
-                      )
-        outro_text.set_label(outro)
+        url_frmt_str = (u'  <a href=\"http://kotusworks.wordpress.com/artwork/{0}-icon-theme/#'
+                        u'{0}_{1}\">{2} {3} Icon Theme</a>\n\n')
+        theme_frmt_str = u'{0} {1}'
+
+        new_intro_string = re.sub('Ardis Basic', theme_frmt_str.format(theme, edition), old_intro_string)
+
+        thanks_message = [[u''],
+                          [u'By purchasing one of the paid versions of %s, ' % theme,
+                           u'you allow us to further develop this project!\n'],
+                          [u'Thank you for purchasing the Plus version,',
+                           u' you contribution means a lot to us.\n\n'],
+                          [u'Thank you for purchasing our premium version of our icon theme.\n\n',
+                           u'Contributions like yours help us to expand this project, and it allows ',
+                           u'us to make many more awesome things in the future!\n\n']]
+
+        if ed_level < 3:
+            outro_buffer.writelines([u'<span>If you think that there\'s not enough customization options for you,',
+                                     u' and you want more,\n',
+                                     u'check other version of %s Icon Theme here:</span>\n\n' % theme])
+            if ed_level < 2:
+                outro_buffer.write(url_frmt_str.format(theme.lower(), u'plus', theme, u'Plus'))
+
+            outro_buffer.write(url_frmt_str.format(theme.lower(), u'mega', theme, u'Mega'))
+
+        outro_buffer.writelines(thanks_message[ed_level])
+
+        intro_text.set_label(str(new_intro_string))
+        outro_text.set_label(str(outro_buffer.getvalue()))
+        outro_buffer.close()
 
 
 class ArdisBuilder:
@@ -372,6 +377,16 @@ Reads the ArdisBuilder settings and Icon Theme settings from an index file to se
             self.Ardis_kw['vers'] = ardis_vers_pat.group(1)
 
         self.Ardis_kw['edition'] = self.AB_rc_dict.get('Edition')
+
+        if "--override" in sys.argv:
+            for item in sys.argv:
+                parts = item.split("=")
+                if len(parts) == 2:
+                    k, v = parts[0], parts[1]
+                    if k in self.Ardis_kw.keys():
+                        self.Ardis_kw[k] = v
+                        print parts, "override used"
+
         if self.Ardis_kw['edition'] is None:
             self.AB_rc_dict['Edition'] = 'Basic'
             self.Ardis_kw['edition'] = 'Basic'
@@ -416,9 +431,9 @@ Selectively reads a specific group in a standard config file into a dict object.
                 if group_pat:
                     cur_gr = group_pat.group(1)
                 if cur_gr == targ_group:
-                    key_pat = re.search('(^[^=]+)=(.*$)', line)
-                    if key_pat:
-                        new_dict[key_pat.group(1)] = key_pat.group(2)
+                    k, s, v = line.rstrip('\n').partition("=")
+                    if s and v:
+                        new_dict[k] = v
         finally:
             nf.close()
         return new_dict
@@ -546,18 +561,22 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
         theme_size_dirs = []
         theme_size_dirs = glob.glob('%s/*x*/' % path)
         theme_size_dirs.sort()
+        if os.path.isdir('%s/scalable/' % path):
+            temp_list = [str('%s/scalable/' % path)]
+            temp_list.extend(theme_size_dirs)
+            theme_size_dirs = temp_list
         for s_dir in theme_size_dirs:
             for c_dir in themecontexts:
                 test_s_c_dir = os.path.join(s_dir, c_dir)
                 if os.path.isdir(test_s_c_dir):
                     theme_ready_path = os.path.relpath(test_s_c_dir, path)
-                    themedirlist.append(re.sub('/$', '', theme_ready_path))
+                    themedirlist.append(theme_ready_path.rstrip("/"))
                     # The index is now happy, now we need to make any needed symlinks
                 if os.path.islink(test_s_c_dir):
                     if "--debug" in sys.argv:
                         print "-->ardis_dirs-->Found symlink %s" % test_s_c_dir
                     try:
-                        link_target = 'extra/' + c_dir + '/' + ArdisDirArgs[c_dir] + '/'
+                        link_target = '/'.join(['extra', c_dir, ArdisDirArgs[c_dir], ''])
                         if os.path.isdir(os.path.join(s_dir, link_target)):
                             os.unlink(test_s_c_dir)
                             os.symlink(link_target, test_s_c_dir)
@@ -578,8 +597,7 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
         if "--debug" in sys.argv:
             print "-->ardis_dirs-->%s" % str(self.errordict)
             print "-->ardis_dirs-->%s" % str(self.errorlist)
-        temp_directories = re.sub("\',\s\'", ",", str(themedirlist))
-        newdirectories = re.sub("(^\[\'|\'\]$)", "", temp_directories)
+        newdirectories = ",".join(themedirlist)
         return newdirectories
 
     def hide_page(self, p_num_to_hide):
@@ -900,7 +918,7 @@ class Handler:
         hide_bonus_choices(theme_dict.unlocked['actions'], 'box3')
         splash_progbar.set_fraction(0.8)
         # theme_dict.refresh_unlocked_icons(builder)
-        theme_dict.apply_edition_labels(builder, abapp.AB_rc_dict['Edition'], theme=abapp.Ardis_kw['dir'])
+        theme_dict.apply_edition_labels(builder, abapp.Ardis_kw['edition'], theme=abapp.Ardis_kw['dir'])
         splash_progbar.set_fraction(1.0)
         if "--debug" not in sys.argv:
             splash_win.hide()
