@@ -662,6 +662,12 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
             prog_bar.set_fraction(float('0.00'))
 
         if p_num_to_show == 5:
+            index_file = os.path.join(self.Ardis_kw['path'], 'index.theme')
+            rw_ability = bool(os.access(index_file, os.R_OK) and os.access(index_file, os.W_OK))
+            if rw_ability is False:
+                # This should disable the clickability of the Next button
+                # This should also bring up the password dialog
+                nextbutton.set_sensitive(False)
             nextbutton.set_label('  Build   ')
             winbox.add(new_vp)
             setPosInParent('curr_page_dot', p_num_to_show)
@@ -1017,9 +1023,14 @@ class Handler:
         abapp.show_page(self.nex_page)
         # if the next page doesnt exist, the app exits now
         self.page_dot_container.reorder_child(self.page_dot_dot, self.nex_page)
+        if nextbutton.get_sensitive() is False:
+            self.old_pw_purpose = self.pw_purpose
+            self.pw_purpose = "Unlock permissions of root-installed Ardis"
+            self.on_open_window_clicked(builder.get_object('window3'))
 
     def on_Back_clicked(self, button):
         nextbutton.set_label('  Next   ')
+        nextbutton.set_sensitive(True)
         abapp.hide_page(self.cur_page)
         abapp.show_page(self.prev_page)
         self.page_dot_container.reorder_child(self.page_dot_dot, self.prev_page)
@@ -1096,13 +1107,13 @@ class Handler:
     def on_pw_submit_clicked(self, text_entry):
         if self.pw_purpose == "Unlock permissions of root-installed Ardis":
             args = str("sudo -kS chmod -v -R a+rw '%s'" % abapp.Ardis_kw['path'])
-            print args
         else:
             args = str("xargs echo $@")
-        test = subprocess.Popen(args, stdin=subprocess.PIPE, shell=True, stderr=subprocess.PIPE)
+        test = subprocess.Popen(args, stdin=subprocess.PIPE, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
         stdout, stderr = test.communicate(input=str(text_entry.props.text + "\n"))
         stderr_list = str(stderr).split('\n')
-        stderr_list.remove('Password:')
+        if 'Password:' in stderr_list:
+            stderr_list.remove('Password:')
         if '' in stderr_list:
             stderr_list.remove('')
 
@@ -1110,6 +1121,7 @@ class Handler:
         if len(stderr_list) == 0:
             new_label = "Success!"
             new_color = Gdk.RGBA(red=0, green=1.0, blue=0, alpha=0.5)
+            nextbutton.set_sensitive(True)
         else:
             new_label = "Incorrect Password"
             new_color = Gdk.RGBA(red=1.0, green=0.5, blue=0, alpha=0.5)

@@ -1,6 +1,6 @@
 #!/usr/bin/python2.7
 """
-ArdisUtils (C) 2014 Ethan Randall
+ArdisUtils (C) 2014-2015 Ethan Randall
 """
 # coding: utf-8
 __author__ = "Ethan Randall"

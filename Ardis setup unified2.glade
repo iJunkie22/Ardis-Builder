@@ -3,7 +3,7 @@
 
 The Artistic License 2.0
 
-           Copyright (c) 2014 Ethan Randall
+           Copyright (c) 2014-2015 Ethan Randall
 
      Everyone is permitted to copy and distribute verbatim copies
       of this license document, but changing it is not allowed.
@@ -731,10 +731,10 @@ Ardis Builder developed and coded by iJunkie22: &lt;b&gt;ijunkie22@gmail.com&lt;
     <property name="program_name">Ardis-Builder</property>
     <property name="version">2.0_b01</property>
     <property name="copyright" translatable="yes">Ardis-Builder
-Copyright (c) 2014 Ethan Randall
+Copyright (c) 2014-2015 Ethan Randall
 
 Ardis Icon Theme
-Copyright (c) 2014 Ivan Kotus</property>
+Copyright (c) 2014-2015 Ivan Kotus</property>
     <property name="website">http://ijunkie22.github.io/Ardis-Builder/</property>
     <property name="website_label" translatable="yes">Ardis-Builder Website</property>
     <property name="authors">Ethan Randall</property>
