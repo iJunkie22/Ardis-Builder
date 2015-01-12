@@ -16,7 +16,7 @@ AB_bash_loader="$user_local_bin/ArdisBuilder"
 AB_desktop_entry="$HOME/.local/share/applications/ArdisBuilder.desktop"
 echo "#!/bin/bash
 cd $q_s$maintest_dir$q_s
-./maintest.py
+./main.py
 exit
 " > "$AB_bash_loader"
 chmod +x "$AB_bash_loader"

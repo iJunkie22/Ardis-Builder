@@ -5,7 +5,6 @@ ArdisUtils (C) 2014-2015 Ethan Randall
 # coding: utf-8
 __author__ = "Ethan Randall"
 
-
 import re
 from optparse import OptionParser
 import colorsys
@@ -68,6 +67,16 @@ class LineProcessor:
         self.white_filter = None
         self.el_to_clean = None
         self.filters = None
+        self.color_regex = re.compile('('
+                                      '((?<=[";]fill:)(#(\X*)([a-eA-E1-9]+)(\X*))(?=[";]))'
+                                      '|'
+                                      '((?<=[";]stop-color:)(#(\X*)([a-eA-E1-9]+)(\X*))(?=[";]))'
+                                      '|'
+                                      '(((?<=\sfill=\")(#\X*)([a-eA-E1-9]+)(\X*))(?=\"))'
+                                      '|'
+                                      '((((?<=\sstop-color)=\")(#\X*)([a-eA-E1-9]+)(\X*))(?=\"))'
+                                      ')'
+                                      )
 
     def import_options(self, opts_in):
         """
@@ -90,7 +99,7 @@ class LineProcessor:
         if opts.filters:
             filters_list = re.split(';', opts.filters)
             for filter_x in filters_list:
-                colorize_opt = re.match('colorize:(#?)(hide|\X+|#\X+)', filter_x)
+                colorize_opt = re.match('colorize:(#?)(hide|\X+|[0-9A-F]+|#\X+)', filter_x)
                 if colorize_opt:
                     self.colorize_filter = colorize_opt.groups()[-1]
                 white_opt = re.match('white:(#?)(\X+)', filter_x)
@@ -103,7 +112,7 @@ class LineProcessor:
                 if resize_opt:
                     self.resize_filter = dict(width=resize_opt.group(1),
                                               height=resize_opt.group(2)
-                                              )
+                    )
 
     def do_colorize_filter(self, input_line):
         """
@@ -113,18 +122,10 @@ class LineProcessor:
         if self.colorize_filter is None:
             return input_line
         if self.colorize_filter == 'hide':
-            output_line = re.sub('('
-                                 '((?<=[";](fill|stop-color):)(#(\X*)([a-eA-E1-9]+)(\X*))(?=[";]))'
-                                 '|'
-                                 '((?<=\s(fill|stop-color)=\")(#\X*)([a-eA-E1-9]+)(\X*))(?=\"))',
-                                 'none', input_line)
+            output_line = re.sub(self.color_regex, 'none', input_line)
             return output_line
         else:
-            output_line = re.sub('('
-                                 '((?<=[";](fill|stop-color):#)((\X*)([a-eA-E1-9]+)(\X*))(?=[";]))'
-                                 '|((?<=\s(fill|stop-color)=\"#)((\X*)([a-eA-E1-9]+)(\X*))(?=\"))'
-                                 ')',
-                                 str(self.colorize_filter), input_line)
+            output_line = re.sub(self.color_regex, str(self.colorize_filter), input_line)
             return output_line
 
     def do_white_filter(self, input_line):
@@ -134,7 +135,11 @@ class LineProcessor:
         """
         if self.white_filter is None:
             return input_line
-        output_line = re.sub('(((?<=[";]fill:#)([fF]+)(?=[";]))|((?<=\sfill=\"#)([fF]+)(?=\")))',
+        output_line = re.sub('('
+                             '((?<=[";]fill:#)([fF]+)(?=[";]))'
+                             '|'
+                             '((?<=\sfill=\"#)([fF]+)(?=\"))'
+                             ')',
                              str(self.white_filter), input_line)
         return output_line
 
@@ -281,7 +286,7 @@ class ArdisColor:
         """
         :rtype : str
         """
-        return "#"+"".join(self.color_hex)
+        return "#" + "".join(self.color_hex)
 
     @property
     def saturation(self):
@@ -333,6 +338,7 @@ Gives a tuple of int values representing the (h, s, v) with the maxes (255, 100,
 
 if __name__ == "__main__":
     from os import environ as evar_dict
+
     if evar_dict.get('PYCHARM_HOSTED') == '1':
         # if __debug__ is True:
         test_color = ArdisColor(hex="#FF33AA")
@@ -380,8 +386,8 @@ if __name__ == "__main__":
                     el_c -= 1
 
     finally:
-            file_input.close()
-            file_output.close()
+        file_input.close()
+        file_output.close()
 
     if options.export_filename:
         e_fname_pattern = re.match('.*(\.(png|xpm))', options.export_filename)
@@ -392,7 +398,8 @@ if __name__ == "__main__":
             new_e_fname = options.export_filename
         import shlex
         import subprocess
-        command_line = str('/usr/bin/convert -background "none" "'+options.out_filename+'" "'+new_e_fname+'"')
+
+        command_line = str('/usr/bin/convert -background "none" "' + options.out_filename + '" "' + new_e_fname + '"')
         clargs = shlex.split(command_line)
         subprocess.Popen(clargs)
 

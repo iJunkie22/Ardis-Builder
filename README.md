@@ -71,7 +71,7 @@ In case you are compiling from source instead of dpkg, here is a verbose list of
 
 
 ####To execute, run:
-`maintest.py`
+`main.py`
 
  
 #### To add an application launcher for Ardis Builder in your Settings category of your Applications Menu, run:

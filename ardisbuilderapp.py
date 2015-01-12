@@ -1,5 +1,4 @@
-#!/usr/bin/python2.7
-# coding: utf-8
+__author__ = "Ethan Randall"
 
 import os
 import sys
@@ -726,11 +725,6 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
             except TypeError:
                 # This captures any attempt to advance to a page that doesnt exist
 
-                print 'Action style=' + '"' + self.choice_values['actions'] + '"'
-                # print 'Places color='+Ardis_colors[self.choice_values['places']], '"'+self.choice_values['places']+'"'
-                print 'Places color="' + self.choice_values['places'] + '"'
-                print 'Start here=' + self.choice_values['small apps']
-                print 'DesktopEnvironment=' + self.user_DE
                 print 'Install Location=' + self.Ardis_kw['path']
 
                 # Apply the temp theme to theme index
@@ -789,7 +783,7 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
                         print '***CLEARED KDE ICON CACHE "' + kde_cache + '"***'
 
                 Gtk.main_quit()
-                exit()
+                #exit()
 
             # If it made it this far it is normal and safe. YAY!
             if p_num_to_show == 0:
@@ -1016,7 +1010,7 @@ class Handler:
         # Captures exit request made by a window manager
         # Disabling this means closing the window leaves a ZOMBIE!!!
         Gtk.main_quit()
-        exit()
+        #exit()
 
     def on_Next_clicked(self, button):
         abapp.hide_page(self.cur_page)
@@ -1037,7 +1031,8 @@ class Handler:
 
     @staticmethod
     def on_Exit_clicked(button):
-        exit()
+        pass
+        #exit()
 
     @staticmethod
     def on_AdvSettings_toggle(tog):
@@ -1201,7 +1196,6 @@ def read_mapped_index(mapped_dict, buffer_obj=None):
             else:
                 print "%s=%s" % (a, item_directories)
 
-
 __warningregistry__ = dict()
 abapp = ArdisBuilder()
 
@@ -1245,6 +1239,9 @@ splash_box = builder.get_object('AB_splash_rootbox')
 if ssh_session:
     pass
     # exit()
-blah = Gtk.main()
 
-exit()
+
+def start():
+    Gtk.main()
+
+#exit()
