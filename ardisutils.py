@@ -68,13 +68,13 @@ class LineProcessor:
         self.el_to_clean = None
         self.filters = None
         self.color_regex = re.compile('('
-                                      '((?<=[";]fill:)(#(\X*)([a-eA-E1-9]+)(\X*))(?=[";]))'
+                                      '((?<=[";]fill:)(#([0-9A-Fa-f]*)([a-eA-E1-9]+)([0-9A-Fa-f]*))(?=[";]))'
                                       '|'
-                                      '((?<=[";]stop-color:)(#(\X*)([a-eA-E1-9]+)(\X*))(?=[";]))'
+                                      '((?<=[";]stop-color:)(#([0-9A-Fa-f]*)([a-eA-E1-9]+)([0-9A-Fa-f]*))(?=[";]))'
                                       '|'
-                                      '(((?<=\sfill=\")(#\X*)([a-eA-E1-9]+)(\X*))(?=\"))'
+                                      '(((?<=\sfill=\")(#[0-9A-Fa-f]*)([a-eA-E1-9]+)([0-9A-Fa-f]*))(?=\"))'
                                       '|'
-                                      '((((?<=\sstop-color)=\")(#\X*)([a-eA-E1-9]+)(\X*))(?=\"))'
+                                      '((((?<=\sstop-color)=\")(#[0-9A-Fa-f]*)([a-eA-E1-9]+)([0-9A-Fa-f]*))(?=\"))'
                                       ')'
                                       )
 
@@ -84,7 +84,7 @@ class LineProcessor:
         :param opts_in: Either an instance of OptionParser's options object, or None
         """
         opts = EmptyClass()
-        if hasattr(opts_in, "filters") is True and hasattr(opts, "el_to_clean") is True:
+        if hasattr(opts_in, "filters") is True and hasattr(opts_in, "el_to_clean") is True:
             opts = opts_in
         if hasattr(opts_in, "filters") is False:
             opts.filters = self.filters
@@ -99,13 +99,13 @@ class LineProcessor:
         if opts.filters:
             filters_list = re.split(';', opts.filters)
             for filter_x in filters_list:
-                colorize_opt = re.match('colorize:(#?)(hide|\X+|[0-9A-F]+|#\X+)', filter_x)
+                colorize_opt = re.match('colorize:(#?)(hide|[0-9A-Fa-f]+|[0-9A-F]+|#[0-9A-Fa-f]+)', filter_x)
                 if colorize_opt:
                     self.colorize_filter = colorize_opt.groups()[-1]
-                white_opt = re.match('white:(#?)(\X+)', filter_x)
+                white_opt = re.match('white:(#?)([0-9A-Fa-f]+)', filter_x)
                 if white_opt:
                     self.white_filter = white_opt.groups()[-1]
-                shadow_opt = re.match('shadows:(#?)(hide|\X+)', filter_x)
+                shadow_opt = re.match('shadows:(#?)(hide|[0-9A-Fa-f]+)', filter_x)
                 if shadow_opt:
                     self.shadow_filter = shadow_opt.groups()[-1]
                 resize_opt = re.match('resize:(\d+px),(\d+px)', filter_x)
@@ -157,7 +157,7 @@ class LineProcessor:
             output_line = re.sub('opacity:(0\.(2|3)\d*)', 'opacity:0.0', input_line)
             return output_line
         else:
-            output_line = re.sub('(((?<=[";]fill:#)((\X*)([a-eA-E\d]+)\X*))(?=[";]))',
+            output_line = re.sub('(((?<=[";]fill:#)(([0-9A-Fa-f]*)([a-eA-E\d]+)[0-9A-Fa-f]*))(?=[";]))',
                                  str(self.shadow_filter), input_line)
             return output_line
 
