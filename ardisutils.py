@@ -68,13 +68,13 @@ class LineProcessor:
         self.el_to_clean = None
         self.filters = None
         self.color_regex = re.compile('('
-                                      '((?<=[";]fill:)(#([0-9A-Fa-f]*)([a-eA-E1-9]+)([0-9A-Fa-f]*))(?=[";]))'
+                                      '((?<=[";]fill:)((#?)([0-9A-Fa-f]*)([a-eA-E1-9]+)([0-9A-Fa-f]*))(?=[";]))'
                                       '|'
-                                      '((?<=[";]stop-color:)(#([0-9A-Fa-f]*)([a-eA-E1-9]+)([0-9A-Fa-f]*))(?=[";]))'
+                                      '((?<=[";]stop-color:)((#?)([0-9A-Fa-f]*)([a-eA-E1-9]+)([0-9A-Fa-f]*))(?=[";]))'
                                       '|'
-                                      '(((?<=\sfill=\")(#[0-9A-Fa-f]*)([a-eA-E1-9]+)([0-9A-Fa-f]*))(?=\"))'
+                                      '(((?<=\sfill=\")((#?)[0-9A-Fa-f]*)([a-eA-E1-9]+)([0-9A-Fa-f]*))(?=\"))'
                                       '|'
-                                      '((((?<=\sstop-color)=\")(#[0-9A-Fa-f]*)([a-eA-E1-9]+)([0-9A-Fa-f]*))(?=\"))'
+                                      '((((?<=\sstop-color)=\")((#?)[0-9A-Fa-f]*)([a-eA-E1-9]+)([0-9A-Fa-f]*))(?=\"))'
                                       ')'
                                       )
 
@@ -99,9 +99,9 @@ class LineProcessor:
         if opts.filters:
             filters_list = re.split(';', opts.filters)
             for filter_x in filters_list:
-                colorize_opt = re.match('colorize:(#?)(hide|[0-9A-Fa-f]+|[0-9A-F]+|#[0-9A-Fa-f]+)', filter_x)
+                colorize_opt = re.match('colorize:(#?)(hide|[0-9A-Fa-f]+|#[0-9A-Fa-f]+)', filter_x)
                 if colorize_opt:
-                    self.colorize_filter = colorize_opt.groups()[-1]
+                    self.colorize_filter = ''.join(colorize_opt.groups())
                 white_opt = re.match('white:(#?)([0-9A-Fa-f]+)', filter_x)
                 if white_opt:
                     self.white_filter = white_opt.groups()[-1]
