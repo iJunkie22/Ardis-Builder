@@ -1249,53 +1249,22 @@ Please click next for further customization options.</property>
     <property name="default_height">250</property>
     <property name="decorated">False</property>
     <child>
-      <object class="GtkBox" id="box43">
+      <object class="GtkGrid" id="grid4">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkImage" id="image66">
-            <property name="width_request">96</property>
-            <property name="height_request">96</property>
-            <property name="visible">True</property>
-            <property name="app_paintable">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">center</property>
-            <property name="valign">center</property>
-            <property name="vexpand">True</property>
-            <property name="pixbuf">icons/icon_96x96.png</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
         <child>
           <object class="GtkLabel" id="label52">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="valign">center</property>
+            <property name="hexpand">True</property>
             <property name="vexpand">True</property>
             <property name="label" translatable="yes">Please select which ArdisBuilder-compatible theme to modify:</property>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkComboBoxText" id="comboboxtext1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="valign">center</property>
-            <property name="vexpand">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+            <property name="width">4</property>
           </packing>
         </child>
         <child>
@@ -1311,9 +1280,58 @@ Please click next for further customization options.</property>
             <signal name="clicked" handler="on_picker_submit_clicked" swapped="no"/>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">3</property>
+            <property name="left_attach">0</property>
+            <property name="top_attach">3</property>
+            <property name="width">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBoxText" id="comboboxtext1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="valign">center</property>
+            <property name="vexpand">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+            <property name="width">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="image66">
+            <property name="width_request">96</property>
+            <property name="height_request">96</property>
+            <property name="visible">True</property>
+            <property name="app_paintable">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="vexpand">True</property>
+            <property name="pixbuf">icons/icon_96x96.png</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label56">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="valign">center</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0</property>
+            <property name="label" translatable="yes">ArdisBuilder</property>
+            <property name="justify">right</property>
+            <attributes>
+              <attribute name="scale" value="4"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
+            <property name="width">3</property>
           </packing>
         </child>
       </object>
@@ -1987,6 +2005,97 @@ with gray background</property>
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="SVG_PNG_choice_box">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="spacing">7</property>
+            <child>
+              <object class="GtkLabel" id="label57">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">SVG</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="box46">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="spacing">7</property>
+                <child>
+                  <object class="GtkEventBox" id="event_box_curr_radio6">
+                    <property name="name">cur_rad</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="visible_window">False</property>
+                    <property name="above_child">True</property>
+                    <child>
+                      <object class="GtkImage" id="image68">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="pixbuf">Images/radio_on.png</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEventBox" id="eventbox26">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="visible_window">False</property>
+                    <property name="above_child">True</property>
+                    <signal name="button-press-event" handler="on_SVG_PNG_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image69">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="pixbuf">Images/radio_off.png</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label58">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">PNG</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>

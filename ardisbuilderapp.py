@@ -357,6 +357,8 @@ class ArdisBuilder:
             if v['has_radios'] is True:
                 self.choices[v['desc']] = {'label_box': v['lab_box'], 'radio': v['cur_rad']}
 
+        self.use_vectors = True
+
     def load_index_to_dict(self, path, keepdirs=False):
         """
 Reads the ArdisBuilder settings and Icon Theme settings from an index file to self. Returns True if successful.
@@ -389,6 +391,8 @@ Reads the ArdisBuilder settings and Icon Theme settings from an index file to se
         if self.Ardis_kw['edition'] is None:
             self.AB_rc_dict['Edition'] = 'Basic'
             self.Ardis_kw['edition'] = 'Basic'
+
+        self.AB_rc_dict['has_vectors'] = os.path.isdir('%s/scalable/' % path)
         return True
 
     @staticmethod
@@ -554,13 +558,16 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
         self.errordict = {}
         for k, v in ArdisDirArgs.items():
             self.AB_rc_dict[k] = v
+        self.AB_rc_dict['use_vectors'] = str(self.use_vectors)
         themecontexts = ['actions', 'animations', 'apps', 'categories', 'devices', 'emblems', 'emotes', 'intl',
                          'mimetypes', 'panel', 'places', 'status']
         themedirlist = []
         theme_size_dirs = []
         theme_size_dirs = glob.glob('%s/*x*/' % path)
         theme_size_dirs.sort()
-        if os.path.isdir('%s/scalable/' % path):
+        self.AB_rc_dict['has_vectors'] = os.path.isdir('%s/scalable/' % path)
+
+        if self.AB_rc_dict['has_vectors'] and self.use_vectors:
             temp_list = [str('%s/scalable/' % path)]
             temp_list.extend(theme_size_dirs)
             theme_size_dirs = temp_list
@@ -693,7 +700,7 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
             try:
                 temp_theme_file.write('Directories=%s\n\n[X-ArdisBuilder Settings]\n' % d_string)
                 for k, v in self.AB_rc_dict.items():
-                    temp_theme_file.write(k + '=' + v + '\n')
+                    temp_theme_file.write('{key}={value}\n'.format(key=str(k), value=str(v)))
                 temp_theme_file.write('\n')
                 e_count = 0
                 for g_item in ardis_d_list[::]:
@@ -924,6 +931,7 @@ class Handler:
             splash_win.hide()
             window.show_all()
             backbutton.hide()
+            builder.get_object('SVG_PNG_choice_box').set_visible(abapp.AB_rc_dict['has_vectors'])
             return False
         print "done"
         print "woken"
@@ -1088,6 +1096,20 @@ class Handler:
         assert isinstance(cur_dict, dict)
         cur_rad = builder.get_object(cur_dict["cur_rad"])
         rad_parent.reorder_child(cur_rad, i)
+
+    def on_SVG_PNG_clicked(self, radio, void):
+        """
+
+        :param radio: Gtk.EventBox
+        :param void: null
+        """
+        rad_parent = radio.get_parent()
+        rad_siblings = rad_parent.get_children()
+        i = int(rad_siblings.index(radio))
+        rad_pos = int(list(c.props.name for c in rad_siblings).index('cur_rad'))
+        cur_rad = rad_siblings[rad_pos]
+        rad_parent.reorder_child(cur_rad, i)
+        abapp.use_vectors = bool(i - 1)
 
     @staticmethod
     def on_open_window_clicked(window3, *junk):
