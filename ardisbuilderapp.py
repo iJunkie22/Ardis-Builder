@@ -357,7 +357,7 @@ class ArdisBuilder:
             if v['has_radios'] is True:
                 self.choices[v['desc']] = {'label_box': v['lab_box'], 'radio': v['cur_rad']}
 
-        self.use_vectors = True
+        self.use_bitmaps = True
 
     def load_index_to_dict(self, path, keepdirs=False):
         """
@@ -558,16 +558,17 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
         self.errordict = {}
         for k, v in ArdisDirArgs.items():
             self.AB_rc_dict[k] = v
-        self.AB_rc_dict['use_vectors'] = str(self.use_vectors)
+        self.AB_rc_dict['use_bitmaps'] = str(self.use_bitmaps)
         themecontexts = ['actions', 'animations', 'apps', 'categories', 'devices', 'emblems', 'emotes', 'intl',
                          'mimetypes', 'panel', 'places', 'status']
         themedirlist = []
         theme_size_dirs = []
-        theme_size_dirs = glob.glob('%s/*x*/' % path)
-        theme_size_dirs.sort()
+        if self.use_bitmaps is True:
+            theme_size_dirs = glob.glob('%s/*x*/' % path)
+            theme_size_dirs.sort()
         self.AB_rc_dict['has_vectors'] = os.path.isdir('%s/scalable/' % path)
 
-        if self.AB_rc_dict['has_vectors'] and self.use_vectors:
+        if self.AB_rc_dict['has_vectors']:
             temp_list = [str('%s/scalable/' % path)]
             temp_list.extend(theme_size_dirs)
             theme_size_dirs = temp_list
@@ -1109,7 +1110,7 @@ class Handler:
         rad_pos = int(list(c.props.name for c in rad_siblings).index('cur_rad'))
         cur_rad = rad_siblings[rad_pos]
         rad_parent.reorder_child(cur_rad, i)
-        abapp.use_vectors = bool(i - 1)
+        abapp.use_bitmaps = bool(i)
 
     @staticmethod
     def on_open_window_clicked(window3, *junk):

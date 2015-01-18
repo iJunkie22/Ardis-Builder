@@ -2017,7 +2017,7 @@ with gray background</property>
               <object class="GtkLabel" id="label57">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">SVG</property>
+                <property name="label" translatable="yes">SVGs Only</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2031,27 +2031,6 @@ with gray background</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">7</property>
                 <child>
-                  <object class="GtkEventBox" id="event_box_curr_radio6">
-                    <property name="name">cur_rad</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="visible_window">False</property>
-                    <property name="above_child">True</property>
-                    <child>
-                      <object class="GtkImage" id="image68">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="pixbuf">Images/radio_on.png</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkEventBox" id="eventbox26">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -2063,6 +2042,27 @@ with gray background</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="pixbuf">Images/radio_off.png</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEventBox" id="event_box_curr_radio6">
+                    <property name="name">cur_rad</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="visible_window">False</property>
+                    <property name="above_child">True</property>
+                    <child>
+                      <object class="GtkImage" id="image68">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="pixbuf">Images/radio_on.png</property>
                       </object>
                     </child>
                   </object>
@@ -2083,7 +2083,7 @@ with gray background</property>
               <object class="GtkLabel" id="label58">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">PNG</property>
+                <property name="label" translatable="yes">PNG &amp; SVG</property>
               </object>
               <packing>
                 <property name="expand">False</property>
