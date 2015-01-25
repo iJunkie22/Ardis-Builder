@@ -24,49 +24,10 @@ In case you are compiling from source instead of dpkg, here is a verbose list of
 
 
 #OSX Requirements (MacPorts Ports)
-* at-spi2-atk
-* at-spi2-core
-* atk
-* bzip2
-* cairo
-* dbus
-* expat
-* fontconfig
-* freetype
-* gdk-pixbuf2
-* gettext
-* glib2
-* gobject-introspection
-* graphite2
-* gtk3
-* harfbuzz
-* libcroco
-* libffi
-* libiconv
-* libpixman
-* libpng
 * librsvg
-* libxml2
-* pango
 * py27-gobject3
-* xorg-libX11
-* xorg-libXau
-* xorg-libXcomposite
-* xorg-libXcursor
-* xorg-libXdamage
-* xorg-libXdmcp
-* xorg-libXext
-* xorg-libXfixes
-* xorg-libXi
-* xorg-libXinerama
-* xorg-libXrandr
-* xorg-libice
-* xorg-libsm
-* xorg-libxcb
-* xrender
-* xz
-* zlib
 
+>To install MacPorts, refer [here](https://www.macports.org/install.php)
 
 
 
