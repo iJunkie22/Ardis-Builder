@@ -801,22 +801,22 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
 
     @staticmethod
     def make_desktop_launcher():
-        # This is still in development
-        entry_dict = dict(Exec=mypath,
-                          Categories="Settings;",
-                          Name="Ardis-Builder"
-                          )
-        new_desk_file = StringIO()
+        d_e_string = ("[Desktop Entry]\n"
+                      "Name=Ardis-Builder\n"
+                      "Icon={dirpath}/icons/ardis-builder.png\n"
+                      "Exec={dirpath}/ArdisBuilder\n"
+                      "Path={dirpath}\n"
+                      "Categories=Settings;\n"
+                      "Type=Application\n"
+                      "\n").format(dirpath=(os.path.dirname(mypath)))
+
+        new_desk_file = open((os.path.dirname(mypath) + "/ArdisBuilder.desktop"), 'w')
 
         try:
-            new_desk_file.write("[Desktop Entry]\nCategories=Settings;")
-            for k, v in entry_dict.items():
-                new_desk_file.write("%s=%s" % (k, v))
-            for line in new_desk_file:
-                print line
+            new_desk_file.write(d_e_string)
         finally:
             new_desk_file.close()
-        pass
+        os.chmod((os.path.dirname(mypath) + "/ArdisBuilder.desktop"), 0755)
 
 
 class Handler:
@@ -884,6 +884,7 @@ class Handler:
     @staticmethod
     def on_splash_lbl_drawn(*args):
         print "drawn"
+        return None
 
     def on_picker_submit_clicked(self, *args):
         choice = self.combobox.get_active_text()
@@ -1009,6 +1010,7 @@ class Handler:
         except AttributeError:
             pass
         print ""
+        return None
 
     @staticmethod
     def on_splash_lbl_show(*args):
@@ -1265,6 +1267,14 @@ if ssh_session:
 
 
 def start():
+    AB_Gtk_app = Gtk.Application()
+    AB_Gtk_app.register()
+    AB_Gtk_app.add_window(window)
+    #AB_Gtk_app.add_window(splash_win)
+
+    #picker_win.show_all()
+    #splash_win.show_all()
+    #AB_Gtk_app.run()
     Gtk.main()
 
 #exit()
