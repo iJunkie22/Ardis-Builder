@@ -5,7 +5,7 @@ import sys
 import re
 import glob
 import subprocess
-from io import StringIO
+import cStringIO
 
 import ardisutils
 
@@ -156,10 +156,10 @@ class ArdisDict:
 
         about_dialog = gtkbuilder.get_object('aboutdialog1')
         outro_text = gtkbuilder.get_object('label46')
-        outro_buffer = StringIO()
-        outro_buffer.writelines([u'<span>Thank You for choosing %s!</span>\n\n' % theme,
-                                 u'<span>%s gives you what others can\'t, it gives you what you deserve,' % theme,
-                                 u' a power of customization.</span>\n\n']
+        outro_buffer = cStringIO.StringIO()
+        outro_buffer.writelines(['<span>Thank You for choosing %s!</span>\n\n' % theme,
+                                 '<span>%s gives you what others can\'t, it gives you what you deserve,' % theme,
+                                 ' a power of customization.</span>\n\n']
                                 )
 
         intro_text = gtkbuilder.get_object('label51')
@@ -177,29 +177,29 @@ class ArdisDict:
         old_intro_string = re.sub('<b>AB Version</b>', '<b>%s</b>' % ab_vers,
                                   old_intro_string)
 
-        url_frmt_str = (u'  <a href=\"http://kotusworks.wordpress.com/artwork/{0}-icon-theme/#'
-                        u'{0}_{1}\">{2} {3} Icon Theme</a>\n\n')
-        theme_frmt_str = u'{0} {1}'
+        url_frmt_str = ('  <a href=\"http://kotusworks.wordpress.com/artwork/{0}-icon-theme/#'
+                        '{0}_{1}\">{2} {3} Icon Theme</a>\n\n')
+        theme_frmt_str = '{0} {1}'
 
         new_intro_string = re.sub('Ardis Basic', theme_frmt_str.format(theme, edition), old_intro_string)
 
-        thanks_message = [[u''],
-                          [u'By purchasing one of the paid versions of %s, ' % theme,
-                           u'you allow us to further develop this project!\n'],
-                          [u'Thank you for purchasing the Plus version,',
-                           u' you contribution means a lot to us.\n\n'],
-                          [u'Thank you for purchasing our premium version of our icon theme.\n\n',
-                           u'Contributions like yours help us to expand this project, and it allows ',
-                           u'us to make many more awesome things in the future!\n\n']]
+        thanks_message = [[''],
+                          ['By purchasing one of the paid versions of %s, ' % theme,
+                           'you allow us to further develop this project!\n'],
+                          ['Thank you for purchasing the Plus version,',
+                           ' you contribution means a lot to us.\n\n'],
+                          ['Thank you for purchasing our premium version of our icon theme.\n\n',
+                           'Contributions like yours help us to expand this project, and it allows ',
+                           'us to make many more awesome things in the future!\n\n']]
 
         if ed_level < 3:
-            outro_buffer.writelines([u'<span>If you think that there\'s not enough customization options for you,',
-                                     u' and you want more,\n',
-                                     u'check other version of %s Icon Theme here:</span>\n\n' % theme])
+            outro_buffer.writelines(['<span>If you think that there\'s not enough customization options for you,',
+                                     ' and you want more,\n',
+                                     'check other version of %s Icon Theme here:</span>\n\n' % theme])
             if ed_level < 2:
-                outro_buffer.write(url_frmt_str.format(theme.lower(), u'plus', theme, u'Plus'))
+                outro_buffer.write(url_frmt_str.format(theme.lower(), 'plus', theme, 'Plus'))
 
-            outro_buffer.write(url_frmt_str.format(theme.lower(), u'mega', theme, u'Mega'))
+            outro_buffer.write(url_frmt_str.format(theme.lower(), 'mega', theme, 'Mega'))
 
         outro_buffer.writelines(thanks_message[ed_level])
 
@@ -1208,18 +1208,18 @@ def hide_bonus_choices(unlocked_dict, targ_x):
 
 
 def read_mapped_index(mapped_dict, buffer_obj=None):
+    virt_f = cStringIO.StringIO()
     for k, v in mapped_dict.items():
-        if buffer_obj:
-            buffer_obj.insert_at_cursor(str("\n\n\n[%s]\n" % k))
-        else:
-            print "\n\n\n[%s]" % k
+        virt_f.writelines(['\n\n\n', k, '\n'])
+
         for a in sorted(v.keys()):
-            temp_directories = re.sub("\',\s\'", ",", str(v[a]))
-            item_directories = re.sub("(^\[\'|\'\]$)", "", temp_directories)
-            if buffer_obj:
-                buffer_obj.insert_at_cursor(str("%s=%s\n" % (a, item_directories)))
-            else:
-                print "%s=%s" % (a, item_directories)
+            virt_f.write(a + '=')
+            virt_f.writelines(li + ',' for li in v[a])
+            virt_f.write('\n')
+
+    buffer_obj.set_text(virt_f.getvalue())
+    virt_f.close()
+
 
 __warningregistry__ = dict()
 abapp = ArdisBuilder()
