@@ -8,6 +8,7 @@ __author__ = "Ethan Randall"
 import re
 from optparse import OptionParser
 import colorsys
+import cStringIO
 
 
 parser = OptionParser()
@@ -203,6 +204,28 @@ class LineProcessor:
         finally:
             file_in.close()
 
+    def loop_over_fd(self, infile):
+        """
+        :type infile: FileIO[str]
+        """
+        el_buf = 0
+        for line_in in infile:
+            if self.el_to_clean == "text":
+                m_begin = re.search(r'^\s*<text|^\s*<tspan', line_in)
+                if m_begin:
+                    el_buf += 1
+            if el_buf == 0:
+                line_filtered = line_in
+                line_filtered = self.do_resize_filter(line_filtered)
+                line_filtered = self.do_shadow_filter(line_filtered)
+                line_filtered = self.do_colorize_filter(line_filtered)
+                line_filtered = self.do_white_filter(line_filtered)
+                yield line_filtered
+            else:
+                m_ended = re.search(r'^\s*..text.|.*\s/>', line_in)
+                if m_ended:
+                    el_buf -= 1
+
     def filter_to_file(self, infile, outfile):
         """
         :type infile: str
@@ -214,6 +237,30 @@ class LineProcessor:
                 file_out.write(i)
         finally:
             file_out.close()
+
+    def filter_to_self(self, infilepath):
+        """
+        :type infilepath: str
+        """
+        file_buf = cStringIO.StringIO()
+        with open(infilepath, 'r') as file_in:
+            file_buf.writelines(file_in.readlines())
+
+        file_out1 = open(infilepath + "~", 'w')
+        try:
+            file_out1.write(file_buf.getvalue())
+        finally:
+            file_out1.close()
+
+        file_buf.seek(0)
+
+        file_out2 = open(infilepath, 'w')
+        try:
+            file_out2.writelines(self.loop_over_fd(file_buf))
+        finally:
+            file_out2.close()
+
+        file_buf.close()
 
 
 class ArdisColor:
