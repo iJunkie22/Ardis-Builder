@@ -31,10 +31,12 @@ In case you are compiling from source instead of dpkg, here is a verbose list of
 
 
 
-####To execute, run:
-`main.py`
+####Installation:
+Run `[YOUR_PYTHON] ./setup.py install` in the repo\'s root folder.
 
- 
-#### To add an application launcher for Ardis Builder in your Settings category of your Applications Menu, run:
-`make_loader.sh`
+####Running:
+`[YOUR_PYTHON] -m ardisBuilder`
+
+And to use ardisutils:
+`[YOUR_PYTHON] -m ardisBuilder.ardisutils [ARGUMENTS]`
  

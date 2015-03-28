@@ -3,6 +3,10 @@ __author__ = 'Ethan Randall'
 
 from . import ardisbuilderapp
 
-ardisbuilderapp.ArdisBuilder.make_desktop_launcher()
+try:
+    ardisbuilderapp.ArdisBuilder.make_desktop_launcher()
+
+except IOError:
+    pass
 
 ardisbuilderapp.start()
