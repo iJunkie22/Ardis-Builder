@@ -7,12 +7,14 @@ import glob
 import subprocess
 import cStringIO
 
-import ardisutils
-
+from . import ardisutils
+from . import Theme_Indexer
 
 mypath = __file__
+if '__package__' in dir():
+    mypath = os.path.join(os.getcwd(), __file__)
 assert isinstance(mypath, str)
-os.chdir(os.path.dirname(mypath))
+os.chdir(os.path.dirname(mypath) + "/ui")
 
 
 class ArdisThemeGen:
@@ -1226,11 +1228,11 @@ abapp = ArdisBuilder()
 
 from gi.repository import Gtk
 from gi.repository import Gdk
-import Theme_Indexer
+
 
 
 builder = Gtk.Builder()
-builder.add_from_file(abapp.w_path + '/Ardis setup unified2.glade')
+builder.add_from_file(abapp.w_path + '/ui.glade')
 
 theme_dict = ArdisDict()
 custom_color_gen = ArdisThemeGen()
