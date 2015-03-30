@@ -170,20 +170,15 @@ class ArdisDict:
 
         ab_vers = about_dialog.props.version
 
-        if vers:
-            old_intro_string = re.sub('<b>Ardis Theme Version</b>', '<b>%s</b>' % vers,
-                                      self.ye_old_intro_string)
-        else:
-            old_intro_string = self.ye_old_intro_string
-
-        old_intro_string = re.sub('<b>AB Version</b>', '<b>%s</b>' % ab_vers,
-                                  old_intro_string)
-
         url_frmt_str = ('  <a href=\"http://kotusworks.wordpress.com/artwork/{0}-icon-theme/#'
                         '{0}_{1}\">{2} {3} Icon Theme</a>\n\n')
         theme_frmt_str = '{0} {1}'
 
-        new_intro_string = re.sub('Ardis Basic', theme_frmt_str.format(theme, edition), old_intro_string)
+        intro_dict = dict(theme_version=theme_frmt_str.format(theme, edition) + " Icon Theme",
+                          ab_version=ab_vers,
+                          edition=theme_frmt_str.format(theme, edition))
+
+        new_intro_string = str(self.ye_old_intro_string).format(**intro_dict)
 
         thanks_message = [[''],
                           ['By purchasing one of the paid versions of %s, ' % theme,

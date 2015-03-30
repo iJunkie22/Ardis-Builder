@@ -667,9 +667,9 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 This wizard allows you to customize Ardis icon theme to your tastes and compliment your own pre-existing application appearance configurations.
 
-Current version of the icon pack installed is &lt;b&gt;Ardis Theme Version&lt;/b&gt;
-Current version of the customization script is &lt;b&gt;AB Version&lt;/b&gt;
-Current edition of Ardis installed is &lt;b&gt;Ardis Basic&lt;/b&gt;
+Current version of the icon pack installed is &lt;b&gt;{theme_version}&lt;/b&gt;
+Current version of the customization script is &lt;b&gt;{ab_version}&lt;/b&gt;
+Current edition of Ardis installed is &lt;b&gt;{edition}&lt;/b&gt;
 
 &lt;span&gt;Ardis icon theme designed and developed by KotusWorks: &lt;b&gt;kotus.works@gmail.com&lt;/b&gt;
 Ardis Builder developed and coded by iJunkie22: &lt;b&gt;ijunkie22@gmail.com&lt;/b&gt;&lt;/span&gt;
