@@ -1,12 +1,12 @@
 #!/usr/bin/python2.7
 __author__ = 'Ethan Randall'
 
-from . import ardisbuilderapp
+import ardisBuilder.ardisbuilderapp
 
 try:
-    ardisbuilderapp.ArdisBuilder.make_desktop_launcher()
+    ardisBuilder.ardisbuilderapp.ArdisBuilder.make_desktop_launcher()
 
 except IOError:
     pass
 
-ardisbuilderapp.start()
+ardisBuilder.ardisbuilderapp.start()

@@ -7,8 +7,9 @@ import glob
 import subprocess
 import cStringIO
 
-from . import ardisutils
-from . import Theme_Indexer
+import ardisBuilder.ardisutils
+import ardisBuilder.Theme_Indexer
+import ardisBuilder.fileutils as futil
 
 mypath = __file__
 if '__package__' in dir():
@@ -17,10 +18,11 @@ assert isinstance(mypath, str)
 os.chdir(os.path.dirname(mypath) + "/ui")
 
 
-class ArdisThemeGen:
+class ArdisThemeGen(object):
+    hexdigits = "0123456789ABCDEF"
+
     def __init__(self):
         self.rgb_color = dict(r=0, g=0, b=0)
-        self.hexdigits = "0123456789ABCDEF"
         self.dec_rep = 0
         self.counter = 0
 
@@ -50,7 +52,7 @@ Iterates over hex string with a step of 2 by default, converting to base 10 and 
 
     def set_color_from_hex(self, new_color):
         assert isinstance(new_color, str)
-        rgb_tuple = ardisutils.ArdisColor(hex=new_color).color255
+        rgb_tuple = ardisBuilder.ardisutils.ArdisColor(hex=new_color).color255
         self.dec_rep = "custom"
         self.rgb_color["r"], self.rgb_color["g"], self.rgb_color["b"] = rgb_tuple
 
@@ -73,17 +75,15 @@ Returns catenated rgb representation of rgb_color dict.
         self.dec_rep = "custom"
 
     def theme_folder_list(self, path, dirs=False, files=False):
-        checked_dirs = list()
+        checked_dirs = []
         for folder_path in glob.iglob("%s/*/extra/actions/white/*" % path):
-            dir_tuple = folder_path.rpartition("/white/")
-            a, b, c = dir_tuple
+            a, b, c = folder_path.rpartition("/white/")
             if a not in checked_dirs:
                 checked_dirs.append(a)
-                if os.path.isdir("%s/%s/" % (a, str(self.dec_rep))) is False:
-                    if dirs is True:
-                        yield 'mkdir %s/%s' % (a, str(self.dec_rep))
+                if not os.path.isdir("%s/%s/" % (a, self.dec_rep)) and dirs:
+                    yield 'mkdir %s/%s' % (a, self.dec_rep)
             if files is True:
-                yield self.imagemagick_str(folder_path, "%s/%s/%s" % (a, str(self.dec_rep), c))
+                yield self.imagemagick_str(folder_path, "%s/%s/%s" % (a, self.dec_rep, c))
 
     def generate(self, input_command):
         self.test = subprocess.Popen(input_command, shell=True)
@@ -95,6 +95,13 @@ Returns catenated rgb representation of rgb_color dict.
 
 
 class ArdisDict:
+    labels = {'Standard Type': 'standard',
+              'Standard type\nwith gray background': 'grayBG',
+              'Dark icons with no background': 'gray',
+              'Light icons with no background': 'white',
+              'Custom': 'custom'
+              }
+
     def __init__(self):
         self.unlocked = dict(places=['Blue', 'Violet', 'Brown'],
                              actions=['Standard Type', 'Dark icons with no background'],
@@ -102,13 +109,6 @@ class ArdisDict:
                              categories=['Standard Type', 'Standard type\nwith gray background'],
                              apps=['Standard Type', 'Standard type\nwith gray background']
                              )
-
-        self.labels = {'Standard Type': 'standard',
-                       'Standard type\nwith gray background': 'grayBG',
-                       'Dark icons with no background': 'gray',
-                       'Light icons with no background': 'white',
-                       'Custom': 'custom'
-                       }
 
         self.images = dict(plus=dict(image53='Images/style_light_apps_no_bg.png',
                                      image26='Images/places_sample_Red.png',
@@ -153,18 +153,19 @@ class ArdisDict:
                 obj.set_from_file(v)
         return True
 
-    def apply_edition_labels(self, gtkbuilder, edition=None, vers=None, theme="Ardis"):
+    def apply_edition_labels(self, edition=None, vers=None, theme="Ardis"):
+        global builder
         ed_level = [None, 'Basic', 'Plus', 'Mega'].index(edition)
 
-        about_dialog = gtkbuilder.get_object('aboutdialog1')
-        outro_text = gtkbuilder.get_object('label46')
+        about_dialog = builder.get_object('aboutdialog1')
+        outro_text = builder.get_object('label46')
         outro_buffer = cStringIO.StringIO()
         outro_buffer.writelines(['<span>Thank You for choosing %s!</span>\n\n' % theme,
                                  '<span>%s gives you what others can\'t, it gives you what you deserve,' % theme,
                                  ' a power of customization.</span>\n\n']
                                 )
 
-        intro_text = gtkbuilder.get_object('label51')
+        intro_text = builder.get_object('label51')
         if self.ye_old_intro_string is None:
             self.ye_old_intro_string = intro_text.get_label()
 
@@ -206,6 +207,12 @@ class ArdisDict:
 
 
 class ArdisBuilder:
+    Ardis_colors = {'Black': '#111111', 'Blue': '#0078ad', 'Brown': '#b59a6e', 'Green': '#85d075',
+                    'Dark Green': '#66ae4a', 'Light Green': '#79c843', 'Olive Green': '#669966',
+                    'Orange': '#f38725', 'Peach': '#ef6a47', 'Pink': '#e65177', 'Red': '#cd1d31',
+                    'Gray': '#666666', 'Cyan': '#6788cc', 'Soft Red': '#b93d48',
+                    'Violet': '#924565', 'Yellow': '#ffcc67'}
+
     def __init__(self):
         self.mac_patch = False
         if sys.platform == 'darwin':
@@ -232,7 +239,7 @@ class ArdisBuilder:
         sys.path.append(str(self.w_path))
 
         # envars = {}
-        self.GDM_dict = dict()
+        self.GDM_dict = {}
         self.user_GDMS = None
         self.envars = os.environ.copy()
         self.user_home_dir = self.envars['HOME']
@@ -241,7 +248,10 @@ class ArdisBuilder:
             # The GDM doesnt declare the fairly new (added ~2014) XDG_CURRENT_DESKTOP global...
             self.user_GDMS = self.envars.get('GDMSESSION')
             if self.user_GDMS:
-                self.GDM_dict = self.parse_file('/usr/share/xsessions/' + self.user_GDMS + '.desktop', 'Desktop Entry')
+
+                xsession_fp = "/usr/share/xsessions/%s.desktop" % self.user_GDMS
+                self.GDM_dict = futil.IniFile.from_file(xsession_fp).root_dict['Desktop Entry']
+
                 if self.GDM_dict['Type'] == 'XSession':
                     # This is probably a valid session description file
                     self.user_DE = self.GDM_dict['DesktopNames']
@@ -259,12 +269,11 @@ class ArdisBuilder:
 
         if "--override" in sys.argv:
             for item in sys.argv:
-                parts = item.split("=")
-                if len(parts) == 2:
-                    k, v = parts[0], parts[1]
-                    if k in self.Ardis_kw.keys():
-                        self.Ardis_kw[k] = v
-                        print parts, "override used"
+                assert isinstance(item, str)
+                k, s, v = item.partition("=")
+                if v and k in self.Ardis_kw.keys():
+                    self.Ardis_kw[k] = v
+                    print "".join([k, s, v]), "override used"
 
         m_list = sys.modules.keys()
         if "gi" not in m_list:
@@ -334,23 +343,18 @@ class ArdisBuilder:
                                   lab_box='box33',
                                   img_box='box34',
                                   cur_rad='event_box_curr_radio3')}
-        # Ardis_colors = {}
-        self.Ardis_colors = {'Black': '#111111', 'Blue': '#0078ad', 'Brown': '#b59a6e', 'Green': '#85d075',
-                             'Dark Green': '#66ae4a', 'Light Green': '#79c843', 'Olive Green': '#669966',
-                             'Orange': '#f38725', 'Peach': '#ef6a47', 'Pink': '#e65177', 'Red': '#cd1d31',
-                             'Gray': '#666666', 'Cyan': '#6788cc', 'Soft Red': '#b93d48',
-                             'Violet': '#924565', 'Yellow': '#ffcc67'}
-        self.Ardis_actions = self.default_ab_strings()
-        self.Ardis_apps = self.default_ab_strings()
-        self.Ardis_status = self.default_ab_strings()
-        self.Ardis_categories = self.default_ab_strings()
-        self.Ardis_generic = self.default_ab_strings()
-        self.choices = dict()
-        self.choice_values = dict()
-        self.AB_rc_dict = dict()
-        self.Ardis_index_dict = dict()
 
-        for k, v in self.AB_Pages.items():
+        self.Ardis_actions = self.default_ab_strings()
+        self.Ardis_apps = self.Ardis_actions.copy()
+        self.Ardis_status = self.Ardis_actions.copy()
+        self.Ardis_categories = self.Ardis_actions.copy()
+        self.Ardis_generic = self.Ardis_actions.copy()
+        self.choices = {}
+        self.choice_values = {}
+        self.AB_rc_dict = {}
+        self.Ardis_index_dict = {}
+
+        for v in self.AB_Pages.values():
             if v['has_radios'] is True:
                 self.choices[v['desc']] = {'label_box': v['lab_box'], 'radio': v['cur_rad']}
 
@@ -363,11 +367,13 @@ Reads the ArdisBuilder settings and Icon Theme settings from an index file to se
         """
         if path is None:
             return False
-        self.AB_rc_dict = self.parse_file(os.path.join(path, "index.theme"),
-                                          'X-ArdisBuilder Settings')
-        self.Ardis_index_dict = self.parse_file(os.path.join(path, "index.theme"), 'Icon Theme')
+
+        ini_file_dict = futil.IniFile.from_file(os.path.join(path, "index.theme")).root_dict
+        assert isinstance(ini_file_dict, dict)
+        self.AB_rc_dict = ini_file_dict['X-ArdisBuilder Settings']
+        self.Ardis_index_dict = ini_file_dict['Icon Theme']
         self.Ardis_kw['dcount'] = len(self.Ardis_index_dict['Directories'].split(','))
-        if keepdirs is False:
+        if not keepdirs:
             del self.Ardis_index_dict['Directories']
 
         ardis_vers_pat = re.search('((?<= \- v).*)', self.Ardis_index_dict['Comment'])
@@ -378,12 +384,11 @@ Reads the ArdisBuilder settings and Icon Theme settings from an index file to se
 
         if "--override" in sys.argv:
             for item in sys.argv:
-                parts = item.split("=")
-                if len(parts) == 2:
-                    k, v = parts[0], parts[1]
-                    if k in self.Ardis_kw.keys():
-                        self.Ardis_kw[k] = v
-                        print parts, "override used"
+                assert isinstance(item, str)
+                k, s, v = item.partition("=")
+                if v and k in self.Ardis_kw.keys():
+                    self.Ardis_kw[k] = v
+                    print "".join([k, s, v]), "override used"
 
         if self.Ardis_kw['edition'] is None:
             self.AB_rc_dict['Edition'] = 'Basic'
@@ -404,8 +409,7 @@ This will let gtk see non-standard icon theme paths, such as those used by kde, 
         gtk_def_theme = Gtk.IconTheme.get_default()
         gtk_theme_paths = gtk_def_theme.get_search_path()
         if ardis_theme_parent not in gtk_theme_paths:
-            for p in gtk_theme_paths:
-                gtk_real_theme_paths.append(os.path.realpath(p))
+            gtk_real_theme_paths.extend([os.path.realpath(p) for p in gtk_theme_paths])
             if ardis_theme_parent not in gtk_real_theme_paths:
                 os.symlink(ardis_theme_parent, os.path.expanduser('~/.local/share/icons'))
             return True
@@ -443,7 +447,7 @@ Selectively reads a specific group in a standard config file into a dict object.
         searched_locs = []
         themes_here = []
         if self.user_DE == 'KDE':
-            icon_theme_locs.extend(list(os.path.expanduser('~/.kde' + i + '/share/icons') for i in ['', '4']))
+            icon_theme_locs.extend(list(os.path.expanduser('~/.kde%s/share/icons' % i) for i in ['', '4']))
 
         elif self.mac_patch is True:
             icon_theme_locs.append(os.path.expanduser('~/Library/Preferences/KDE/share/icons'))
@@ -452,60 +456,30 @@ Selectively reads a specific group in a standard config file into a dict object.
         icon_theme_locs.append(self.root_shared_icons_dir)
 
         for themes_d in icon_theme_locs:
-
-            if os.path.isdir(themes_d):
+            try:
+                assert os.path.isdir(themes_d)
                 for item in os.listdir(themes_d):
-                    if os.path.isdir(os.path.join(themes_d, item)):
-                        match = re.search("(Ardis|Ursa)", item, flags=re.IGNORECASE)
-                        if match:
-                            if themedir is None and showall is False:
-                                return os.path.join(themes_d, item)
-                            themes_here.append(os.path.join(themes_d, item))
-            if "--debug" in sys.argv:
-                print "--> Found these themes %s" % themes_here
-            if themedir:
-                pos_theme_path = os.path.join(themes_d, themedir)
-                searched_locs.append(pos_theme_path)
-                if os.path.isdir(pos_theme_path) and showall is False:
-                    return pos_theme_path
-        if showall is True:
-            if len(themes_here) == 1:
-                return themes_here[0]
-            if len(themes_here) > 1:
-                return themes_here
-        print 'Could not find the Ardis theme in any of these locations:'
-        for p in searched_locs:
-            print p
-        print 'exiting...'
+                    if os.path.isdir(os.path.join(themes_d, item)) and re.search("(Ardis|Ursa)", item, flags=re.I):
+                        if themedir is None and showall is False:
+                            return os.path.join(themes_d, item)
+                        themes_here.append(os.path.join(themes_d, item))
+                if "--debug" in sys.argv:
+                    print "--> Found these themes %s" % themes_here
+                if themedir:
+                    pos_theme_path = os.path.join(themes_d, themedir)
+                    searched_locs.append(pos_theme_path)
+                    if os.path.isdir(pos_theme_path) and showall is False:
+                        return pos_theme_path
+            except AssertionError:
+                pass
+
+        if showall is True and len(themes_here) > 0:
+            return themes_here[0] if len(themes_here) == 1 else themes_here
+
+        sys.stderr.write('Could not find the Ardis theme in any of these locations:\n')
+        sys.stderr.writelines([("%s\n" % p) for p in searched_locs])
+        sys.stderr.write('exiting...\n')
         sys.exit(1)
-
-    def map_index_to_dict(self, path, verbose=False):
-        """
-Recursively reads a theme index file, and obeys the index to find all sizes for any given icon.
-Organizes this information into a dict with Contexts as top-level keys, icon names as second-level keys, and
-a list containing the sizes of the icon, stored as the value of the icon name keys.
-        :param path: path to index file
-        :param verbose: whether to print the index
-        :rtype : dict
-        """
-        index_file = os.path.join(path, "index.theme")
-        new_dict = self.parse_file(index_file, 'Icon Theme')
-        index_dict = dict()
-        if verbose is True:
-            print "[Icon Theme]"
-            for k, v in new_dict.items():
-                print "%s=%s" % (k, v)
-        for i in new_dict['Directories'].split(','):
-            d_dict = self.parse_file(index_file, i)
-            if d_dict['Context'] not in index_dict.keys():
-                index_dict[d_dict['Context']] = dict()
-
-            for fullpath in glob.iglob("%s/*" % os.path.join(path, i)):
-                filename = os.path.relpath(fullpath, os.path.join(path, i)).split('.')[0]
-                if filename not in index_dict[d_dict['Context']].keys():
-                    index_dict[d_dict['Context']][filename] = list()
-                index_dict[d_dict['Context']][filename].append(d_dict['Size'])
-        return index_dict
 
     @staticmethod
     def default_ab_strings():
@@ -523,10 +497,7 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
 
     @staticmethod
     def invert_dict(s_dict):
-        n_dict = {}
-        for k, v in s_dict.items():
-            n_dict[v] = k
-        return n_dict
+        return {[(v, k) for (k, v) in s_dict.items()]}
 
     @staticmethod
     def set_ab_image(ob_id, ob_fname):
@@ -534,6 +505,7 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
 
         :rtype : None
         """
+        global builder
         targ_img = builder.get_object(ob_id)
         targ_img.clear()
         targ_img.set_from_file(ob_fname)
@@ -556,48 +528,49 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
         for k, v in ArdisDirArgs.items():
             self.AB_rc_dict[k] = v
         self.AB_rc_dict['use_bitmaps'] = str(self.use_bitmaps)
+
         themecontexts = ['actions', 'animations', 'apps', 'categories', 'devices', 'emblems', 'emotes', 'intl',
                          'mimetypes', 'panel', 'places', 'status']
         themedirlist = []
-        theme_size_dirs = []
-        if self.use_bitmaps is True:
-            theme_size_dirs = glob.glob('%s/*x*/' % path)
-            theme_size_dirs.sort()
+        theme_size_dirs = sorted(glob.glob('%s/*x*/' % path)) if self.use_bitmaps else []
+
         self.AB_rc_dict['has_vectors'] = os.path.isdir('%s/scalable/' % path)
 
         if self.AB_rc_dict['has_vectors']:
             temp_list = [str('%s/scalable/' % path)]
             temp_list.extend(theme_size_dirs)
             theme_size_dirs = temp_list
-        for s_dir in theme_size_dirs:
-            for c_dir in themecontexts:
-                test_s_c_dir = os.path.join(s_dir, c_dir)
-                if os.path.isdir(test_s_c_dir):
-                    theme_ready_path = os.path.relpath(test_s_c_dir, path)
-                    themedirlist.append(theme_ready_path.rstrip("/"))
-                    # The index is now happy, now we need to make any needed symlinks
-                if os.path.islink(test_s_c_dir):
+
+        for s_dir, c_dir in [(s, c) for s in theme_size_dirs for c in themecontexts]:
+            test_s_c_dir = os.path.join(s_dir, c_dir)
+
+            if os.path.isdir(test_s_c_dir):
+                theme_ready_path = os.path.relpath(test_s_c_dir, path)
+                themedirlist.append(theme_ready_path.rstrip("/"))
+                # The index is now happy, now we need to make any needed symlinks
+
+            if os.path.islink(test_s_c_dir):
+                if "--debug" in sys.argv:
+                    print "-->ardis_dirs-->Found symlink %s" % test_s_c_dir
+                try:
+                    link_target = '/'.join(['extra', c_dir, ArdisDirArgs[c_dir], ''])
+                    assert os.path.isdir(os.path.join(s_dir, link_target))
+                    os.unlink(test_s_c_dir)
+                    os.symlink(link_target, test_s_c_dir)
+                    os.utime(test_s_c_dir, None)
+
+                except AssertionError:
+                    new_sym_error = str("Hmm. Looks like %s doesnt exist." % os.path.join(s_dir, link_target))
                     if "--debug" in sys.argv:
-                        print "-->ardis_dirs-->Found symlink %s" % test_s_c_dir
-                    try:
-                        link_target = '/'.join(['extra', c_dir, ArdisDirArgs[c_dir], ''])
-                        if os.path.isdir(os.path.join(s_dir, link_target)):
-                            os.unlink(test_s_c_dir)
-                            os.symlink(link_target, test_s_c_dir)
-                            os.utime(test_s_c_dir, None)
-                        else:
-                            new_sym_error = str(
-                                "Hmm. Looks like %s doesnt exist." % os.path.join(s_dir, link_target))
-                            if "--debug" in sys.argv:
-                                print "-->ardis_dirs-->%s" % new_sym_error
-                            self.errorlist.append(new_sym_error)
-                            self.errordict[theme_ready_path] = dict(SymLinkError=str(os.path.join(s_dir, link_target)))
-                    except KeyError, undef_cat:
-                        new_cat_error = str('***Oops! %s is not defined!***' % str(undef_cat))
-                        if "--debug" in sys.argv:
-                            print "-->ardis_dirs-->%s" % new_cat_error
-                        self.errordict[theme_ready_path]['UndefinedCategoryError'] = str(undef_cat)
-                        self.errorlist.append(new_cat_error)
+                        print "-->ardis_dirs-->%s" % new_sym_error
+                    self.errorlist.append(new_sym_error)
+                    self.errordict[theme_ready_path] = dict(SymLinkError=str(os.path.join(s_dir, link_target)))
+                except KeyError, undef_cat:
+                    new_cat_error = str('***Oops! %s is not defined!***' % str(undef_cat))
+                    if "--debug" in sys.argv:
+                        print "-->ardis_dirs-->%s" % new_cat_error
+                    self.errordict[theme_ready_path]['UndefinedCategoryError'] = str(undef_cat)
+                    self.errorlist.append(new_cat_error)
         if "--debug" in sys.argv:
             print "-->ardis_dirs-->%s" % str(self.errordict)
             print "-->ardis_dirs-->%s" % str(self.errorlist)
@@ -605,8 +578,8 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
         return newdirectories
 
     def hide_page(self, p_num_to_hide):
+        global builder
         winbox = builder.get_object("box2")
-        page_dict = {}
         page_dict = self.AB_Pages[p_num_to_hide]
         assert isinstance(page_dict, dict)
         assert isinstance(page_dict['viewport'], str)
@@ -616,6 +589,7 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
             winbox.remove(old_vp)
 
     def show_page(self, p_num_to_show):
+        global builder
         winbox = builder.get_object("box2")
         vp_to_show = p_num_to_show + 1
         completeness = ''
@@ -686,7 +660,7 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
                                        status=self.choice_values['status'],
                                        categories=self.choice_values['categories'],
                                        devices=self.choice_values['small apps'])
-            ardis_d_list = Theme_Indexer.list_from_string(',', d_string)
+            ardis_d_list = ardisBuilder.Theme_Indexer.list_from_string(',', d_string)
             # Initialize the progress bar
             dir_len = len(ardis_d_list)
             prog_step = float('1.0') / float(dir_len)
@@ -701,8 +675,8 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
                     temp_theme_file.write('{key}={value}\n'.format(key=str(k), value=str(v)))
                 temp_theme_file.write('\n')
                 e_count = 0
-                for g_item in ardis_d_list[::]:
-                    g_line = Theme_Indexer.define_group(g_item)
+                for g_item in ardis_d_list:
+                    g_line = ardisBuilder.Theme_Indexer.define_group(g_item)
                     temp_theme_file.write(g_line + '\n')
 
                     # Now this item of the list is done so we update the progress bar
@@ -737,10 +711,9 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
                 final_theme_file = open(self.Ardis_kw['path'] + "/index.theme", 'w')
                 try:
                     final_theme_file.write('[Icon Theme]\n')
-                    for k, v in self.Ardis_index_dict.items():
-                        final_theme_file.write("{0}={1}\n".format(k, v))
-                    for line in temp_theme_file:
-                        final_theme_file.write(line)
+                    final_theme_file.writelines(["{0}={1}\n".format(k, v) for (k, v) in self.Ardis_index_dict.items()])
+                    final_theme_file.writelines([line for line in temp_theme_file])
+
                 finally:
                     temp_theme_file.close()
                     final_theme_file.close()
@@ -818,6 +791,8 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
 
 class Handler:
     def __init__(self):
+        global builder
+
         self.combobox = builder.get_object('comboboxtext1')
         if len(abapp.find_theme_path('Ardis', showall=True)) > 1:
             for i in abapp.find_theme_path('Ardis', showall=True):
@@ -893,38 +868,42 @@ class Handler:
 
     @staticmethod
     def on_splash_show(hidden=False, *args):
+        global builder
         if hidden is False:
             splash_win.show_all()
         if hidden is True:
             splash_win.hide()
+
         splash_prog_lbl = builder.get_object('splash_prog_lbl')
         splash_progbar = builder.get_object('splash_progbar')
         splash_prog_lbl.props.label = "Reading theme index into memory"
         abapp.load_index_to_dict(abapp.Ardis_kw['path'])
 
-        splash_progbar.set_fraction(0.1)
+        set_fr = splash_progbar.set_fraction
+
+        set_fr(0.1)
 
         splash_prog_lbl.props.label = "Reading edition-specific properties"
         theme_dict.apply_unlocks(abapp.Ardis_kw['edition'])
-        splash_progbar.set_fraction(0.2)
+        set_fr(0.2)
 
         splash_prog_lbl.props.label = "Loading additional preview icons"
         theme_dict.refresh_unlocked_icons(builder)
-        splash_progbar.set_fraction(0.3)
+        set_fr(0.3)
 
         splash_prog_lbl.props.label = "Hiding Locked Items"
         hide_bonus_choices(theme_dict.unlocked['places'], 'box10')
-        splash_progbar.set_fraction(0.4)
+        set_fr(0.4)
         hide_bonus_choices(theme_dict.unlocked['statuses'], 'box20')
-        splash_progbar.set_fraction(0.5)
+        set_fr(0.5)
         hide_bonus_choices(theme_dict.unlocked['categories'], 'box31')
-        splash_progbar.set_fraction(0.6)
+        set_fr(0.6)
         hide_bonus_choices(theme_dict.unlocked['apps'], 'box15')
-        splash_progbar.set_fraction(0.7)
+        set_fr(0.7)
         hide_bonus_choices(theme_dict.unlocked['actions'], 'box3')
-        splash_progbar.set_fraction(0.8)
+        set_fr(0.8)
         # theme_dict.refresh_unlocked_icons(builder)
-        theme_dict.apply_edition_labels(builder, abapp.Ardis_kw['edition'], theme=abapp.Ardis_kw['dir'])
+        theme_dict.apply_edition_labels(abapp.Ardis_kw['edition'], theme=abapp.Ardis_kw['dir'])
         splash_progbar.set_fraction(1.0)
         if "--debug" not in sys.argv:
             splash_win.hide()
@@ -970,6 +949,7 @@ class Handler:
 
     @staticmethod
     def on_extras_btn_click(button):
+        global builder
         combo_box_theme = builder.get_object('comboboxtext2')
         text_buffer = builder.get_object('textbuffer2')
         if button.props.name == "print_self_index":
@@ -978,17 +958,17 @@ class Handler:
             if oxy_theme_path is None:
                 return False
 
-            ardis_dict = abapp.map_index_to_dict(abapp.Ardis_kw['path'], verbose=False)
-            oxygen_dict = abapp.map_index_to_dict(oxy_theme_path, verbose=False)
+            ardis_dict = futil.map_index_to_dict(abapp.Ardis_kw['path'], verbose=False)
+            oxygen_dict = futil.map_index_to_dict(oxy_theme_path, verbose=False)
 
             dif_dict1 = oxygen_dict
-            for c, c_dict in oxygen_dict.items():
-                if c in ardis_dict.keys():
-                    for f_n, f_list in c_dict.items():
-                        if f_n in ardis_dict[c].keys():
-                            for s in f_list:
-                                if s in ardis_dict[c][f_n]:
-                                    dif_dict1[c][f_n].remove(s)
+
+            subd1 = ardis_dict.keys()
+            for c, c_dict in [(x, y) for (x, y) in oxygen_dict.items() if x in subd1]:
+                subd2 = ardis_dict[c].keys()
+                for f_n, f_list in [(x, y) for (x, y) in c_dict.items() if x in subd2]:
+                    for s in [x for x in f_list if x in ardis_dict[c][f_n]]:
+                        dif_dict1[c][f_n].remove(s)
 
             read_mapped_index(dif_dict1, buffer_obj=text_buffer)
 
@@ -1060,6 +1040,7 @@ class Handler:
 
     @staticmethod
     def on_color_chosen(widget, prop):
+        global builder
         color_btn = builder.get_object("action_color_btn")
         new_color = widget.props.rgba
         for i in color_btn.get_children():
@@ -1074,6 +1055,7 @@ class Handler:
         :param radio: Gtk.EventBox
         :param void: null
         """
+        global builder
         rad_parent = radio.get_parent()
         rad_siblings = rad_parent.get_children()
         i = int(rad_siblings.index(radio))
@@ -1113,15 +1095,17 @@ class Handler:
 
     @staticmethod
     def on_open_window_clicked(window3, *junk):
+        global builder
         window3.show_all()
 
-        theme_dict.apply_edition_labels(builder, abapp.Ardis_kw['edition'], theme=abapp.Ardis_kw['dir'])
+        theme_dict.apply_edition_labels(abapp.Ardis_kw['edition'], theme=abapp.Ardis_kw['dir'])
         if window3.props.title == 'Password':
             pathstat = os.stat(os.path.join(abapp.Ardis_kw['path'], 'index.theme'))
             builder.get_object('lbl_cur_u_num').props.label = str(os.getuid())
             builder.get_object('lbl_cur_o_num').props.label = str(pathstat.st_uid)
 
     def on_pw_submit_clicked(self, text_entry):
+        global builder
         if self.pw_purpose == "Unlock permissions of root-installed Ardis":
             args = str("sudo -kS chmod -v -R a+rw '%s'" % abapp.Ardis_kw['path'])
         else:
@@ -1156,24 +1140,28 @@ class Handler:
 
 
 def setPageDot(n):
+    global builder
     pageDot = builder.get_object("curr_page_dot")
     mainbox = builder.get_object("box1")
     mainbox.reorder_child(pageDot, n)
 
 
 def setPosInCont(targ_obj, targ_con, targ_pos):
+    global builder
     target_object = builder.get_object(targ_obj)
     taget_container = builder.get_object(targ_con)
     taget_container.reorder_child(target_object, targ_pos)
 
 
 def setPosInParent(targ_obj, targ_pos):
+    global builder
     target_object = builder.get_object(targ_obj)
     taget_container = target_object.get_parent()
     taget_container.reorder_child(target_object, targ_pos)
 
 
 def getPosInCont(targ_obj, targ_con):
+    global builder
     target_object = builder.get_object(targ_obj)
     taget_container = builder.get_object(targ_con)
     objects_list = taget_container.get_children()
@@ -1181,18 +1169,21 @@ def getPosInCont(targ_obj, targ_con):
 
 
 def getPosInParent(targ_obj):
+    global builder
     target_object = builder.get_object(targ_obj)
     output = list(target_object.get_parent().get_children()).index(target_object)
     return output
 
 
 def getNthChildLabel(targ_con, child_n):
+    global builder
     taget_container = builder.get_object(targ_con)
     output = taget_container.get_children()[child_n].get_text()
     return output
 
 
 def hide_bonus_choices(unlocked_dict, targ_x):
+    global builder
     targ_parent = builder.get_object(targ_x)
     out_list = []
     col_list = targ_parent.get_children()
@@ -1216,6 +1207,8 @@ def read_mapped_index(mapped_dict, buffer_obj=None):
 
     buffer_obj.set_text(virt_f.getvalue())
     virt_f.close()
+
+
 
 
 __warningregistry__ = dict()
@@ -1258,12 +1251,17 @@ splash_prog_lbl = builder.get_object('splash_prog_lbl')
 splash_progbar = builder.get_object('splash_progbar')
 splash_box = builder.get_object('AB_splash_rootbox')
 
+
 if ssh_session:
     pass
     # exit()
 
 
 def start():
+    global builder
+    global theme_dict
+    global custom_color_gen
+    global abapp
     AB_Gtk_app = Gtk.Application()
     AB_Gtk_app.register()
     AB_Gtk_app.add_window(window)
