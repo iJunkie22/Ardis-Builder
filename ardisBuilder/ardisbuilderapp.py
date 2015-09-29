@@ -230,7 +230,10 @@ class ArdisBuilder:
         # https://build.opensuse.org/package/view_file/openSUSE:12.3/alacarte/alacarte-force-Gtk3.patch?expand=1
         if self.mac_patch is True:
             from gi.overrides.Gtk import Gtk
-            from gi.overrides.Gdk import Gdk
+            try:
+                from gi.overrides.Gdk import Gdk
+            except KeyError:
+                from gi.repository import Gdk
         else:
             from gi.repository import Gtk
             from gi.repository import Gdk
