@@ -797,8 +797,9 @@ class Handler:
         global builder
 
         self.combobox = builder.get_object('comboboxtext1')
-        if len(abapp.find_theme_path('Ardis', showall=True)) > 1:
-            for i in abapp.find_theme_path('Ardis', showall=True):
+        tpath_result = abapp.find_theme_path('Ardis', showall=True)
+        if isinstance(tpath_result, list):
+            for i in tpath_result:
                 self.combobox.append_text(str(i))
             picker_win.show_all()
             # This will call the prompt
