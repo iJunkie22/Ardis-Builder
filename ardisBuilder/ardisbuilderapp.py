@@ -604,10 +604,8 @@ Acts as a starting point for the ArdisBuilder-to-theme-directory translation dic
         new_vp = builder.get_object(page_dict['viewport'])
 
         for k, v in self.choices.items():
-            if k == 'places':
-                self.choice_values[k] = getNthChildLabel(v['label_box'], getPosInParent(v['radio']))
-            else:
-                self.choice_values[k] = self.Ardis_generic[getNthChildLabel(v['label_box'], getPosInParent(v['radio']))]
+            v2 = getNthChildLabel(v['label_box'], getPosInParent(v['radio']))
+            self.choice_values[k] = v2 if k == 'places' else self.Ardis_generic[v2]
 
         if '--debug' in sys.argv:
             print self.choice_values
