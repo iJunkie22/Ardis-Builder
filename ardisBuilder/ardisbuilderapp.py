@@ -213,6 +213,13 @@ class ArdisBuilder:
                     'Gray': '#666666', 'Cyan': '#6788cc', 'Soft Red': '#b93d48',
                     'Violet': '#924565', 'Yellow': '#ffcc67'}
 
+    Ardis_generic = {'Standard Type': 'standard',
+                     'Standard type\nwith gray background': 'grayBG',
+                     'Dark icons with no background': 'gray',
+                     'Light icons with no background': 'white',
+                     'Custom': 'custom'
+                     }
+
     def __init__(self):
         self.mac_patch = False
         if sys.platform == 'darwin':
@@ -347,11 +354,7 @@ class ArdisBuilder:
                                   img_box='box34',
                                   cur_rad='event_box_curr_radio3')}
 
-        self.Ardis_actions = self.default_ab_strings()
-        self.Ardis_apps = self.Ardis_actions.copy()
-        self.Ardis_status = self.Ardis_actions.copy()
-        self.Ardis_categories = self.Ardis_actions.copy()
-        self.Ardis_generic = self.Ardis_actions.copy()
+        self.Ardis_actions = self.Ardis_generic.copy()
         self.choices = {}
         self.choice_values = {}
         self.AB_rc_dict = {}
@@ -483,20 +486,6 @@ Selectively reads a specific group in a standard config file into a dict object.
         sys.stderr.writelines([("%s\n" % p) for p in searched_locs])
         sys.stderr.write('exiting...\n')
         sys.exit(1)
-
-    @staticmethod
-    def default_ab_strings():
-        """
-Acts as a starting point for the ArdisBuilder-to-theme-directory translation dicts.
-        :rtype : dict
-        """
-        newdict = dict()
-        newdict['Standard Type'] = 'standard'
-        newdict['Standard type\nwith gray background'] = 'grayBG'
-        newdict['Dark icons with no background'] = 'gray'
-        newdict['Light icons with no background'] = 'white'
-        newdict['Custom'] = 'custom'
-        return newdict
 
     @staticmethod
     def invert_dict(s_dict):
