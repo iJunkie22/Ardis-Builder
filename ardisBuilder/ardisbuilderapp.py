@@ -18,6 +18,12 @@ assert isinstance(mypath, str)
 os.chdir(os.path.dirname(mypath) + "/ui")
 
 
+TYPE_STD = 'Standard Type'
+TYPE_STD_W_GBG = 'Standard type\nwith gray background'
+ICNS_D_NBG = 'Dark icons with no background'
+ICNS_L_NBG = 'Light icons with no background'
+
+
 class ArdisThemeGen(object):
     hexdigits = "0123456789ABCDEF"
 
@@ -95,35 +101,35 @@ Returns catenated rgb representation of rgb_color dict.
 
 
 class ArdisDict:
-    labels = {'Standard Type': 'standard',
-              'Standard type\nwith gray background': 'grayBG',
-              'Dark icons with no background': 'gray',
-              'Light icons with no background': 'white',
+    labels = {TYPE_STD: 'standard',
+              TYPE_STD_W_GBG: 'grayBG',
+              ICNS_D_NBG: 'gray',
+              ICNS_L_NBG: 'white',
               'Custom': 'custom'
               }
 
-    def __init__(self):
-        self.unlocked = dict(places=['Blue', 'Violet', 'Brown'],
-                             actions=['Standard Type', 'Dark icons with no background'],
-                             statuses=['Standard Type', 'Light icons with no background'],
-                             categories=['Standard Type', 'Standard type\nwith gray background'],
-                             apps=['Standard Type', 'Standard type\nwith gray background']
-                             )
+    def_unlocked = {'places': ['Blue', 'Violet', 'Brown'],
+                    'actions': [TYPE_STD, ICNS_D_NBG],
+                    'statuses': [TYPE_STD, ICNS_L_NBG],
+                    'categories': [TYPE_STD, TYPE_STD_W_GBG],
+                    'apps': [TYPE_STD, TYPE_STD_W_GBG]
+                    }
 
-        self.images = dict(plus=dict(image53='Images/style_light_apps_no_bg.png',
-                                     image26='Images/places_sample_Red.png',
-                                     image21='Images/places_sample_Green.png',
-                                     image49='Images/style_dark_status_no_bg.png',
-                                     image51='Images/style_light_categories_withno_bg.png'
-                                     ),
-                           mega=dict(image18='Images/places_sample_Black.png',
-                                     image23='Images/places_sample_Orange.png',
-                                     image27='Images/places_sample_Gray.png',
-                                     image39='Images/places_sample_Cyan.png',
-                                     image56='Images/style_dark_apps_withno_bg.png',
-                                     image58='Images/style_dark_status_icons.png'
-                                     )
-                           )
+    images = {'plus': {'image53': 'Images/style_light_apps_no_bg.png',
+                       'image26': 'Images/places_sample_Red.png',
+                       'image21': 'Images/places_sample_Green.png',
+                       'image49': 'Images/style_dark_status_no_bg.png',
+                       'image51': 'Images/style_light_categories_withno_bg.png'},
+              'mega': {'image18': 'Images/places_sample_Black.png',
+                       'image23': 'Images/places_sample_Orange.png',
+                       'image27': 'Images/places_sample_Gray.png',
+                       'image39': 'Images/places_sample_Cyan.png',
+                       'image56': 'Images/style_dark_apps_withno_bg.png',
+                       'image58': 'Images/style_dark_status_icons.png'}
+              }
+
+    def __init__(self):
+        self.unlocked = self.def_unlocked.copy()
         self.image_sets = []
         self.ye_old_intro_string = None
 
@@ -132,17 +138,17 @@ class ArdisDict:
 
         if ed_level > 1:
             self.unlocked['places'].extend(['Red', 'Green'])
-            self.unlocked['statuses'].append('Dark icons with no background')
-            self.unlocked['categories'].append('Light icons with no background')
-            self.unlocked['apps'].append('Light icons with no background')
-            self.unlocked['actions'].append('Light icons with no background')
+            self.unlocked['statuses'].append(ICNS_D_NBG)
+            self.unlocked['categories'].append(ICNS_L_NBG)
+            self.unlocked['apps'].append(ICNS_L_NBG)
+            self.unlocked['actions'].append(ICNS_L_NBG)
             self.image_sets.append('plus')
         if ed_level > 2:
             self.unlocked['places'].extend(['Cyan', 'Orange', 'Gray', 'Black'])
-            self.unlocked['actions'].append('Standard type\nwith gray background')
+            self.unlocked['actions'].append(TYPE_STD_W_GBG)
             self.unlocked['actions'].append('Custom')
-            self.unlocked['apps'].append('Dark icons with no background')
-            self.unlocked['statuses'].append('Standard type\nwith gray background')
+            self.unlocked['apps'].append(ICNS_D_NBG)
+            self.unlocked['statuses'].append(TYPE_STD_W_GBG)
             self.image_sets.append('mega')
 
     def refresh_unlocked_icons(self, gtkbuilder):
@@ -213,12 +219,57 @@ class ArdisBuilder:
                     'Gray': '#666666', 'Cyan': '#6788cc', 'Soft Red': '#b93d48',
                     'Violet': '#924565', 'Yellow': '#ffcc67'}
 
-    Ardis_generic = {'Standard Type': 'standard',
-                     'Standard type\nwith gray background': 'grayBG',
-                     'Dark icons with no background': 'gray',
-                     'Light icons with no background': 'white',
+    Ardis_generic = {TYPE_STD: 'standard',
+                     TYPE_STD_W_GBG: 'grayBG',
+                     ICNS_D_NBG: 'gray',
+                     ICNS_L_NBG: 'white',
                      'Custom': 'custom'
                      }
+
+    AB_Pages = {0: dict(desc='intro',
+                        viewport='viewport1',
+                        has_radios=False),
+                1: dict(desc='actions',
+                        viewport='viewport2',
+                        has_radios=True,
+                        rad_box='box7',
+                        lab_box='box5',
+                        img_box='box6',
+                        cur_rad='event_box_curr_radio1'),
+                4: dict(desc='places',
+                        viewport='viewport3',
+                        has_radios=True,
+                        rad_box='box11',
+                        lab_box='box12',
+                        img_box='box13',
+                        cur_rad='event_box_curr_radio2'),
+                11: dict(desc='mimetypes',
+                         viewport='viewport4',
+                         has_radios=False),
+                2: dict(desc='small apps',
+                        viewport='viewport5',
+                        has_radios=True,
+                        rad_box='box16',
+                        lab_box='box17',
+                        img_box='box18',
+                        cur_rad='event_box_curr_radio4'),
+                3: dict(desc='status',
+                        viewport='viewport6',
+                        has_radios=True,
+                        rad_box='box21',
+                        lab_box='box22',
+                        img_box='box23',
+                        cur_rad='event_box_curr_radio5'),
+                5: dict(desc='thank-you',
+                        viewport='viewport7',
+                        has_radios=False),
+                20: dict(desc='categories',
+                         viewport='viewport8',
+                         has_radios=True,
+                         rad_box='box32',
+                         lab_box='box33',
+                         img_box='box34',
+                         cur_rad='event_box_curr_radio3')}
 
     def __init__(self):
         self.mac_patch = False
@@ -304,55 +355,11 @@ class ArdisBuilder:
         self.load_index_to_dict(self.Ardis_kw['path'])
 
         self.ardis_unlocked_places = ['Blue', 'Violet', 'Brown']
-        self.ardis_unlocked_actions = ['Standard Type', 'Dark icons with no background']
-        self.ardis_unlocked_statuses = ['Standard Type', 'Light icons with no background']
-        self.ardis_unlocked_categories = ['Standard Type', 'Standard type\nwith gray background']
-        self.ardis_unlocked_apps = ['Standard Type', 'Standard type\nwith gray background']
 
-        self.AB_Pages = {0: dict(desc='intro',
-                                 viewport='viewport1',
-                                 has_radios=False),
-                         1: dict(desc='actions',
-                                 viewport='viewport2',
-                                 has_radios=True,
-                                 rad_box='box7',
-                                 lab_box='box5',
-                                 img_box='box6',
-                                 cur_rad='event_box_curr_radio1'),
-                         4: dict(desc='places',
-                                 viewport='viewport3',
-                                 has_radios=True,
-                                 rad_box='box11',
-                                 lab_box='box12',
-                                 img_box='box13',
-                                 cur_rad='event_box_curr_radio2'),
-                         11: dict(desc='mimetypes',
-                                  viewport='viewport4',
-                                  has_radios=False),
-                         2: dict(desc='small apps',
-                                 viewport='viewport5',
-                                 has_radios=True,
-                                 rad_box='box16',
-                                 lab_box='box17',
-                                 img_box='box18',
-                                 cur_rad='event_box_curr_radio4'),
-                         3: dict(desc='status',
-                                 viewport='viewport6',
-                                 has_radios=True,
-                                 rad_box='box21',
-                                 lab_box='box22',
-                                 img_box='box23',
-                                 cur_rad='event_box_curr_radio5'),
-                         5: dict(desc='thank-you',
-                                 viewport='viewport7',
-                                 has_radios=False),
-                         20: dict(desc='categories',
-                                  viewport='viewport8',
-                                  has_radios=True,
-                                  rad_box='box32',
-                                  lab_box='box33',
-                                  img_box='box34',
-                                  cur_rad='event_box_curr_radio3')}
+        self.ardis_unlocked_actions = [TYPE_STD, ICNS_D_NBG]
+        self.ardis_unlocked_statuses = [TYPE_STD, ICNS_L_NBG]
+        self.ardis_unlocked_categories = [TYPE_STD, TYPE_STD_W_GBG]
+        self.ardis_unlocked_apps = [TYPE_STD, TYPE_STD_W_GBG]
 
         self.Ardis_actions = self.Ardis_generic.copy()
         self.choices = {}
@@ -751,7 +758,7 @@ Selectively reads a specific group in a standard config file into a dict object.
                         print '***CLEARED KDE ICON CACHE "' + kde_cache + '"***'
 
                 Gtk.main_quit()
-                #exit()
+                # exit()
 
             # If it made it this far it is normal and safe. YAY!
             if p_num_to_show == 0:
@@ -989,7 +996,7 @@ class Handler:
         # Captures exit request made by a window manager
         # Disabling this means closing the window leaves a ZOMBIE!!!
         Gtk.main_quit()
-        #exit()
+        # exit()
 
     def on_Next_clicked(self, button):
         abapp.hide_page(self.cur_page)
@@ -1011,7 +1018,7 @@ class Handler:
     @staticmethod
     def on_Exit_clicked(button):
         pass
-        #exit()
+        # exit()
 
     @staticmethod
     def on_AdvSettings_toggle(tog):
@@ -1200,15 +1207,11 @@ def read_mapped_index(mapped_dict, buffer_obj=None):
     virt_f.close()
 
 
-
-
 __warningregistry__ = dict()
 abapp = ArdisBuilder()
 
 from gi.repository import Gtk
 from gi.repository import Gdk
-
-
 
 builder = Gtk.Builder()
 builder.add_from_file(abapp.w_path + '/ui.glade')
@@ -1242,7 +1245,6 @@ splash_prog_lbl = builder.get_object('splash_prog_lbl')
 splash_progbar = builder.get_object('splash_progbar')
 splash_box = builder.get_object('AB_splash_rootbox')
 
-
 if ssh_session:
     pass
     # exit()
@@ -1256,11 +1258,11 @@ def start():
     AB_Gtk_app = Gtk.Application()
     AB_Gtk_app.register()
     AB_Gtk_app.add_window(window)
-    #AB_Gtk_app.add_window(splash_win)
+    # AB_Gtk_app.add_window(splash_win)
 
-    #picker_win.show_all()
-    #splash_win.show_all()
-    #AB_Gtk_app.run()
+    # picker_win.show_all()
+    # splash_win.show_all()
+    # AB_Gtk_app.run()
     Gtk.main()
 
-#exit()
+# exit()
