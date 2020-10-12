@@ -1,11 +1,13 @@
+from __future__ import print_function
+
 __author__ = "Ethan Randall"
 
-import os
-import sys
-import re
-import glob
-import subprocess
 import cStringIO
+import glob
+import os
+import re
+import subprocess
+import sys
 
 import ardisBuilder.ardisutils
 import ardisBuilder.Theme_Indexer
@@ -15,8 +17,36 @@ mypath = __file__
 if '__package__' in dir():
     mypath = os.path.join(os.getcwd(), __file__)
 assert isinstance(mypath, str)
-os.chdir(os.path.dirname(mypath) + "/ui")
 
+if sys.platform == 'darwin':
+    print('MacPorts patch ACTIVATED')
+    sys.path.append('/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages')
+    mac_patch = True
+    root_shared_icons_dir = '/opt/local/share/icons'
+else:
+    mac_patch = False
+    root_shared_icons_dir = '/usr/share/icons'
+
+import gi
+
+gi.require_version('Gtk', '3.0')
+# Credit for this patch goes to
+# https://build.opensuse.org/package/view_file/openSUSE:12.3/alacarte/alacarte-force-Gtk3.patch?expand=1
+if mac_patch is True:
+    from gi.overrides.Gtk import Gtk
+
+    try:
+        from gi.overrides.Gdk import Gdk
+    except KeyError:
+        from gi.repository import Gdk
+
+# noinspection PyUnresolvedReferences
+from gi.repository import Gtk
+# noinspection PyUnresolvedReferences
+from gi.repository import Gdk
+
+UI_DIR = os.path.dirname(mypath) + "/ui"
+os.chdir(UI_DIR)
 
 TYPE_STD = 'Standard Type'
 TYPE_STD_W_GBG = 'Standard type\nwith gray background'
@@ -97,10 +127,10 @@ Returns catenated rgb representation of rgb_color dict.
         self.counter += 1
         x, y = divmod(int(self.counter), 50)
         if y == 0:
-            print "%s items done" % self.counter
+            print("%s items done" % self.counter)
 
 
-class ArdisDict:
+class ArdisDict(object):
     labels = {TYPE_STD: 'standard',
               TYPE_STD_W_GBG: 'grayBG',
               ICNS_D_NBG: 'gray',
@@ -160,18 +190,17 @@ class ArdisDict:
         return True
 
     def apply_edition_labels(self, edition=None, vers=None, theme="Ardis"):
-        global builder
         ed_level = [None, 'Basic', 'Plus', 'Mega'].index(edition)
 
-        about_dialog = builder.get_object('aboutdialog1')
-        outro_text = builder.get_object('label46')
+        about_dialog = g_ui.builder.get_object('aboutdialog1')
+        outro_text = g_ui.builder.get_object('label46')
         outro_buffer = cStringIO.StringIO()
         outro_buffer.writelines(['<span>Thank You for choosing %s!</span>\n\n' % theme,
                                  '<span>%s gives you what others can\'t, it gives you what you deserve,' % theme,
                                  ' a power of customization.</span>\n\n']
                                 )
 
-        intro_text = builder.get_object('label51')
+        intro_text = g_ui.builder.get_object('label51')
         if self.ye_old_intro_string is None:
             self.ye_old_intro_string = intro_text.get_label()
 
@@ -212,7 +241,7 @@ class ArdisDict:
         outro_buffer.close()
 
 
-class ArdisBuilder:
+class ArdisBuilder(object):
     Ardis_colors = {'Black': '#111111', 'Blue': '#0078ad', 'Brown': '#b59a6e', 'Green': '#85d075',
                     'Dark Green': '#66ae4a', 'Light Green': '#79c843', 'Olive Green': '#669966',
                     'Orange': '#f38725', 'Peach': '#ef6a47', 'Pink': '#e65177', 'Red': '#cd1d31',
@@ -272,33 +301,6 @@ class ArdisBuilder:
                          cur_rad='event_box_curr_radio3')}
 
     def __init__(self):
-        self.mac_patch = False
-        if sys.platform == 'darwin':
-            print 'MacPorts patch ACTIVATED'
-            sys.path.append('/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages')
-            self.mac_patch = True
-            self.root_shared_icons_dir = '/opt/local/share/icons'
-        else:
-            self.root_shared_icons_dir = '/usr/share/icons'
-
-        import gi
-
-        gi.require_version('Gtk', '3.0')
-        # Credit for this patch goes to
-        # https://build.opensuse.org/package/view_file/openSUSE:12.3/alacarte/alacarte-force-Gtk3.patch?expand=1
-        if self.mac_patch is True:
-            from gi.overrides.Gtk import Gtk
-            try:
-                from gi.overrides.Gdk import Gdk
-            except KeyError:
-                from gi.repository import Gdk
-        else:
-            from gi.repository import Gtk
-            from gi.repository import Gdk
-
-        self.w_path = os.getcwd()
-        sys.path.append(str(self.w_path))
-
         # envars = {}
         self.GDM_dict = {}
         self.user_GDMS = None
@@ -316,7 +318,7 @@ class ArdisBuilder:
                 if self.GDM_dict['Type'] == 'XSession':
                     # This is probably a valid session description file
                     self.user_DE = self.GDM_dict['DesktopNames']
-            elif self.mac_patch is True:
+            elif mac_patch is True:
                 self.user_DE = 'N/A(Using XQuartz on OSX)'
             else:
                 self.user_DE = 'unknown'
@@ -334,19 +336,19 @@ class ArdisBuilder:
                 k, s, v = item.partition("=")
                 if v and k in self.Ardis_kw.keys():
                     self.Ardis_kw[k] = v
-                    print "".join([k, s, v]), "override used"
+                    print("".join([k, s, v]), "override used")
 
         m_list = sys.modules.keys()
         if "gi" not in m_list:
             # Debugging-related info. If this is triggered, please include it in the report you send :)
-            print sys.prefix
-            print sys.exec_prefix
-            print '=' * 30
-            print "Search Paths >>>>"
+            print(sys.prefix)
+            print(sys.exec_prefix)
+            print('=' * 30)
+            print("Search Paths >>>>")
             for p_i in sys.path:
-                print p_i
-            print '=' * 30
-            print 'Module List >>>>', m_list
+                print(p_i)
+            print('=' * 30)
+            print('Module List >>>>', m_list)
             sys.path.append('/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages')
             exit(1)
         else:
@@ -401,7 +403,7 @@ Reads the ArdisBuilder settings and Icon Theme settings from an index file to se
                 k, s, v = item.partition("=")
                 if v and k in self.Ardis_kw.keys():
                     self.Ardis_kw[k] = v
-                    print "".join([k, s, v]), "override used"
+                    print("".join([k, s, v]), "override used")
 
         if self.Ardis_kw['edition'] is None:
             self.AB_rc_dict['Edition'] = 'Basic'
@@ -439,20 +441,15 @@ Selectively reads a specific group in a standard config file into a dict object.
         :rtype : dict
         """
         new_dict = {}
-        nf = open(indexfile, 'r')
-        try:
-            # new_dict = {}
+        config_line_pat = re.compile(r'(^\[(?P<GroupName>.+?)\]$)|(^(?P<Key>.+?)=(?P<Value>.+)$)', flags=re.MULTILINE)
+        with open(indexfile, 'r') as nf:
             cur_gr = ""
-            for line in nf:
-                group_pat = re.search('((?<=^\[).*(?=\]))', line)
-                if group_pat:
-                    cur_gr = group_pat.group(1)
-                if cur_gr == targ_group:
-                    k, s, v = line.rstrip('\n').partition("=")
-                    if s and v:
-                        new_dict[k] = v
-        finally:
-            nf.close()
+            for mat in config_line_pat.finditer(nf.read()):
+                mat_dict = mat.groupdict()
+                if mat_dict.get('GroupName', ''):
+                    cur_gr = mat_dict['GroupName']
+                elif cur_gr == targ_group:
+                    new_dict[mat_dict['Key']] = mat_dict['Value'].strip('\n')
         return new_dict
 
     def find_theme_path(self, themedir=None, showall=False):
@@ -462,11 +459,11 @@ Selectively reads a specific group in a standard config file into a dict object.
         if self.user_DE == 'KDE':
             icon_theme_locs.extend(list(os.path.expanduser('~/.kde%s/share/icons' % i) for i in ['', '4']))
 
-        elif self.mac_patch is True:
+        elif mac_patch is True:
             icon_theme_locs.append(os.path.expanduser('~/Library/Preferences/KDE/share/icons'))
 
         icon_theme_locs.append(os.path.expanduser('~/.icons'))
-        icon_theme_locs.append(self.root_shared_icons_dir)
+        icon_theme_locs.append(root_shared_icons_dir)
 
         for themes_d in icon_theme_locs:
             try:
@@ -477,7 +474,7 @@ Selectively reads a specific group in a standard config file into a dict object.
                             return os.path.join(themes_d, item)
                         themes_here.append(os.path.join(themes_d, item))
                 if "--debug" in sys.argv:
-                    print "--> Found these themes %s" % themes_here
+                    print("--> Found these themes %s" % themes_here)
                 if themedir:
                     pos_theme_path = os.path.join(themes_d, themedir)
                     searched_locs.append(pos_theme_path)
@@ -496,7 +493,7 @@ Selectively reads a specific group in a standard config file into a dict object.
 
     @staticmethod
     def invert_dict(s_dict):
-        return {[(v, k) for (k, v) in s_dict.items()]}
+        return {v: k for (k, v) in s_dict.items()}
 
     @staticmethod
     def set_ab_image(ob_id, ob_fname):
@@ -504,8 +501,7 @@ Selectively reads a specific group in a standard config file into a dict object.
 
         :rtype : None
         """
-        global builder
-        targ_img = builder.get_object(ob_id)
+        targ_img = g_ui.builder.get_object(ob_id)
         targ_img.clear()
         targ_img.set_from_file(ob_fname)
         return None
@@ -550,7 +546,7 @@ Selectively reads a specific group in a standard config file into a dict object.
 
             if os.path.islink(test_s_c_dir):
                 if "--debug" in sys.argv:
-                    print "-->ardis_dirs-->Found symlink %s" % test_s_c_dir
+                    print("-->ardis_dirs-->Found symlink %s" % test_s_c_dir)
                 try:
                     link_target = '/'.join(['extra', c_dir, ArdisDirArgs[c_dir], ''])
                     assert os.path.isdir(os.path.join(s_dir, link_target))
@@ -561,35 +557,33 @@ Selectively reads a specific group in a standard config file into a dict object.
                 except AssertionError:
                     new_sym_error = str("Hmm. Looks like %s doesnt exist." % os.path.join(s_dir, link_target))
                     if "--debug" in sys.argv:
-                        print "-->ardis_dirs-->%s" % new_sym_error
+                        print("-->ardis_dirs-->%s" % new_sym_error)
                     self.errorlist.append(new_sym_error)
                     self.errordict[theme_ready_path] = dict(SymLinkError=str(os.path.join(s_dir, link_target)))
                 except KeyError, undef_cat:
                     new_cat_error = str('***Oops! %s is not defined!***' % str(undef_cat))
                     if "--debug" in sys.argv:
-                        print "-->ardis_dirs-->%s" % new_cat_error
+                        print("-->ardis_dirs-->%s" % new_cat_error)
                     self.errordict[theme_ready_path]['UndefinedCategoryError'] = str(undef_cat)
                     self.errorlist.append(new_cat_error)
         if "--debug" in sys.argv:
-            print "-->ardis_dirs-->%s" % str(self.errordict)
-            print "-->ardis_dirs-->%s" % str(self.errorlist)
+            print("-->ardis_dirs-->%s" % str(self.errordict))
+            print("-->ardis_dirs-->%s" % str(self.errorlist))
         newdirectories = ",".join(themedirlist)
         return newdirectories
 
     def hide_page(self, p_num_to_hide):
-        global builder
-        winbox = builder.get_object("box2")
+        winbox = g_ui.builder.get_object("box2")
         page_dict = self.AB_Pages[p_num_to_hide]
         assert isinstance(page_dict, dict)
         assert isinstance(page_dict['viewport'], str)
 
-        old_vp = builder.get_object(page_dict['viewport'])
-        if nextbutton.get_label() == '  Next   ':
+        old_vp = g_ui.builder.get_object(page_dict['viewport'])
+        if g_ui.nextbutton.get_label() == '  Next   ':
             winbox.remove(old_vp)
 
     def show_page(self, p_num_to_show):
-        global builder
-        winbox = builder.get_object("box2")
+        winbox = g_ui.builder.get_object("box2")
         vp_to_show = p_num_to_show + 1
         completeness = ''
         try:
@@ -597,18 +591,18 @@ Selectively reads a specific group in a standard config file into a dict object.
         except KeyError, nullpage:
             page_dict = {'viewport': 'viewport99'}
         assert isinstance(page_dict, dict)
-        new_vp = builder.get_object(page_dict['viewport'])
+        new_vp = g_ui.builder.get_object(page_dict['viewport'])
 
         for k, v in self.choices.items():
-            v2 = getNthChildLabel(v['label_box'], getPosInParent(v['radio']))
+            v2 = g_ui.getNthChildLabel(v['label_box'], g_ui.getPosInParent(v['radio']))
             self.choice_values[k] = v2 if k == 'places' else self.Ardis_generic[v2]
 
         if '--debug' in sys.argv:
-            print self.choice_values
+            print(self.choice_values)
 
         if p_num_to_show >= 5:
             # This is when the last page is triggered
-            res_label_obj = builder.get_object('results_summary')
+            res_label_obj = g_ui.builder.get_object('results_summary')
             try:
 
                 res_sum = ('Your selected options are:\n'
@@ -632,7 +626,7 @@ Selectively reads a specific group in a standard config file into a dict object.
             dir_len = self.Ardis_kw['dcount']
             # This alternative method uses the number of directories in the OLD list, since it should be the same anyway
             # avoids the unnecessary calling of ardis_dirs, and the premature application of symlinks
-            prog_bar = builder.get_object('progressbar1')
+            prog_bar = g_ui.builder.get_object('progressbar1')
             prog_bar.set_property('text', None)
             prog_bar.set_fraction(float('0.00'))
 
@@ -642,12 +636,12 @@ Selectively reads a specific group in a standard config file into a dict object.
             if rw_ability is False:
                 # This should disable the clickability of the Next button
                 # This should also bring up the password dialog
-                nextbutton.set_sensitive(False)
-            nextbutton.set_label('  Build   ')
+                g_ui.nextbutton.set_sensitive(False)
+            g_ui.nextbutton.set_label('  Build   ')
             winbox.add(new_vp)
-            setPosInParent('curr_page_dot', p_num_to_show)
+            g_ui.setPosInParent('curr_page_dot', p_num_to_show)
 
-        elif nextbutton.get_label() == '  Build   ':
+        elif g_ui.nextbutton.get_label() == '  Build   ':
             # The user has chosen to generate
             # First we re-read all the choices
             d_string = self.ardis_dirs(self.Ardis_kw['path'],
@@ -661,7 +655,7 @@ Selectively reads a specific group in a standard config file into a dict object.
             # Initialize the progress bar
             dir_len = len(ardis_d_list)
             prog_step = float('1.0') / float(dir_len)
-            prog_bar = builder.get_object('progressbar1')
+            prog_bar = g_ui.builder.get_object('progressbar1')
             prog_bar.set_fraction(float('0.00'))
 
             # Start generating the temp theme
@@ -680,7 +674,7 @@ Selectively reads a specific group in a standard config file into a dict object.
                     old_prog = prog_bar.get_fraction()
                     new_prog = old_prog + prog_step
                     prog_bar.set_fraction(new_prog)
-                    # print self.errordict.keys()
+                    # print( self.errordict.keys() )
                     if g_item in self.errordict.keys():
                         e_count += 1
 
@@ -688,10 +682,10 @@ Selectively reads a specific group in a standard config file into a dict object.
                     if e_count > 0:
                         prog_bar.set_text('{0} completed with {1} errors'.format(completeness, str(e_count)))
                 for k, v in self.errordict.items():
-                    print k, v
+                    print(k, v)
             finally:
                 temp_theme_file.close()
-            nextbutton.set_label('  Apply   ')
+            g_ui.nextbutton.set_label('  Apply   ')
 
         else:
             # The requested page is just a page (or the end)
@@ -701,7 +695,7 @@ Selectively reads a specific group in a standard config file into a dict object.
             except TypeError:
                 # This captures any attempt to advance to a page that doesnt exist
 
-                print 'Install Location=' + self.Ardis_kw['path']
+                print('Install Location=' + self.Ardis_kw['path'])
 
                 # Apply the temp theme to theme index
                 temp_theme_file = open(self.Ardis_kw['path'] + "/temp_index.theme", 'r')
@@ -723,7 +717,7 @@ Selectively reads a specific group in a standard config file into a dict object.
                 theme.rescan_if_needed()
                 theme.set_custom_theme(None)
                 try:
-                    print Gtk.Settings.props.gtk_icon_theme_name()
+                    print(Gtk.Settings.props.gtk_icon_theme_name())
                 except TypeError:
                     pass
 
@@ -731,40 +725,40 @@ Selectively reads a specific group in a standard config file into a dict object.
                 theme2.emit('changed')
                 theme2.rescan_if_needed()
 
-                if self.mac_patch is True:
-                    print "-" * 40
-                    print ">>> You will need to apply {0} with: \nkwriteconfig --group Icons --key Theme {0}".format(
-                        self.Ardis_kw['name'])
-                    print "-" * 40
+                if mac_patch is True:
+                    print("-" * 40)
+                    print(">>> You will need to apply {0} with: \n"
+                          "kwriteconfig --group Icons --key Theme {0}".format(self.Ardis_kw['name']))
+                    print("-" * 40)
 
                 # Now Rudely erase GNOMEs icon cache
-                clean_switch_GNOME = builder.get_object('switch2')
+                clean_switch_GNOME = g_ui.builder.get_object('switch2')
                 if clean_switch_GNOME.get_active() is True:
                     # This part is still experimental, and may not work at all
                     giconcaches = glob.glob('/usr/share/icons/gnome/icon-cache.cache')
                     for gnome_cache in giconcaches:
                         try:
                             os.remove(gnome_cache)
-                            print '***CLEARED GNOME ICON CACHE "' + gnome_cache + '"***'
+                            print('***CLEARED GNOME ICON CACHE "' + gnome_cache + '"***')
                         except OSError:
                             pass
 
                 # Now Rudely erase KDEs icon cache
-                clean_switch_KDE = builder.get_object('switch1')
+                clean_switch_KDE = g_ui.builder.get_object('switch1')
                 if clean_switch_KDE.get_active() is True:
                     kiconcaches = glob.glob('/var/tmp/kdecache-*/icon-cache.kcache')
                     for kde_cache in kiconcaches:
                         os.remove(kde_cache)
-                        print '***CLEARED KDE ICON CACHE "' + kde_cache + '"***'
+                        print('***CLEARED KDE ICON CACHE "' + kde_cache + '"***')
 
                 Gtk.main_quit()
                 # exit()
 
             # If it made it this far it is normal and safe. YAY!
             if p_num_to_show == 0:
-                backbutton.hide()
+                g_ui.backbutton.hide()
             else:
-                backbutton.show()
+                g_ui.backbutton.show()
 
     @staticmethod
     def make_desktop_launcher():
@@ -786,22 +780,23 @@ Selectively reads a specific group in a standard config file into a dict object.
         os.chmod((os.path.dirname(mypath) + "/ArdisBuilder.desktop"), 0755)
 
 
-class Handler:
-    def __init__(self):
-        global builder
-
-        self.combobox = builder.get_object('comboboxtext1')
-        tpath_result = abapp.find_theme_path('Ardis', showall=True)
+class Handler(object):
+    def __init__(self, uiBackend):
+        """
+        :param ArdisUIBackend uiBackend:
+        """
+        self.combobox = uiBackend.builder.get_object('comboboxtext1')
+        tpath_result = g_abapp.find_theme_path('Ardis', showall=True)
         if isinstance(tpath_result, list):
             for i in tpath_result:
                 self.combobox.append_text(str(i))
-            picker_win.show_all()
+            uiBackend.picker_win.show_all()
             # This will call the prompt
         else:
-            abapp.load_index_to_dict(abapp.find_theme_path())
+            g_abapp.load_index_to_dict(g_abapp.find_theme_path())
             self.on_splash_show(hidden=True)
 
-        self.page_dot_dot = builder.get_object('curr_page_dot')
+        self.page_dot_dot = uiBackend.builder.get_object('curr_page_dot')
         self.page_dot_container = self.page_dot_dot.get_parent()
         self.pw_purpose = ""
         self.old_pw_purpose = ""
@@ -812,6 +807,9 @@ class Handler:
             self.gtksettings.props.gtk_button_images = True
         finally:
             pass
+
+        self.custom_color_gen = ArdisThemeGen()
+        self.theme_dict = ArdisDict()
 
     def get_cur_page(self):
         cur_page = self.page_dot_container.get_children().index(self.page_dot_dot)
@@ -833,112 +831,107 @@ class Handler:
     def on_splash_mapped(self, *args):
         pass
 
-    def start_spinner(self, *args):
+    def start_spinner(self, *_):
         self.on_gen_colorized()
         return None
 
     @staticmethod
-    def stop_spinner(*args):
-        gen_spinner.stop()
+    def stop_spinner(*_):
+        g_ui.gen_spinner.stop()
+        return None
+
+    def on_gen_colorized(self, *_):
+        for result in self.custom_color_gen.theme_folder_list(g_abapp.Ardis_kw['path'], dirs=True):
+            self.custom_color_gen.generate(result)
+        for result2 in self.custom_color_gen.theme_folder_list(g_abapp.Ardis_kw['path'], files=True):
+            self.custom_color_gen.generate(result2)
+        g_ui.gen_lbl.show()
         return None
 
     @staticmethod
-    def on_gen_colorized(*args):
-        for result in custom_color_gen.theme_folder_list(abapp.Ardis_kw['path'], dirs=True):
-            custom_color_gen.generate(result)
-        for result2 in custom_color_gen.theme_folder_list(abapp.Ardis_kw['path'], files=True):
-            custom_color_gen.generate(result2)
-        gen_lbl.show()
+    def on_splash_lbl_drawn(*_):
+        print("drawn")
         return None
 
-    @staticmethod
-    def on_splash_lbl_drawn(*args):
-        print "drawn"
-        return None
-
-    def on_picker_submit_clicked(self, *args):
+    def on_picker_submit_clicked(self, *_):
         choice = self.combobox.get_active_text()
         if choice:
-            abapp.Ardis_kw['path'] = choice
-            abapp.Ardis_kw['dir'] = os.path.basename(choice)
-            picker_win.hide()
+            g_abapp.Ardis_kw['path'] = choice
+            g_abapp.Ardis_kw['dir'] = os.path.basename(choice)
+            g_ui.picker_win.hide()
             self.on_splash_show(hidden=False)
 
-    @staticmethod
-    def on_splash_show(hidden=False, *args):
-        global builder
+    def on_splash_show(self, hidden=False, *_):
         if hidden is False:
-            splash_win.show_all()
+            g_ui.splash_win.show_all()
         if hidden is True:
-            splash_win.hide()
+            g_ui.splash_win.hide()
 
-        splash_prog_lbl = builder.get_object('splash_prog_lbl')
-        splash_progbar = builder.get_object('splash_progbar')
-        splash_prog_lbl.props.label = "Reading theme index into memory"
-        abapp.load_index_to_dict(abapp.Ardis_kw['path'])
+        g_ui.splash_prog_lbl.props.label = "Reading theme index into memory"
+        g_abapp.load_index_to_dict(g_abapp.Ardis_kw['path'])
 
-        set_fr = splash_progbar.set_fraction
+        set_fr = g_ui.splash_progbar.set_fraction
 
         set_fr(0.1)
 
-        splash_prog_lbl.props.label = "Reading edition-specific properties"
-        theme_dict.apply_unlocks(abapp.Ardis_kw['edition'])
+        g_ui.splash_prog_lbl.props.label = "Reading edition-specific properties"
+        self.theme_dict.apply_unlocks(g_abapp.Ardis_kw['edition'])
         set_fr(0.2)
 
-        splash_prog_lbl.props.label = "Loading additional preview icons"
-        theme_dict.refresh_unlocked_icons(builder)
+        g_ui.splash_prog_lbl.props.label = "Loading additional preview icons"
+        self.theme_dict.refresh_unlocked_icons(g_ui.builder)
         set_fr(0.3)
 
-        splash_prog_lbl.props.label = "Hiding Locked Items"
-        hide_bonus_choices(theme_dict.unlocked['places'], 'box10')
+        g_ui.splash_prog_lbl.props.label = "Hiding Locked Items"
+        g_ui.hide_bonus_choices(self.theme_dict.unlocked['places'], 'box10')
         set_fr(0.4)
-        hide_bonus_choices(theme_dict.unlocked['statuses'], 'box20')
+        g_ui.hide_bonus_choices(self.theme_dict.unlocked['statuses'], 'box20')
         set_fr(0.5)
-        hide_bonus_choices(theme_dict.unlocked['categories'], 'box31')
+        g_ui.hide_bonus_choices(self.theme_dict.unlocked['categories'], 'box31')
         set_fr(0.6)
-        hide_bonus_choices(theme_dict.unlocked['apps'], 'box15')
+        g_ui.hide_bonus_choices(self.theme_dict.unlocked['apps'], 'box15')
         set_fr(0.7)
-        hide_bonus_choices(theme_dict.unlocked['actions'], 'box3')
+        g_ui.hide_bonus_choices(self.theme_dict.unlocked['actions'], 'box3')
         set_fr(0.8)
-        # theme_dict.refresh_unlocked_icons(builder)
-        theme_dict.apply_edition_labels(abapp.Ardis_kw['edition'], theme=abapp.Ardis_kw['dir'])
-        splash_progbar.set_fraction(1.0)
+        # g_theme_dict.refresh_unlocked_icons(builder)
+        self.theme_dict.apply_edition_labels(g_abapp.Ardis_kw['edition'], theme=g_abapp.Ardis_kw['dir'])
+        g_ui.splash_progbar.set_fraction(1.0)
         if "--debug" not in sys.argv:
-            splash_win.hide()
-            window.show_all()
-            backbutton.hide()
-            builder.get_object('SVG_PNG_choice_box').set_visible(abapp.AB_rc_dict['has_vectors'])
+            g_ui.splash_win.hide()
+            g_ui.window.show_all()
+            g_ui.backbutton.hide()
+            g_ui.builder.get_object('SVG_PNG_choice_box').set_visible(g_abapp.AB_rc_dict['has_vectors'])
             return False
-        print "done"
-        print "woken"
-        print Gtk.main_level()
-        print splash_prog_lbl.props.label
-        for prop in dir(splash_prog_lbl.props):
+        print("done")
+        print("woken")
+        print(Gtk.main_level())
+        print(g_ui.splash_prog_lbl.props.label)
+        for prop in dir(g_ui.splash_prog_lbl.props):
             try:
-                print "\n", prop
-                print splash_prog_lbl.props.__getattribute__(str(prop))
+                print("\n", prop)
+                print(g_ui.splash_prog_lbl.props.__getattribute__(str(prop)))
             except AttributeError:
                 pass
             except TypeError:
                 pass
-        splash_win.hide()
-        window.show_all()
+        g_ui.splash_win.hide()
+        g_ui.window.show_all()
 
     def on_splash_lbl_realized(self, *args):
         pass
 
     @staticmethod
-    def moo(*args):
-        print "moo"
+    def moo(*_):
+        print("moo")
 
     @staticmethod
     def remap(*args):
-        print args
-        print "unmapping"
+        print(args)
+        print("unmapping")
         args[0].unmap()
-        print "remapping"
+        print("remapping")
         args[0].map()
-        print "remapped"
+        print("remapped")
         return True
 
     @staticmethod
@@ -947,16 +940,15 @@ class Handler:
 
     @staticmethod
     def on_extras_btn_click(button):
-        global builder
-        combo_box_theme = builder.get_object('comboboxtext2')
-        text_buffer = builder.get_object('textbuffer2')
+        combo_box_theme = g_ui.builder.get_object('comboboxtext2')
+        text_buffer = g_ui.builder.get_object('textbuffer2')
         if button.props.name == "print_self_index":
             theme_choice = combo_box_theme.get_active_text()
-            oxy_theme_path = abapp.find_theme_path(themedir=theme_choice, showall=False)
+            oxy_theme_path = g_abapp.find_theme_path(themedir=theme_choice, showall=False)
             if oxy_theme_path is None:
                 return False
 
-            ardis_dict = futil.map_index_to_dict(abapp.Ardis_kw['path'], verbose=False)
+            ardis_dict = futil.map_index_to_dict(g_abapp.Ardis_kw['path'], verbose=False)
             oxygen_dict = futil.map_index_to_dict(oxy_theme_path, verbose=False)
 
             dif_dict1 = oxygen_dict
@@ -978,18 +970,18 @@ class Handler:
     def print_event(*args):
         if "--debug" not in sys.argv:
             return None
-        print args, "hi"
+        print(args, "hi")
         event = args[1]
         try:
-            print event.get_event_type()
+            print(event.get_event_type())
         except AttributeError:
             pass
-        print ""
+        print("")
         return None
 
     @staticmethod
-    def on_splash_lbl_show(*args):
-        print "shown"
+    def on_splash_lbl_show(*_):
+        print("shown")
 
     @staticmethod
     def on_window1_delete_event(arg1, arg2):
@@ -999,20 +991,20 @@ class Handler:
         # exit()
 
     def on_Next_clicked(self, button):
-        abapp.hide_page(self.cur_page)
-        abapp.show_page(self.nex_page)
+        g_abapp.hide_page(self.cur_page)
+        g_abapp.show_page(self.nex_page)
         # if the next page doesnt exist, the app exits now
         self.page_dot_container.reorder_child(self.page_dot_dot, self.nex_page)
-        if nextbutton.get_sensitive() is False:
+        if g_ui.nextbutton.get_sensitive() is False:
             self.old_pw_purpose = self.pw_purpose
             self.pw_purpose = "Unlock permissions of root-installed Ardis"
-            self.on_open_window_clicked(builder.get_object('window3'))
+            self.on_open_window_clicked(g_ui.builder.get_object('window3'))
 
     def on_Back_clicked(self, button):
-        nextbutton.set_label('  Next   ')
-        nextbutton.set_sensitive(True)
-        abapp.hide_page(self.cur_page)
-        abapp.show_page(self.prev_page)
+        g_ui.nextbutton.set_label('  Next   ')
+        g_ui.nextbutton.set_sensitive(True)
+        g_abapp.hide_page(self.cur_page)
+        g_abapp.show_page(self.prev_page)
         self.page_dot_container.reorder_child(self.page_dot_dot, self.prev_page)
 
     @staticmethod
@@ -1023,7 +1015,7 @@ class Handler:
     @staticmethod
     def on_AdvSettings_toggle(tog):
         # this is a simple test to make sure everything is connected
-        print tog.get_active()
+        print(tog.get_active())
 
     def hide_adv_settings(self, wind, event):
         """
@@ -1034,18 +1026,16 @@ class Handler:
         if wind.props.title == 'Password':
             self.pw_purpose = self.old_pw_purpose
         return True
-        # print self.get_active()
+        # print( self.get_active() )
 
-    @staticmethod
-    def on_color_chosen(widget, prop):
-        global builder
-        color_btn = builder.get_object("action_color_btn")
+    def on_color_chosen(self, widget, prop):
+        color_btn = g_ui.builder.get_object("action_color_btn")
         new_color = widget.props.rgba
         for i in color_btn.get_children():
             i.override_background_color(0, new_color)
         color_str = widget.props.rgba.to_string()
-        custom_color_gen.set_color_from_gdk_str(color_str)
-        gen_lbl.hide()
+        self.custom_color_gen.set_color_from_gdk_str(color_str)
+        g_ui.gen_lbl.hide()
 
     def on_eventbox_radio_press(self, radio, void):
         """
@@ -1053,7 +1043,6 @@ class Handler:
         :param radio: Gtk.EventBox
         :param void: null
         """
-        global builder
         rad_parent = radio.get_parent()
         rad_siblings = rad_parent.get_children()
         i = int(rad_siblings.index(radio))
@@ -1066,15 +1055,15 @@ class Handler:
 
             rad_pos = int(list(c.props.name for c in rad_siblings).index('cur_rad'))
             try:
-                chosen = str(list(abapp.Ardis_generic[x.props.label] for x in lbl_siblings)[i])
+                chosen = str(list(g_abapp.Ardis_generic[x.props.label] for x in lbl_siblings)[i])
             except KeyError, e:
                 chosen = str(list(x.props.label for x in lbl_siblings)[i])
             finally:
-                print chosen
+                print(chosen)
 
-        cur_dict = abapp.AB_Pages[self.cur_page]
+        cur_dict = g_abapp.AB_Pages[self.cur_page]
         assert isinstance(cur_dict, dict)
-        cur_rad = builder.get_object(cur_dict["cur_rad"])
+        cur_rad = g_ui.builder.get_object(cur_dict["cur_rad"])
         rad_parent.reorder_child(cur_rad, i)
 
     def on_SVG_PNG_clicked(self, radio, void):
@@ -1089,23 +1078,20 @@ class Handler:
         rad_pos = int(list(c.props.name for c in rad_siblings).index('cur_rad'))
         cur_rad = rad_siblings[rad_pos]
         rad_parent.reorder_child(cur_rad, i)
-        abapp.use_bitmaps = bool(i)
+        g_abapp.use_bitmaps = bool(i)
 
-    @staticmethod
-    def on_open_window_clicked(window3, *junk):
-        global builder
+    def on_open_window_clicked(self, window3, *junk):
         window3.show_all()
 
-        theme_dict.apply_edition_labels(abapp.Ardis_kw['edition'], theme=abapp.Ardis_kw['dir'])
+        self.theme_dict.apply_edition_labels(g_abapp.Ardis_kw['edition'], theme=g_abapp.Ardis_kw['dir'])
         if window3.props.title == 'Password':
-            pathstat = os.stat(os.path.join(abapp.Ardis_kw['path'], 'index.theme'))
-            builder.get_object('lbl_cur_u_num').props.label = str(os.getuid())
-            builder.get_object('lbl_cur_o_num').props.label = str(pathstat.st_uid)
+            pathstat = os.stat(os.path.join(g_abapp.Ardis_kw['path'], 'index.theme'))
+            g_ui.builder.get_object('lbl_cur_u_num').props.label = str(os.getuid())
+            g_ui.builder.get_object('lbl_cur_o_num').props.label = str(pathstat.st_uid)
 
     def on_pw_submit_clicked(self, text_entry):
-        global builder
         if self.pw_purpose == "Unlock permissions of root-installed Ardis":
-            args = str("sudo -kS chmod -v -R a+rw '%s'" % abapp.Ardis_kw['path'])
+            args = str("sudo -kS chmod -v -R a+rw '%s'" % g_abapp.Ardis_kw['path'])
         else:
             args = str("xargs echo $@")
         test = subprocess.Popen(args, stdin=subprocess.PIPE, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
@@ -1116,11 +1102,11 @@ class Handler:
         if '' in stderr_list:
             stderr_list.remove('')
 
-        stderr_label = builder.get_object('pw_stderr_label')
+        stderr_label = g_ui.builder.get_object('pw_stderr_label')
         if len(stderr_list) == 0:
             new_label = "Success!"
             new_color = Gdk.RGBA(red=0, green=1.0, blue=0, alpha=0.5)
-            nextbutton.set_sensitive(True)
+            g_ui.nextbutton.set_sensitive(True)
         else:
             new_label = "Incorrect Password"
             new_color = Gdk.RGBA(red=1.0, green=0.5, blue=0, alpha=0.5)
@@ -1128,69 +1114,83 @@ class Handler:
         stderr_label.props.label = new_label
         stderr_label.override_background_color(0, new_color)
 
-        pathstat = os.stat(os.path.join(abapp.Ardis_kw['path'], 'index.theme'))
-        builder.get_object('lbl_cur_u_num').props.label = str(os.getuid())
-        builder.get_object('lbl_cur_o_num').props.label = str(pathstat.st_uid)
+        pathstat = os.stat(os.path.join(g_abapp.Ardis_kw['path'], 'index.theme'))
+        g_ui.builder.get_object('lbl_cur_u_num').props.label = str(os.getuid())
+        g_ui.builder.get_object('lbl_cur_o_num').props.label = str(pathstat.st_uid)
 
     def set_pw_context(self, button):
         self.old_pw_purpose = self.pw_purpose
         self.pw_purpose = button.props.label
 
 
-def setPageDot(n):
-    global builder
-    pageDot = builder.get_object("curr_page_dot")
-    mainbox = builder.get_object("box1")
-    mainbox.reorder_child(pageDot, n)
+class ArdisUIBackend(object):
+    def __init__(self):
+        self.builder = Gtk.Builder()
+        self.builder.add_from_file(UI_DIR + '/ui.glade')
+
+        self.window = self.builder.get_object("window1")
+        self.splash_win = self.builder.get_object("AB_splash_window")
+        self.picker_win = self.builder.get_object('picker')
+        self.advsetwin = self.builder.get_object("window2")
+        self.pageDot = self.builder.get_object("curr_page_dot")
+        self.mainbox = self.builder.get_object("box1")
+        self.nextbutton = self.builder.get_object("button1")
+        self.backbutton = self.builder.get_object("button2")
+        self.aboutbutton = self.builder.get_object("box38")
+        self.extrastuffbutton = self.builder.get_object("box37")
+        self.pageone = self.builder.get_object("viewport1")
+        self.gen_spinner = self.builder.get_object("spinner1")
+        self.gen_lbl = self.builder.get_object("lbl_gen_status")
+
+        self.splash_prog_lbl = self.builder.get_object('splash_prog_lbl')
+        self.splash_progbar = self.builder.get_object('splash_progbar')
+        self.splash_box = self.builder.get_object('AB_splash_rootbox')
+
+        self.handler = Handler(uiBackend=self)
+        self.builder.connect_signals(self.handler)
 
 
-def setPosInCont(targ_obj, targ_con, targ_pos):
-    global builder
-    target_object = builder.get_object(targ_obj)
-    taget_container = builder.get_object(targ_con)
-    taget_container.reorder_child(target_object, targ_pos)
+    def setPageDot(self, n):
+        pageDot = self.builder.get_object("curr_page_dot")
+        mainbox = self.builder.get_object("box1")
+        mainbox.reorder_child(pageDot, n)
 
+    def setPosInCont(self, targ_obj, targ_con, targ_pos):
+        target_object = self.builder.get_object(targ_obj)
+        taget_container = self.builder.get_object(targ_con)
+        taget_container.reorder_child(target_object, targ_pos)
 
-def setPosInParent(targ_obj, targ_pos):
-    global builder
-    target_object = builder.get_object(targ_obj)
-    taget_container = target_object.get_parent()
-    taget_container.reorder_child(target_object, targ_pos)
+    def setPosInParent(self, targ_obj, targ_pos):
+        target_object = self.builder.get_object(targ_obj)
+        taget_container = target_object.get_parent()
+        taget_container.reorder_child(target_object, targ_pos)
 
+    def getPosInCont(self, targ_obj, targ_con):
+        target_object = self.builder.get_object(targ_obj)
+        taget_container = self.builder.get_object(targ_con)
+        objects_list = taget_container.get_children()
+        return objects_list.index(target_object)
 
-def getPosInCont(targ_obj, targ_con):
-    global builder
-    target_object = builder.get_object(targ_obj)
-    taget_container = builder.get_object(targ_con)
-    objects_list = taget_container.get_children()
-    return objects_list.index(target_object)
+    def getPosInParent(self, targ_obj):
+        target_object = self.builder.get_object(targ_obj)
+        output = list(target_object.get_parent().get_children()).index(target_object)
+        return output
 
+    def getNthChildLabel(self, targ_con, child_n):
+        taget_container = self.builder.get_object(targ_con)
+        output = taget_container.get_children()[child_n].get_text()
+        return output
 
-def getPosInParent(targ_obj):
-    global builder
-    target_object = builder.get_object(targ_obj)
-    output = list(target_object.get_parent().get_children()).index(target_object)
-    return output
+    def hide_bonus_choices(self, unlocked_dict, targ_x):
+        targ_parent = self.builder.get_object(targ_x)
+        out_list = []
+        col_list = targ_parent.get_children()
+        for i, v in enumerate(list(z.get_text() for z in col_list[1].get_children())):
 
-
-def getNthChildLabel(targ_con, child_n):
-    global builder
-    taget_container = builder.get_object(targ_con)
-    output = taget_container.get_children()[child_n].get_text()
-    return output
-
-
-def hide_bonus_choices(unlocked_dict, targ_x):
-    global builder
-    targ_parent = builder.get_object(targ_x)
-    out_list = []
-    col_list = targ_parent.get_children()
-    for i, v in enumerate(list(z.get_text() for z in col_list[1].get_children())):
-
-        if v not in unlocked_dict:
-            out_list.extend(list(x.get_children()[i] for x in col_list))
-    for obj in out_list:
-        obj.hide()
+            if v not in unlocked_dict:
+                out_list.extend(list(x.get_children()[i] for x in col_list))
+        for obj in out_list:
+            obj.hide()
 
 
 def read_mapped_index(mapped_dict, buffer_obj=None):
@@ -1208,56 +1208,16 @@ def read_mapped_index(mapped_dict, buffer_obj=None):
 
 
 __warningregistry__ = dict()
-abapp = ArdisBuilder()
-
-from gi.repository import Gtk
-from gi.repository import Gdk
-
-builder = Gtk.Builder()
-builder.add_from_file(abapp.w_path + '/ui.glade')
-
-theme_dict = ArdisDict()
-custom_color_gen = ArdisThemeGen()
-
-window = builder.get_object("window1")
-splash_win = builder.get_object("AB_splash_window")
-picker_win = builder.get_object('picker')
-advsetwin = builder.get_object("window2")
-pageDot = builder.get_object("curr_page_dot")
-mainbox = builder.get_object("box1")
-nextbutton = builder.get_object("button1")
-backbutton = builder.get_object("button2")
-aboutbutton = builder.get_object("box38")
-extrastuffbutton = builder.get_object("box37")
-pageone = builder.get_object("viewport1")
-gen_spinner = builder.get_object("spinner1")
-gen_lbl = builder.get_object("lbl_gen_status")
-
-current_page = 0
-builder.connect_signals(Handler())
-
-ssh_session = abapp.envars.get('SSH_CONNECTION')
-
-builder.get_object('splash_prog_lbl').show_now()
-builder.get_object('splash_progbar').show_now()
-
-splash_prog_lbl = builder.get_object('splash_prog_lbl')
-splash_progbar = builder.get_object('splash_progbar')
-splash_box = builder.get_object('AB_splash_rootbox')
-
-if ssh_session:
-    pass
-    # exit()
+g_abapp = ArdisBuilder()
+g_ui = ArdisUIBackend()
+g_ui.splash_prog_lbl.show_now()
+g_ui.splash_progbar.show_now()
 
 
 def start():
-    global builder
-    global theme_dict
-    global custom_color_gen
-    global abapp
     AB_Gtk_app = Gtk.Application()
     AB_Gtk_app.register()
-    AB_Gtk_app.add_window(window)
+    AB_Gtk_app.add_window(g_ui.window)
     # AB_Gtk_app.add_window(splash_win)
 
     # picker_win.show_all()
